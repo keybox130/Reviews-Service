@@ -81,7 +81,7 @@ const reviewSchema = new mongoose.Schema({
 const initDB = () => {
 
   let documents = [];
-  const numDocuments = 2;
+  const numDocuments = 1000;
 
   const Review = mongoose.model('Review', reviewSchema);
 
@@ -99,7 +99,7 @@ db.once('open', function() {
   // populate the database once we are connected
   initDB()
     .then(docs => {
-      console.log(docs);
+      // console.log(docs);
       console.log('Successfully initialized database');
     })
     .catch(err => {
