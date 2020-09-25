@@ -3,8 +3,10 @@ const app = express();
 const db = require('./db.js');
 const port = 3000;
 
-app.get('/stays/seed', (req, res) => {
-  // db.initDB();
+// database is automatically seeded when server starts up
+
+app.get('/', (req, res) => {
+  // not implemented atm
   res.sendStatus(200);
 });
 

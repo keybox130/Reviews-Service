@@ -14,85 +14,112 @@ const config = {
   dropDatabase: true,
 };
 
-// schema of each individual review
-const reviewSchema = new mongoose.Schema({
-  id: mongoose.ObjectId,
-  user_icon: String,
-  review_text: String,
-  date: Date,
-  name: String,
-  rating: {
-    cleanliness: Number,
-    communication: Number,
-    check_in: Number,
-    accuracy: Number,
-    location: Number,
-    value: Number
-  }
-});
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  // populate the database once we are connected
-  initDB();
-});
-
-// get random number between min and max, inclusive
+// get random int between min and max, inclusive
 const getRandomInt = (min, max) => {
   let range = max - min;
   return Math.floor(Math.random() * range) + min;
 }
 
-const random_names = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'Clarence', 'Jorge', 'Antonio',
+// get random float between min and max, inclusive and rounded to numDecimalPlaces
+const getRandomFloat = (min, max) => {
+  const numDecimalPlaces = 2;
+  let range = max - min;
+  return Number(((Math.random() * range) + min).toFixed(numDecimalPlaces));
+}
+
+const randomNames = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'Clarence', 'Jorge', 'Antonio',
                       'Elana', 'Lim', 'Jake', 'James', 'Johnny', 'Jorgen', 'Haneen', 'Mataeux', 'Theo', 'Ryan',
                       'Jacob', 'Jenny', 'Alex', 'Alissa', 'Andrew', 'Anna', 'Arun', 'Adjoa', 'Billy', 'Brian',
                       'Carina', 'Catherine', 'Daniel', 'Erfan', 'Eric', 'Harris', 'Harrison', 'Jen', 'Jessie',
                       'Joel', 'Johnny', 'Joesph', 'Karl', 'Katharine', 'Liz', 'Mike', 'Minji', 'Mylani', 'Rebecca',
                       'Rob', 'Shaquon', 'Sophie', 'Sokhary', 'Susan', 'Victoria', 'Watson', 'Yas'];
 
-const random_text = ['apple', 'orange', 'pear', 'little', 'big', 'hack', 'reactor', 'review', 'great', 'the', 'a',
-                     'is', 'of', 'will', 'tree', 'normal', 'abstract', 'your', 'job', 'free', 'work', 'stay','home'.
+const randomText = ['apple', 'orange', 'pear', 'little', 'big', 'hack', 'reactor', 'review', 'great', 'the', 'a',
+                     'is', 'of', 'will', 'tree', 'normal', 'abstract', 'your', 'job', 'free', 'work', 'stay','home',
                      'apartment', 'kite', 'rent', 'stay', 'like', 'roof', 'room', 'bathroom', 'lorem ipsum'];
 
-const generateRandomReview = (length) => {
+const generateRandomReview = () => {
   let review = [];
-  for (let i = 0; i < length; i++) {
-    let index = Math.floor(Math.random(0, random_text.length));
-    review.push(random_text[index]);
+  // generate random review of length between 50-150
+  let reviewLength = getRandomInt(50,150);
+  for (let i = 0; i < reviewLength; i++) {
+    // get a random word from randomText
+    let index = getRandomInt(0, randomText.length);
+    review.push(randomText[index]);
   }
-}
+  return review.join(' ');
+};
 
 // generate a random document
 const generateRandomDocument = (id) => {
   const doc = {
-    id: id,
-    user_icon: 'google.com',
-    review_text: generateRandomReview(100),
+    userIcon: 'google.com',
+    reviewText: generateRandomReview(100),
     date: new Date(),
-    name: random_names[getRandomInt(0, random_names.length)],
+    name: randomNames[getRandomInt(0, randomNames.length)],
     rating: {
-      cleanliness: getRandomInt(1, 5),
-      communication: getRandomInt(1, 5),
-      check_in: getRandomInt(1, 5),
-      accuracy: getRandomInt(1, 5),
-      location: getRandomInt(1, 5),
-      value: getRandomInt(1, 5)
+      cleanliness: getRandomFloat(1, 5),
+      communication: getRandomFloat(1, 5),
+      checkIn: getRandomFloat(1, 5),
+      accuracy: getRandomFloat(1, 5),
+      location: getRandomFloat(1, 5),
+      value: getRandomFloat(1, 5)
     }
-  }
+  };
   return doc;
-}
+};
 
-const initDB = async () => {
+// schema of each individual review
+const reviewSchema = new mongoose.Schema({
+  id: mongoose.ObjectId,
+  userIcon: String,
+  reviewText: String,
+  date: Date,
+  name: String,
+  rating: {
+    cleanliness: Number,
+    communication: Number,
+    checkIn: Number,
+    accuracy: Number,
+    location: Number,
+    value: Number
+  }
+});
 
-  let bulkData = [];
-  const numDocuments = 2;
+const Review = mongoose.model('Review', reviewSchema);
 
-  const Review = mongoose.model('Review', reviewSchema);
+const initDB = () => {
 
+  let documents = [];
+  const numDocuments = 100;
+
+  // generate 'numDocuments' random documents
   for (let i = 0; i < numDocuments; i++) {
     const doc = generateRandomDocument(i+1);
-    console.log(doc);
+    documents.push(doc);
   }
 
-  console.log('Initialized DB');
-}
+  // insert them and return the promise
+  return Review.insertMany(documents);
+
+};
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  // populate the database once we are connected (if necessary!)
+  Review.find({}).exec()
+  .then(docs => {
+    // check if there are already docs in the database
+    if (!docs.length) {
+      initDB()
+        .then(docs => {
+          console.log('Successfully initialized database');
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    } else {
+      console.log('Database is already populated!');
+    }
+  });
+});
