@@ -81,7 +81,7 @@ const reviewSchema = new mongoose.Schema({
 const initDB = () => {
 
   let documents = [];
-  const numDocuments = 1000;
+  const numDocuments = 100;
 
   const Review = mongoose.model('Review', reviewSchema);
 
