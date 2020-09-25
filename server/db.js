@@ -99,7 +99,6 @@ db.once('open', function() {
   // populate the database once we are connected
   initDB()
     .then(docs => {
-      // console.log(docs);
       console.log('Successfully initialized database');
     })
     .catch(err => {
