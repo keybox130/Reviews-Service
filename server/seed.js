@@ -24,16 +24,16 @@ const getRandomInt = (min, max) => {
   return Math.floor(Math.random() * range) + min;
 };
 
-const generateRandomReview = () => {
-  let review = [];
+const generateReviewText = () => {
+  let text = [];
   // generate random review of length between 50-150
-  let reviewLength = getRandomInt(50,150);
-  for (let i = 0; i < reviewLength; i++) {
+  let numWords = getRandomInt(50,150);
+  for (let i = 0; i < numWords; i++) {
     // get a random word from randomText
     let index = getRandomInt(0, randomText.length);
-    review.push(randomText[index]);
+    text.push(randomText[index]);
   }
-  return review.join(' ');
+  return text.join(' ');
 };
 
 const getRandomPhoto = () => {
@@ -45,12 +45,10 @@ const getRandomPhoto = () => {
 }
 
 // generate a random document
-const generateRandomDoc = (roomId, photoId) => {
-  console.log('Hi');
-  const doc = {
-    roomId: roomId,
+const generateRandomReview = () => {
+  const review = {
     userIcon: getRandomPhoto(),
-    reviewText: generateRandomReview(100),
+    reviewText: generateReviewText(),
     date: new Date(),
     name: randomNames[getRandomInt(0, randomNames.length)],
     rating: {
@@ -62,7 +60,8 @@ const generateRandomDoc = (roomId, photoId) => {
       value: getRandomFloat(1, 5)
     }
   };
-  return doc;
+
+  return review;
 };
 
 // mongo seeding config
@@ -75,27 +74,47 @@ const config = {
   dropDatabase: true,
 };
 
+const generateRandomReviews = () => {
+  let reviews = [];
+  const numReviews = 100;
+  for (let i = 0; i < numReviews; i++) {
+    reviews.push(generateRandomReview());
+  }
+  return reviews;
+}
+
 const initDB = () => {
 
-  let documents = [];
-  const numDocuments = 100;
-  const numReviewsPerPage = 30;
+  const numRooms = 100;
+  const numReviews = 30;
 
-  // generate 'numDocuments' random documents
-  for (let i = 0; i < numDocuments; i++) {
-    // give each room 30 reviews (for now)
-    let roomId = (i % numReviewsPerPage) + 1;
-    const doc = generateRandomDoc(roomId, );
-    documents.push(doc);
+  // create a random sample of reviews
+  let reviewSamples = generateRandomReviews();
+  let rooms = [];
+
+  for (let i = 0; i < numRooms; i++) {
+    // a room has many reviews
+    let room = {
+      room_id: i+1,
+      reviews: []
+    }
+    // generate 'numRooms' random rooms
+    for (let i = 0; i < numReviews; i++) {
+      // give each room 30 reviews (for now) by sampling from array of generated reviews
+      let randomReview = reviewSamples[getRandomInt(0, reviewSamples.length)];
+      room.reviews.push(randomReview);
+    }
+    rooms.push(room)
   }
+
   // insert them and return the promise
-  return db.Review.insertMany(documents);
+  return db.Room.insertMany(rooms);
 
 };
 
 const seedDB = () => {
   // populate the database once we are connected (if necessary!)
-  db.Review.find({}).exec()
+  db.Room.find({}).exec()
   .then(docs => {
     // check if there are already docs in the database
     if (!docs.length) {

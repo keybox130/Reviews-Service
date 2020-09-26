@@ -2,8 +2,13 @@ const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/reviews', {useNewUrlParser: true});
 const dbo = mongoose.connection;
 
-// schema of each individual review
-const reviewSchema = new mongoose.Schema({
+const roomSchema = new mongoose.Schema({
+  room_id: Number,
+  reviews: Array
+})
+
+// schema of each individual review (unused)
+/* const reviewSchema = new mongoose.Schema({
   id: mongoose.ObjectId,
   roomId: Number,
   userIcon: String,
@@ -18,11 +23,11 @@ const reviewSchema = new mongoose.Schema({
     location: Number,
     value: Number
   }
-});
+}); */
 
-const Review = mongoose.model('Review', reviewSchema);
+const Room = mongoose.model('Room', roomSchema);
 
 module.exports = {
   dbo,
-  Review
+  Room
 }
