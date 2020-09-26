@@ -36,12 +36,20 @@ const generateRandomReview = () => {
   return review.join(' ');
 };
 
+const getRandomPhoto = () => {
+  // min and max photo ids from S3
+  let min = 69900;
+  let max = 69999;
+  let photoId = getRandomInt(min, max);
+  return 'https://keybox-review-images.s3-us-west-1.amazonaws.com/' + photoId + '.png';
+}
+
 // generate a random document
-const generateRandomDoc = (roomId) => {
+const generateRandomDoc = (roomId, photoId) => {
   console.log('Hi');
   const doc = {
     roomId: roomId,
-    userIcon: 'google.com',
+    userIcon: getRandomPhoto(),
     reviewText: generateRandomReview(100),
     date: new Date(),
     name: randomNames[getRandomInt(0, randomNames.length)],
@@ -71,14 +79,13 @@ const initDB = () => {
 
   let documents = [];
   const numDocuments = 100;
-
   const numReviewsPerPage = 30;
 
   // generate 'numDocuments' random documents
   for (let i = 0; i < numDocuments; i++) {
     // give each room 30 reviews (for now)
     let roomId = (i % numReviewsPerPage) + 1;
-    const doc = generateRandomDoc(roomId);
+    const doc = generateRandomDoc(roomId, );
     documents.push(doc);
   }
   // insert them and return the promise
