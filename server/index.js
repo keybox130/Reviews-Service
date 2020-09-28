@@ -1,11 +1,21 @@
 const express = require('express');
 const app = express();
 const db = require('./db.js');
+const path = require('path');
 const port = 3000;
 
-app.get('/', (req, res) => {
-  // not implemented atm
-  res.sendStatus(200);
+// send app and js bundle
+app.use(express.static(__dirname + '/../client/dist'));
+
+// return all stays (remove once endpoints based on stay id implemented)
+app.get('/stays', (req, res) => {
+  db.Room.find({}).exec()
+  .then(docs => {
+    res.status(200).send(docs);
+  })
+  .catch(err => {
+    res.status(404).send(err);
+  })
 });
 
 app.listen(port, () => {
