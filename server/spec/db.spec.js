@@ -1,4 +1,4 @@
-const db = require('../db.js');
+const db = require('../src/db.js');
 
 describe('Database API', () => {
   test('it should connect to the database', done => {
