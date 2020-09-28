@@ -5,7 +5,7 @@ const path = require('path');
 const port = 3000;
 
 // send app and js bundle
-app.use(express.static(__dirname + '/../client/dist'));
+app.use(express.static(__dirname + '/../../client/dist'));
 
 // return all stays (remove once endpoints based on stay id implemented)
 app.get('/stays', (req, res) => {
