@@ -38,17 +38,10 @@ class App extends React.Component {
   }
 
   render() {
-    if (!this.state.reviews.length) {
-      return (
-        <h1>Loading...</h1>
-      );
-    } else {
-      return (
-        <div>
-          <StyledReviewList reviews={this.state.reviews}/>
-        </div>
-      );
-    }
+    return !this.state.reviews.length ? <h1>Loading...</h1> :
+    <div>
+      <StyledReviewList reviews={this.state.reviews}/>
+    </div>
   }
 }
 

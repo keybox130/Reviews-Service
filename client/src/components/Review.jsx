@@ -1,4 +1,5 @@
 import React from 'react';
+import ReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
 
 const FlexRow = styled.div`
@@ -39,70 +40,65 @@ margin-bottom: 1vh;
 margin-top: 1vh;
 `;
 
-const ReviewText = styled.p`
-display: inline;
-font-family: 'Nunito', sans-serif;
-font-weight: 400;
-font-size: calc(14px + 1vw);
-`;
-
 const Container = styled.div`
 display: inline-block;
 margin: 5vh 5vw;
 `;
 
-const ReadMore = styled.a`
-font-family: 'Nunito', sans-serif;
-font-weight: 600;
-font-size: calc(14px + 1vw);
-text-decoration: underline;
-display: inline;
-`;
+class Review extends React.Component {
+  constructor({review}) {
+    super();
+    this.state = {
+      review: review,
+      text: review.reviewText,
+      showAllText: true
+    }
 
-// returns a component of AirBnB-style formatted text
-const shortenText = (text, shouldShorten) => {
+  }
 
-  const textCutoff = 200;
-  const renderLink = text.length > textCutoff;
+  componentDidMount() {
+    this.shortenText();
+  }
 
-  if (renderLink && shouldShorten) {
-    // embed a link into the shortened review text after the nearest word
-    let nearestWord = text.indexOf(' ', textCutoff);
+  // shortens the review text according to AirBnB style, if needed
+  shortenText() {
+    const textCutoff = 180;
+    const shouldShorten = this.state.text.length > textCutoff;
+
+    if (shouldShorten) {
+      // cut text to the nearest word
+      let nearestWord = this.state.text.indexOf(' ', textCutoff);
+      this.setState({
+        text: this.state.text.slice(0, nearestWord) + ' ',
+        showAllText: !shouldShorten
+      });
+    }
+  }
+
+  // reset shortened text to original on click
+  onClick() {
+    this.setState({
+      text: this.state.review.reviewText,
+      showAllText: true
+    });
+  }
+
+  render() {
     return (
-      <div>
-        <ReviewText>
-          {text.slice(0, nearestWord) + '... '}
-        </ReviewText>
-        <ReadMore onClick={expand}>read more</ReadMore>
-      </div>
-    );
-  } else {
-    // render the full review text
-    return (
-    <ReviewText>
-      {text}
-    </ReviewText>
+      <Container>
+        <FlexRow>
+          <ProfileImage src={this.state.review.userIcon}></ProfileImage>
+          <FlexColumn>
+            <Name>{this.state.review.name}</Name>
+            <Date>{this.state.review.date}</Date>
+          </FlexColumn>
+        </FlexRow>
+        <FlexRow>
+          <ReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
+        </FlexRow>
+      </Container>
     );
   }
-}
-
-const Review = ( {review} ) => {
-
-  return (
-    <Container>
-      <FlexRow>
-        <ProfileImage src={review.userIcon}></ProfileImage>
-        <FlexColumn>
-          <Name>{review.name}</Name>
-          <Date>{review.date}</Date>
-        </FlexColumn>
-      </FlexRow>
-      <FlexRow>
-        {shortenText(review.reviewText)}
-      </FlexRow>
-    </Container>
-  );
-
 }
 
 const StyledReview = styled(Review)`
