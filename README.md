@@ -16,7 +16,7 @@
 
 ## Usage
 
-> Some usage instructions
+> Start the server using `npm run server-dev`, then start the client using `npm run client-dev`!
 
 ## Requirements
 
