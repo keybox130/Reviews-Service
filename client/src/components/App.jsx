@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import ReviewList from './ReviewList.jsx';
+
 class App extends React.Component {
   constructor() {
     super();
@@ -9,6 +11,9 @@ class App extends React.Component {
       rooms: []
     }
 
+  }
+
+  componentDidMount() {
     this.getAllStays();
   }
 
@@ -18,15 +23,26 @@ class App extends React.Component {
     .then(rooms => {
       console.log(JSON.stringify(rooms));
       this.setState({
-        rooms: rooms
+        rooms: rooms.data
       });
     });
   }
 
   render() {
-    return (
-      <h2>Hello world!</h2>
-    );
+    if (!this.state.rooms.length) {
+      return (
+        <h1>Loading...</h1>
+      )
+    } else {
+      debugger;
+      return (
+        <div>
+          <h2>Hello world!</h2>
+          <ReviewList reviews={this.state.rooms[0].reviews}/>
+        </div>
+      );
+    }
+
   }
 }
 
