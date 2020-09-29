@@ -1,16 +1,19 @@
 import React from 'react';
-import Review from './Review.jsx';
+import StyledReview from './Review.jsx';
+import styled from 'styled-components';
 
 const ReviewList = ( {reviews} ) => {
   console.log(reviews);
-  debugger;
   return (
     <div>
       {reviews.map((review, i) => {
-        return <Review key={i} review={review}/>
+        return <StyledReview key={i} review={review}/>
       })}
     </div>
   );
 }
+
+const StyledReviewList = styled(ReviewList)`
+`;
 
 export default ReviewList;

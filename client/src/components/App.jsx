@@ -21,7 +21,7 @@ class App extends React.Component {
   getAllStays() {
     axios.get('/stays')
     .then(rooms => {
-      console.log(JSON.stringify(rooms));
+      // console.log(JSON.stringify(rooms));
       this.setState({
         rooms: rooms.data
       });
@@ -32,12 +32,10 @@ class App extends React.Component {
     if (!this.state.rooms.length) {
       return (
         <h1>Loading...</h1>
-      )
+      );
     } else {
-      debugger;
       return (
         <div>
-          <h2>Hello world!</h2>
           <ReviewList reviews={this.state.rooms[0].reviews}/>
         </div>
       );
