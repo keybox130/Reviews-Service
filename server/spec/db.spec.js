@@ -2,6 +2,7 @@ const db = require('../src/db.js');
 
 describe('Database API', () => {
   test('it should connect to the database', done => {
+    // after the database is open, verify the connection was successful
     db.dbo.once('open', () => {
       try {
         expect(db.dbo.name).toEqual('reviews');
