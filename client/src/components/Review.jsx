@@ -12,11 +12,6 @@ flex-direction: column;
 margin-left: 3vw;
 `;
 
-const TextDiv = styled.div`
-display: flex;
-flex-direction: column;
-`;
-
 const ProfileImage = styled.img`
 max-height: 30vh;
 display: inline-block;
@@ -65,12 +60,12 @@ display: inline;
 `;
 
 // returns a component of AirBnB-style formatted text
-const shortenText = (text) => {
+const shortenText = (text, shouldShorten) => {
 
   const textCutoff = 200;
   const renderLink = text.length > textCutoff;
 
-  if (renderLink) {
+  if (renderLink && shouldShorten) {
     // embed a link into the shortened review text after the nearest word
     let nearestWord = text.indexOf(' ', textCutoff);
     return (
@@ -78,7 +73,7 @@ const shortenText = (text) => {
         <ReviewText>
           {text.slice(0, nearestWord) + '... '}
         </ReviewText>
-        <ReadMore>read more</ReadMore>
+        <ReadMore onClick={expand}>read more</ReadMore>
       </div>
     );
   } else {
