@@ -1,14 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-
-import ReviewList from './ReviewList.jsx';
+import StyledReviewList from './ReviewList.jsx';
 
 class App extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      rooms: []
+      reviews: []
     }
 
   }
@@ -17,30 +16,39 @@ class App extends React.Component {
     this.getAllStays();
   }
 
-  // gets all stays from the server (will be refactored to get stay)
+  // format the reviews for our service
+  formatReviews(reviews) {
+    const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return reviews.map(review => {
+      const month = months[Number(review.date.slice(5, 7))];
+      const year = review.date.slice(0, 4);
+      review.date = month.toString() + ' ' + year;
+      return review;
+    });
+  }
+
+  // gets first stay from the server (will be refactored to get stay)
   getAllStays() {
     axios.get('/stays')
     .then(rooms => {
-      // console.log(JSON.stringify(rooms));
       this.setState({
-        rooms: rooms.data
+        reviews: this.formatReviews(rooms.data[0].reviews)
       });
     });
   }
 
   render() {
-    if (!this.state.rooms.length) {
+    if (!this.state.reviews.length) {
       return (
         <h1>Loading...</h1>
       );
     } else {
       return (
         <div>
-          <ReviewList reviews={this.state.rooms[0].reviews}/>
+          <StyledReviewList reviews={this.state.reviews}/>
         </div>
       );
     }
-
   }
 }
 

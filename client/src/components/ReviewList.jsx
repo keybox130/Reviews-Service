@@ -2,13 +2,27 @@ import React from 'react';
 import StyledReview from './Review.jsx';
 import styled from 'styled-components';
 
+const FlexRow = styled.div`
+display: flex;
+flex-direction: row;
+`;
+
 const ReviewList = ( {reviews} ) => {
-  console.log(reviews);
+  // console.log(reviews);
   return (
     <div>
-      {reviews.map((review, i) => {
-        return <StyledReview key={i} review={review}/>
-      })}
+      <FlexRow>
+        <StyledReview review={reviews[0]}/>
+        <StyledReview review={reviews[1]}/>
+      </FlexRow>
+      <FlexRow>
+          <StyledReview review={reviews[2]}/>
+          <StyledReview review={reviews[3]}/>
+      </FlexRow>
+      <FlexRow>
+        <StyledReview review={reviews[4]}/>
+        <StyledReview review={reviews[5]}/>
+      </FlexRow>
     </div>
   );
 }
@@ -16,4 +30,4 @@ const ReviewList = ( {reviews} ) => {
 const StyledReviewList = styled(ReviewList)`
 `;
 
-export default ReviewList;
+export default StyledReviewList;
