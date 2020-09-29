@@ -45,7 +45,7 @@ margin-top: 1vh;
 `;
 
 const ReviewText = styled.p`
-display: inline-block;
+display: inline;
 font-family: 'Nunito', sans-serif;
 font-weight: 400;
 font-size: calc(14px + 1vw);
@@ -55,6 +55,41 @@ const Container = styled.div`
 display: inline-block;
 margin: 5vh 5vw;
 `;
+
+const ReadMore = styled.a`
+font-family: 'Nunito', sans-serif;
+font-weight: 600;
+font-size: calc(14px + 1vw);
+text-decoration: underline;
+display: inline;
+`;
+
+// returns a component of AirBnB-style formatted text
+const shortenText = (text) => {
+
+  const textCutoff = 200;
+  const renderLink = text.length > textCutoff;
+
+  if (renderLink) {
+    // embed a link into the shortened review text after the nearest word
+    let nearestWord = text.indexOf(' ', textCutoff);
+    return (
+      <div>
+        <ReviewText>
+          {text.slice(0, nearestWord) + '... '}
+        </ReviewText>
+        <ReadMore>read more</ReadMore>
+      </div>
+    );
+  } else {
+    // render the full review text
+    return (
+    <ReviewText>
+      {text}
+    </ReviewText>
+    );
+  }
+}
 
 const Review = ( {review} ) => {
 
@@ -68,7 +103,7 @@ const Review = ( {review} ) => {
         </FlexColumn>
       </FlexRow>
       <FlexRow>
-        <ReviewText>{review.reviewText}</ReviewText>
+        {shortenText(review.reviewText)}
       </FlexRow>
     </Container>
   );
