@@ -6,6 +6,7 @@ import fonts from './Fonts.js';
 const FlexRow = styled.div`
 display: flex;
 flex-direction: row;
+margin-bottom: 5vh;
 `;
 
 const FlexColumn = styled.div`
@@ -15,7 +16,7 @@ margin-left: 3vw;
 `;
 
 const ProfileImage = styled.img`
-max-height: 30vh;
+max-height: 15vh;
 display: inline-block;
 border-radius: 50%;
 `;
@@ -25,7 +26,7 @@ display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.bold};
 font-size: calc(18px + 1vw);
-margin-top: 3vh;
+margin-top: 1vh;
 margin-bottom: 1vh;
 `;
 

@@ -10,7 +10,7 @@ font-size: calc(14px + 1vw);
 `;
 
 const ReadMore = styled.a`
-font-family: ${fonts.family}
+font-family: ${fonts.family};
 font-weight: ${fonts.bold};
 font-size: calc(14px + 1vw);
 text-decoration: underline;
