@@ -1,5 +1,5 @@
 import React from 'react';
-import ReviewText from './ReviewText.jsx'
+import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
 
 const FlexRow = styled.div`
@@ -94,7 +94,7 @@ class Review extends React.Component {
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <ReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
+          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
         </FlexRow>
       </Container>
     );

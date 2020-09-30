@@ -32,4 +32,7 @@ const ReviewText = ({text, onClick, expanded}) => {
   );
 }
 
-export default ReviewText;
+const StyledReviewText = styled(ReviewText)`
+`;
+
+export default StyledReviewText;
