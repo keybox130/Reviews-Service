@@ -1,16 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
+import fonts from './Fonts.js';
 
 const Text = styled.p`
 display: inline;
-font-family: 'Nunito', sans-serif;
-font-weight: 400;
+font-family: ${fonts.family};
+font-weight: ${fonts.normal};
 font-size: calc(14px + 1vw);
 `;
 
 const ReadMore = styled.a`
-font-family: 'Nunito', sans-serif;
-font-weight: 600;
+font-family: ${fonts.family}
+font-weight: ${fonts.bold};
 font-size: calc(14px + 1vw);
 text-decoration: underline;
 display: inline;

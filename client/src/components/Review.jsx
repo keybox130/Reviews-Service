@@ -1,6 +1,7 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
+import fonts from './Fonts.js';
 
 const FlexRow = styled.div`
 display: flex;
@@ -17,15 +18,12 @@ const ProfileImage = styled.img`
 max-height: 30vh;
 display: inline-block;
 border-radius: 50%;
-object-fit: contain;
-align-self: center;
-flex: 0 0 auto;
 `;
 
 const Name = styled.p`
 display: inline-block;
-font-family: 'Nunito', sans-serif;
-font-weight: 600;
+font-family: ${fonts.family};
+font-weight: ${fonts.bold};
 font-size: calc(18px + 1vw);
 margin-top: 3vh;
 margin-bottom: 1vh;
@@ -33,8 +31,8 @@ margin-bottom: 1vh;
 
 const Date = styled.p`
 display: inline;
-font-family: 'Nunito', sans-serif;
-font-weight: 200;
+font-family: ${fonts.family};
+font-weight: ${fonts.thin};
 font-size: calc(12px + 1vw);
 margin-bottom: 1vh;
 margin-top: 1vh;
@@ -43,6 +41,7 @@ margin-top: 1vh;
 const Container = styled.div`
 display: inline-block;
 margin: 5vh 5vw;
+max-width: 35vw;
 `;
 
 class Review extends React.Component {

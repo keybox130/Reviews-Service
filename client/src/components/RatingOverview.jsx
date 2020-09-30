@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import fonts from './Fonts.js';
 
 const FlexRow = styled.div`
 display: flex;
@@ -11,23 +12,35 @@ display: inline-block;
 margin: 5vh 5vw;
 `;
 
-const Text = styled.p`
+const Header = styled.h1`
 display: inline-block;
-font-family: 'Nunito', sans-serif;
-font-weight: 600;
-font-size: calc(18px + 1vw);
-margin-top: 3vh;
-margin-bottom: 1vh;
+font-family: ${fonts.family};
+font-weight: ${fonts.bold};
+font-size: calc(24px + 1vw);
+margin-top: 4vh;
 `;
 
-const RatingOverview = () => {
+const Star = styled.img`
+max-height: 4vh;
+margin: 4vh 2vw;
+object-fit: contain;
+align-self: center;
+flex: 0 0 auto;
+`;
+
+const RatingOverview = ({average, numReviews}) => {
   return (
     <Container>
       <FlexRow>
-        <Text></Text>
+        <Star src='/static/star.jpg'></Star>
+        <Header>{`${average} (${numReviews} reviews)`}</Header>
       </FlexRow>
     </Container>
   );
 }
 
-export default RatingOverview;
+const StyledRatingOverview = styled(RatingOverview)`
+display: inline-block;
+`;
+
+export default StyledRatingOverview;

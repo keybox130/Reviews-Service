@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
-import StyledRatingGraph from './RatingOverview.jsx';
+import StyledRatingOverview from './RatingOverview.jsx';
+import StyledRatingGraph from './RatingGraph.jsx';
 import StyledReviewList from './ReviewList.jsx';
 import _ from 'underscore';
 
@@ -20,7 +21,6 @@ class App extends React.Component {
         value: 0
       }
     }
-
   }
 
   componentDidMount() {
@@ -58,7 +58,7 @@ class App extends React.Component {
       value: 0
     }
 
-    reviews.forEach(review => {
+    _.each(reviews, review => {
       ratings.cleanliness += review.rating.cleanliness;
       ratings.communication += review.rating.communication;
       ratings.checkIn += review.rating.checkIn;
@@ -76,7 +76,7 @@ class App extends React.Component {
 
     // average of all rating types
     overallAverage /= Object.keys(ratings).length;
-    ratings.average = overallAverage;
+    ratings.average = overallAverage.toFixed(2);
 
     // console.log(ratings);
     return ratings;
@@ -90,14 +90,19 @@ class App extends React.Component {
         reviews: this.extractReviews(rooms.data[0].reviews),
         ratings: this.extractRatings(rooms.data[0].reviews)
       });
+      console.log(JSON.stringify(this.state.reviews.slice(0,6)));
     });
   }
 
   render() {
+
+    console.log()
+
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <div>
-      <StyledRatingGraph ratings={this.state.ratings}/>
-      <StyledReviewList reviews={this.state.reviews}/>
+      <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
+      <StyledRatingGraph />
+      <StyledReviewList reviews={this.state.reviews} />
     </div>
   }
 }

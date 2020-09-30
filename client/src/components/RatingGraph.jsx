@@ -5,4 +5,8 @@ const RatingGraph = (ratings) => {
   return null;
 }
 
-export default RatingGraph;
+const StyledRatingGraph = styled(RatingGraph)`
+display: inline-block;
+`;
+
+export default StyledRatingGraph;
