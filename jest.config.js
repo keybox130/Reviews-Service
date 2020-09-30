@@ -21,14 +21,14 @@ module.exports = {
 
   // Use this configuration option to add custom reporters to Jest
 
-  // reporters: [
-  //   [
-  //     "jest-nyancat-reporter",
-  //     {
-  //       "suppressErrorReporter": false
-  //     }
-  //   ]
-  // ],
+  reporters: [
+    [
+      "jest-nyancat-reporter",
+      {
+        "suppressErrorReporter": false
+      }
+    ]
+  ],
 
   setupFilesAfterEnv: ["jest-enzyme"],
 
