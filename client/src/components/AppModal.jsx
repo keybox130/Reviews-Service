@@ -44,11 +44,12 @@ const CloseButton = styled.button`
 `;
 
 class AppModal extends React.Component {
-  constructor({reviews, ratings}) {
+  constructor({reviews, ratings, close}) {
     super();
     this.state = {
       reviews: reviews,
-      ratings: ratings
+      ratings: ratings,
+      close: close
     }
   }
 
@@ -56,7 +57,7 @@ class AppModal extends React.Component {
     return (
       <Container>
         <FlexColumn>
-          <CloseButton>X</CloseButton>
+          <CloseButton onClick={this.state.close}>X</CloseButton>
         </FlexColumn>
         <FlexRow>
           <FlexColumn>

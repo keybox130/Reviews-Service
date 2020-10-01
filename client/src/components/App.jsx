@@ -119,11 +119,17 @@ class App extends React.Component {
     console.log('Showing Modal...');
   }
 
+  close() {
+    this.setState({
+      showModal: false
+    })
+  }
+
   render() {
 
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <>
-    {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings}/>) : null}
+    {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings} close={this.close.bind(this)}/>) : null}
         <Container className={this.state.showModal ? 'dim' : ''}>
             <>
               <FlexRow>

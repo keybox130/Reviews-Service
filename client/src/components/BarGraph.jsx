@@ -22,7 +22,7 @@ min-width: 30vw;
 const Underlay = styled.div`
 display: inline-block;
 background-color: rgb(221,221,221);
-height: 1vh;
+height: 8px;
 border-radius: 30px;
 width: ${props => props.width}px;
 `;
@@ -35,7 +35,7 @@ font-size: calc(14px + 1vw);
 `;
 
 const Bar = styled.div`
-height: 1vh;
+height: 8px;
 display: flex;
 width: ${props => props.width}px;
 border-radius: 30px;
