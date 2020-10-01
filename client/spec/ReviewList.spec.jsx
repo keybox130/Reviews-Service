@@ -1,7 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
 import StyledReviewList from '../src/components/ReviewList.jsx';
-import StyledReview from '../src/components/Review.jsx';
 
 describe('<StyledReviewList />', () => {
 
