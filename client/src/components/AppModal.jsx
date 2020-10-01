@@ -9,10 +9,12 @@ const Container = styled.div`
 background-color: white;
 border-style: solid;
 border-width: 5px;
+border-radius: 30px;
 z-index: 2;
 position: absolute;
 display: flex;
 margin: 20vw 20vh;
+
 `;
 
 const FlexRow = styled.div`
@@ -23,6 +25,7 @@ const FlexRow = styled.div`
 const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;
+  max-height: 90vh;
 `;
 
 const CloseButton = styled.button`
@@ -32,6 +35,7 @@ const CloseButton = styled.button`
   font-weight: ${fonts.normal};
   font-family: ${fonts.family};
   font-size: calc(${fonts.small}px + 1vw);
+  margin: 2vw 2vh;
   :hover {
     border-radius: 50%;
     cursor: pointer;

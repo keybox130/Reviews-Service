@@ -46,17 +46,23 @@ max-width: 35vw;
 `;
 
 class Review extends React.Component {
-  constructor({review}) {
+  constructor({review, callback}) {
     super();
     this.state = {
       review: review,
       text: review.reviewText,
-      showAllText: true
+      showAllText: true,
+      mountRef: callback ? callback : null
     }
 
+    // add a ref for scroll bar DOM manipulation
+    this.myRef = React.createRef();
   }
 
   componentDidMount() {
+    if (this.state.mountRef) {
+      this.state.mountRef(this.myRef.current.toString());
+    }
     this.shortenText();
   }
 
@@ -85,7 +91,7 @@ class Review extends React.Component {
 
   render() {
     return (
-      <Container>
+      <Container ref={this.myRef}>
         <FlexRow>
           <ProfileImage src={this.state.review.userIcon}></ProfileImage>
           <FlexColumn>
