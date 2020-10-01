@@ -3,6 +3,8 @@ import axios from 'axios';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
+import StyledReviewModal from './ReviewModal.jsx';
+import StyledShowAll from './ShowAll.jsx';
 import _ from 'underscore';
 
 class App extends React.Component {
@@ -19,7 +21,8 @@ class App extends React.Component {
         accuracy: 0,
         location: 0,
         value: 0
-      }
+      },
+      showModal: false
     }
   }
 
@@ -93,13 +96,20 @@ class App extends React.Component {
     });
   }
 
+  showAllReviews() {
+    console.log('Showing all reviews');
+  }
+
   render() {
 
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <div>
       <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
       <StyledRatingGraphs ratings={this.state.ratings}/>
-      <StyledReviewList reviews={this.state.reviews} />
+      {/* only render the top 6 arbitrarily sorted reviews */}
+      <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
+      <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>
+      {this.state.showModal ? (<StyledReviewModal />) : null}
     </div>
   }
 }
