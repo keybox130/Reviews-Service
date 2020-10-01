@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import StyledRatingOverview from './RatingOverview.jsx';
-import StyledRatingGraph from './RatingGraph.jsx';
+import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
 import _ from 'underscore';
 
@@ -78,11 +78,10 @@ class App extends React.Component {
     overallAverage /= Object.keys(ratings).length;
     ratings.average = overallAverage.toFixed(2);
 
-    // console.log(ratings);
     return ratings;
   }
 
-  // gets first stay from the server (will be refactored to get stay)
+  // gets first stay from the server (will be refactored to get stay based on id)
   getAllStays() {
     axios.get('/stays')
     .then(rooms => {
@@ -96,12 +95,10 @@ class App extends React.Component {
 
   render() {
 
-    console.log()
-
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <div>
       <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
-      <StyledRatingGraph />
+      <StyledRatingGraphs ratings={this.state.ratings}/>
       <StyledReviewList reviews={this.state.reviews} />
     </div>
   }
