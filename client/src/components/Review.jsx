@@ -59,9 +59,9 @@ class Review extends React.Component {
     this.myRef = React.createRef();
   }
 
-  componentDidMount() {
+  componentWillMount() {
     if (this.state.mountRef) {
-      this.state.mountRef(this.myRef.current.toString());
+      this.state.mountRef(this.myRef);
     }
     this.shortenText();
   }

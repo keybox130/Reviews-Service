@@ -39,37 +39,60 @@ class ReviewListModal extends React.Component {
 
   constructor({reviews}) {
     super();
+
+    this.numReviewsToShow = 6;
+
     this.state = {
       reviews: reviews,
-      renderedReviews: reviews.slice(0,6)
+      renderedReviews: reviews.slice(0, this.numReviewsToShow)
     }
+    this.myRef = React.createRef();
     this.refList = [];
   }
 
   componentDidMount() {
-
+    window.addEventListener('scroll', e => {
+      this.checkScrollBar();
+    });
   }
 
-  setupScrollBar() {
-    const lastLi = document.querySelectorAll("ul.container > li:last-child");
-    var lastLiOffset = lastLi.offsetTop + lastLi.clientHeight;
+  // load more reviews if the scroll bar is at the bottom
+  loadMoreReviews() {
+    const end = this.state.renderedReviews.length;
+    const nextReviews = this.state.reviews.slice(end, end + this.numReviewsToShow);
+    const newRendered = [...this.state.renderedReviews, ...nextReviews];
+    console.log('Loading more reviews...');
+    console.log(newRendered);
+    this.setState({
+      renderedReviews: newRendered
+    })
+    console.log(this.state.newRendered);
+    // this.state.renderedReviews.push()
+  }
+
+  // check if scrollbar is at bottom
+  checkScrollBar() {
+    const query = 'div.' + this.refList[0].current.classList[0];
+    const reviewElements = document.querySelectorAll(query);
+    const lastReview = reviewElements[reviewElements.length - 1];
+    var lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
+    debugger;
     var pageOffset = window.pageYOffset + window.innerHeight;
+    console.log(`Page offset: ${pageOffset}, lastElementOffset: ${lastElementOffset}`);
+    if (pageOffset > lastElementOffset + 100) {
+      this.loadMoreReviews();
+    }
   }
 
   // save DOM refs of reviews in list
   saveRef(ref) {
-    debugger;
-    if (!this.refList) {
-      this.refList = [];
-    }
-    console.log(ref);
     this.refList.push(ref);
   }
 
   render() {
     return (
       <FlexColumn>
-        {this.state.reviews.map((review, i) => {
+        {this.state.renderedReviews.map((review, i) => {
           return (
             <StyledReview review={review} key={(i)} callback={this.saveRef.bind(this)}/>
             );
