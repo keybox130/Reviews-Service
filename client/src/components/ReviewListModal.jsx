@@ -14,17 +14,27 @@ flex-direction: column;
 margin-left: 3vw;
 `;
 
-const ReviewListModal = ( {reviews} ) => {
+class ReviewListModal extends React.Component {
 
-  return (
-    <FlexColumn>
-      {reviews.map((review, i) => {
-        return (
-          <StyledReview review={review} key={(i)}/>
-        );
-        })}
-    </FlexColumn>
-  );
+  constructor({reviews}) {
+    super();
+    this.state = {
+      reviews: reviews
+    }
+  }
+
+  render() {
+    return (
+      <FlexColumn>
+        {this.state.reviews.map((review, i) => {
+          return (
+            <StyledReview review={review} key={(i)}/>
+          );
+          })}
+      </FlexColumn>
+    );
+  }
+
 }
 
 const StyledReviewListModal = styled(ReviewListModal)`

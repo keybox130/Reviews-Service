@@ -12,6 +12,7 @@ border-width: 5px;
 z-index: 2;
 position: absolute;
 display: flex;
+margin: 20vw 20vh;
 `;
 
 const FlexRow = styled.div`
