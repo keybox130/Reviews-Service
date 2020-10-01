@@ -8,7 +8,7 @@ justify-content: flex-end;
 align-items: center;
 margin: 0 5vw;
 height: 10vh;
-min-width: 32vw;
+min-width: 12vw;
 `;
 
 const InnerContainer = styled.div`

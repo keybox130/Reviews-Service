@@ -3,9 +3,25 @@ import axios from 'axios';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
-import StyledReviewModal from './ReviewModal.jsx';
+import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
+import styled from 'styled-components';
+
 import _ from 'underscore';
+
+const Container = styled.div`
+z-index: 1;
+position: absolute;
+transition-duration: 0.1s;
+.dim {
+  background-color: black;
+}
+`;
+
+const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 class App extends React.Component {
   constructor() {
@@ -97,20 +113,35 @@ class App extends React.Component {
   }
 
   showAllReviews() {
-    console.log('Showing all reviews');
+    this.setState({
+      showModal: true
+    })
+    console.log('Showing Modal...');
   }
 
   render() {
 
     return !this.state.reviews.length ? <h1>Loading...</h1> :
-    <div>
-      <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
-      <StyledRatingGraphs ratings={this.state.ratings}/>
-      {/* only render the top 6 arbitrarily sorted reviews */}
-      <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
-      <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>
-      {this.state.showModal ? (<StyledReviewModal />) : null}
-    </div>
+    <>
+    {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings}/>) : null}
+        <Container className={this.state.showModal ? 'dim' : ''}>
+            <>
+              <FlexRow>
+                <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
+              </FlexRow>
+              <FlexRow>
+                <StyledRatingGraphs ratings={this.state.ratings}/>
+              </FlexRow>
+              {/* only render the top 6 arbitrarily sorted reviews */}
+              <FlexRow>
+                <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
+              </FlexRow>
+              <FlexRow>
+              {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>}
+              </FlexRow>
+            </>
+        </Container>
+      </>
   }
 }
 

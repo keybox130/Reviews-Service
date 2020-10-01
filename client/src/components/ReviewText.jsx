@@ -16,7 +16,7 @@ font-size: calc(14px + 1vw);
 text-decoration: underline;
 display: inline;
 cursor: pointer;
-&:active {
+:active {
   color: rgb(113, 113, 113);
 }
 `;
