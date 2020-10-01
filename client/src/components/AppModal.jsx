@@ -10,11 +10,10 @@ background-color: white;
 border-style: solid;
 border-width: 5px;
 border-radius: 30px;
+margin: 3vh 10vw;
 z-index: 2;
 position: absolute;
 display: flex;
-margin: 20vw 20vh;
-
 `;
 
 const FlexRow = styled.div`
@@ -57,7 +56,7 @@ class AppModal extends React.Component {
     return (
       <Container>
         <FlexColumn>
-          <CloseButton onClick={this.state.close}>X</CloseButton>
+          <CloseButton onClick={this.state.close}>x</CloseButton>
         </FlexColumn>
         <FlexRow>
           <FlexColumn>

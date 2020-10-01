@@ -9,12 +9,18 @@ import styled from 'styled-components';
 
 import _ from 'underscore';
 
-const Container = styled.div`
+const Container = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
 z-index: 1;
 position: absolute;
-transition-duration: 0.1s;
-.dim {
-  background-color: black;
+margin: 3vh 3vw;
+transition-duration: 0.3s;
+&.dim {
+  filter: blur(2px);
+  background-color: rgb(100,100,100);
 }
 `;
 
@@ -108,7 +114,6 @@ class App extends React.Component {
         reviews: this.extractReviews(rooms.data[0].reviews),
         ratings: this.extractRatings(rooms.data[0].reviews)
       });
-      console.log(JSON.stringify(this.state.reviews.slice(0,6)));
     });
   }
 
@@ -124,6 +129,8 @@ class App extends React.Component {
       showModal: false
     })
   }
+
+  // {this.state.showModal ? 'dim' : ''}
 
   render() {
 

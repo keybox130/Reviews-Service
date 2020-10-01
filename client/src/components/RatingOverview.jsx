@@ -32,7 +32,7 @@ const RatingOverview = ({average, numReviews}) => {
   return (
     <Container>
       <FlexRow>
-        <Star src='/static/star.jpg'></Star>
+        <Star src='/static/star.png'></Star>
         <Header>{`${average} (${numReviews} reviews)`}</Header>
       </FlexRow>
     </Container>

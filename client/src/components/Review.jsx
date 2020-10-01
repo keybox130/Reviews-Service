@@ -19,6 +19,7 @@ const ProfileImage = styled.img`
 max-height: 15vh;
 display: inline-block;
 border-radius: 50%;
+mix-blend-mode: darken;
 `;
 
 const Name = styled.p`
@@ -59,7 +60,7 @@ class Review extends React.Component {
     this.myRef = React.createRef();
   }
 
-  componentWillMount() {
+  componentDidMount() {
     if (this.state.mountRef) {
       this.state.mountRef(this.myRef);
     }

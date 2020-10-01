@@ -66,8 +66,6 @@ class ReviewListModal extends React.Component {
     this.setState({
       renderedReviews: newRendered
     })
-    console.log(this.state.newRendered);
-    // this.state.renderedReviews.push()
   }
 
   // check if scrollbar is at bottom
@@ -76,10 +74,9 @@ class ReviewListModal extends React.Component {
     const reviewElements = document.querySelectorAll(query);
     const lastReview = reviewElements[reviewElements.length - 1];
     var lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-    debugger;
     var pageOffset = window.pageYOffset + window.innerHeight;
     console.log(`Page offset: ${pageOffset}, lastElementOffset: ${lastElementOffset}`);
-    if (pageOffset > lastElementOffset + 100) {
+    if (pageOffset > lastElementOffset) {
       this.loadMoreReviews();
     }
   }
