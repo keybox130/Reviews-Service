@@ -1,23 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import fonts from './Fonts.js';
+import {margins} from './Flex.jsx';
 
 const OuterContainer = styled.div`
 display: flex;
-justify-content: flex-end;
+justify-content: space-between;
 align-items: center;
-height: 5vh;
-margin-bottom: 2vh;
-margin-left: 3vw;
-min-width: 10vw;
+height: 4vh;
+margin-left: ${margins.width};
 `;
 
 const InnerContainer = styled.div`
 display: flex;
-justify-content: space-between;
+justify-content: flex-start;
 align-items: center;
-margin: 0 2vw;
-min-width: 10vw;
+margin-left: ${margins.width};
 `;
 
 const Underlay = styled.div`
@@ -33,6 +31,7 @@ display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.normal};
 font-size: ${fonts.large};
+margin-left: 20px;
 `;
 
 const Bar = styled.div`
@@ -49,13 +48,13 @@ const BarGraph = ({text, rating}) => {
   rating = rating.toFixed(1);
   return (
     <OuterContainer>
-      <InnerContainer>
         <Text>{text}</Text>
+      <InnerContainer>
         <Underlay width={maxWidth}>
           <Bar width={proportion}></Bar>
         </Underlay>
-      </InnerContainer>
         <Text>{rating}</Text>
+      </InnerContainer>
     </OuterContainer>
   );
 }

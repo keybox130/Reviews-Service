@@ -2,7 +2,7 @@ import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
 import fonts from './Fonts.js';
-import {FlexRow, FlexColumn} from './Flex.jsx';
+import {FlexRow, FlexColumn, margins} from './Flex.jsx';
 
 const ProfileImage = styled.img`
 max-height: 10vh;
@@ -30,7 +30,7 @@ margin-top: -10px;
 
 const Container = styled.div`
 display: inline-block;
-margin: 0vh 5vw;
+margin: 0vh ${margins.width};
 max-width: 35vw;
 `;
 

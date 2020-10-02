@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
-import {FlexRow} from './Flex.jsx';
+import {FlexColumn, FlexRow} from './Flex.jsx';
 
 const Container = styled.div`
 display: inline-block;
@@ -12,16 +12,16 @@ const RatingGraphs = ({ratings}) => {
   return (
     <Container>
       <FlexRow>
-        <StyledBarGraph text='Cleanliness' rating={ratings.cleanliness}></StyledBarGraph>
-        <StyledBarGraph text='Accuracy' rating={ratings.accuracy}></StyledBarGraph>
-      </FlexRow>
-      <FlexRow>
-        <StyledBarGraph text='Communication' rating={ratings.communication}></StyledBarGraph>
-        <StyledBarGraph text='Location' rating={ratings.location}></StyledBarGraph>
-      </FlexRow>
-      <FlexRow>
-        <StyledBarGraph text='Check-in' rating={ratings.checkIn}></StyledBarGraph>
-        <StyledBarGraph text='Value' rating={ratings.value}></StyledBarGraph>
+        <FlexColumn>
+          <StyledBarGraph text='Cleanliness' rating={ratings.cleanliness}></StyledBarGraph>
+          <StyledBarGraph text='Communication' rating={ratings.communication}></StyledBarGraph>
+          <StyledBarGraph text='Check-in' rating={ratings.checkIn}></StyledBarGraph>
+        </FlexColumn>
+        <FlexColumn>
+          <StyledBarGraph text='Accuracy' rating={ratings.accuracy}></StyledBarGraph>
+          <StyledBarGraph text='Location' rating={ratings.location}></StyledBarGraph>
+          <StyledBarGraph text='Value' rating={ratings.value}></StyledBarGraph>
+        </FlexColumn>
       </FlexRow>
     </Container>
   );
