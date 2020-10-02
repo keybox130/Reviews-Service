@@ -2,17 +2,11 @@ import React from 'react';
 import StyledReview from './Review.jsx';
 import styled from 'styled-components';
 
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-max-width: 2vw;
-`;
-
-const FlexColumn = styled.div`
+const ScrollableFlexColumn = styled.div`
 display: flex;
 flex-direction: column;
-margin-left: 3vw;
 overflow-y: scroll;
+height: 500px;
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -51,7 +45,7 @@ class ReviewListModal extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', e => {
+    this.myRef.current.addEventListener('scroll', e => {
       this.checkScrollBar();
     });
   }
@@ -61,8 +55,6 @@ class ReviewListModal extends React.Component {
     const end = this.state.renderedReviews.length;
     const nextReviews = this.state.reviews.slice(end, end + this.numReviewsToShow);
     const newRendered = [...this.state.renderedReviews, ...nextReviews];
-    console.log('Loading more reviews...');
-    console.log(newRendered);
     this.setState({
       renderedReviews: newRendered
     })
@@ -70,14 +62,14 @@ class ReviewListModal extends React.Component {
 
   // check if scrollbar is at bottom
   checkScrollBar() {
-    const query = 'div.' + this.refList[0].current.classList[0];
-    const reviewElements = document.querySelectorAll(query);
-    const lastReview = reviewElements[reviewElements.length - 1];
-    var lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-    var pageOffset = window.pageYOffset + window.innerHeight;
-    console.log(`Page offset: ${pageOffset}, lastElementOffset: ${lastElementOffset}`);
-    if (pageOffset > lastElementOffset) {
-      this.loadMoreReviews();
+    if (this.myRef.current) {
+      const lastReview = this.refList[this.refList.length-4].current;
+      const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
+      const pageOffset = this.myRef.current.scrollTop;
+      // console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
+      if (pageOffset >= lastElementOffset) {
+        this.loadMoreReviews();
+      }
     }
   }
 
@@ -88,13 +80,13 @@ class ReviewListModal extends React.Component {
 
   render() {
     return (
-      <FlexColumn>
+      <ScrollableFlexColumn ref={this.myRef}>
         {this.state.renderedReviews.map((review, i) => {
           return (
             <StyledReview review={review} key={(i)} callback={this.saveRef.bind(this)}/>
             );
-          })}
-      </FlexColumn>
+        })}
+      </ScrollableFlexColumn>
     );
   }
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import fonts from './Fonts.js';
-import {FlexRow, FlexColumn, Container} from './Constants.jsx';
+import {FlexRow, FlexColumn, Container, Fonts} from './Constants.jsx';
 
 const ProfileImage = styled.img`
-max-height: 10vh;
+max-height: 7vh;
 display: inline-block;
 border-radius: 50%;
 mix-blend-mode: multiply;
@@ -13,19 +12,19 @@ mix-blend-mode: multiply;
 
 const Name = styled.p`
 display: inline-block;
-font-family: ${fonts.family};
-font-weight: ${fonts.bold};
-font-size: ${fonts.large};
+font-family: ${Fonts.family};
+font-weight: ${Fonts.bold};
+font-size: ${Fonts.large};
 margin-top: 10px;
 `;
 
 const Date = styled.p`
 display: inline;
-font-family: ${fonts.family};
-font-weight: ${fonts.thin};
-font-size: ${fonts.medium};
+font-family: ${Fonts.family};
+font-weight: ${Fonts.thin};
+font-size: ${Fonts.small};
 margin-bottom: 20px;
-margin-top: -10px;
+margin-top: -15px;
 `;
 
 class Review extends React.Component {
@@ -91,7 +90,6 @@ class Review extends React.Component {
 }
 
 const StyledReview = styled(Review)`
-display: inline-block;
 `;
 
 export default StyledReview;

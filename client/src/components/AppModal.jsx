@@ -1,40 +1,34 @@
 import React from 'react';
 import StyledRatingOverview from './RatingOverview.jsx';
-import StyledRatingGraphsModal from './RatingGraphsModal.jsx';
+import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
 import styled from 'styled-components';
-import fonts from './Fonts.js';
+import {Fonts, FlexRow, FlexColumn} from './Constants.jsx';
 
-const Container = styled.div`
-background-color: white;
-border-style: solid;
-border-width: 5px;
-border-radius: 30px;
-margin: 3vh 10vw;
+const ReviewModal = styled.div`
 z-index: 2;
 position: absolute;
 display: flex;
-`;
-
-const FlexRow = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const FlexColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  max-height: 90vh;
+flex-direction: row;
+justify-content: space-around;
+background-color: white;
+border-style: none;
+border-width: 5px;
+border-radius: 20px;
+height: 80vh;
+width: 70vw;
+margin: 5vh 15vw;
+padding-top: 5vh;
 `;
 
 const CloseButton = styled.button`
   background-color: rgb(255, 255, 255);
   border-style: none;
   outline:none;
-  font-weight: ${fonts.normal};
-  font-family: ${fonts.family};
-  font-size: calc(${fonts.small}px + 1vw);
-  margin: 2vw 2vh;
+  font-weight: ${Fonts.normal};
+  font-family: ${Fonts.family};
+  font-size: ${Fonts.large};
+  margin-top: -2vh;
   :hover {
     border-radius: 50%;
     cursor: pointer;
@@ -43,7 +37,7 @@ const CloseButton = styled.button`
 `;
 
 class AppModal extends React.Component {
-  constructor({reviews, ratings, close}) {
+  constructor({reviews, ratings, close, callback}) {
     super();
     this.state = {
       reviews: reviews,
@@ -54,21 +48,19 @@ class AppModal extends React.Component {
 
   render() {
     return (
-      <Container>
+      <ReviewModal>
         <FlexColumn>
           <CloseButton onClick={this.state.close}>x</CloseButton>
         </FlexColumn>
-        <FlexRow>
-          <FlexColumn>
-            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
-            <StyledRatingGraphsModal ratings={this.state.ratings}/>
-          </FlexColumn>
-          {/* render the full list */}
-          <FlexColumn>
-            <StyledReviewListModal reviews={this.state.reviews.sort()} />
-          </FlexColumn>
-        </FlexRow>
-      </Container>
+        <FlexColumn>
+          <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true}/>
+          <StyledRatingGraphs ratings={this.state.ratings} isModal={true}/>
+        </FlexColumn>
+        {/* render the full list */}
+        <FlexColumn>
+          <StyledReviewListModal reviews={this.state.reviews.sort()} />
+        </FlexColumn>
+      </ReviewModal>
       );
   }
 }

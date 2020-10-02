@@ -1,29 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import fonts from './Fonts.js';
-
-const Text = styled.p`
-display: inline;
-font-family: ${fonts.family};
-font-weight: ${fonts.normal};
-font-size: ${fonts.medium};
-`;
+import {Container, Text, Fonts, margins} from './Constants.jsx';
 
 const ReadMore = styled.a`
-font-family: ${fonts.family};
-font-weight: ${fonts.normal};
-font-size: ${fonts.medium};
+font-family: ${Fonts.family};
+font-weight: ${Fonts.bold};
+font-size: ${Fonts.medium};
 text-decoration: underline;
 display: inline;
 cursor: pointer;
 :active {
   color: rgb(113, 113, 113);
 }
-`;
-
-const Container = styled.div`
-display: inline-block;
-margin: 0vh 5vw;
 `;
 
 const ReviewText = ({text, onClick, expanded}) => {

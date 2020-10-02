@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import fonts from './Fonts.js';
-import {margins} from './Constants.jsx';
+import {margins, Text, Fonts} from './Constants.jsx';
 
 const OuterContainer = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
 height: 4vh;
+margin-right: ${props => props.rightMargin};
 `;
 
 const InnerContainer = styled.div`
@@ -25,13 +25,6 @@ border-radius: 30px;
 min-width: ${props => props.width}px;
 `;
 
-const Text = styled.p`
-display: inline-block;
-font-family: ${fonts.family};
-font-weight: ${fonts.normal};
-font-size: ${fonts.medium};
-`;
-
 const Bar = styled.div`
 height: ${margins.barHeight};
 display: flex;
@@ -41,18 +34,19 @@ border-radius: 30px;
 background-color: black;
 `;
 
-const BarGraph = ({text, rating}) => {
-  const maxWidth = margins.barWidth; // width in px for higher accuracy
+const BarGraph = ({text, rating, isModal}) => {
+  const maxWidth = isModal ? margins.modalBarWidth : margins.barWidth; // width in px for higher accuracy
+  const rightMargin = isModal ? `10vw` : `0`;
   const proportion = Math.floor((rating / 5.0) * maxWidth);
   rating = rating.toFixed(1);
   return (
-    <OuterContainer>
+    <OuterContainer rightMargin={rightMargin}>
         <Text>{text}</Text>
       <InnerContainer>
         <Underlay width={maxWidth}>
           <Bar width={proportion}></Bar>
         </Underlay>
-        <Text>{rating}</Text>
+        <Text className='rating'>{rating}</Text>
       </InnerContainer>
     </OuterContainer>
   );
