@@ -3,7 +3,29 @@ import axios from 'axios';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
+import StyledAppModal from './AppModal.jsx';
+import StyledShowAll from './ShowAll.jsx';
+import styled from 'styled-components';
+
 import _ from 'underscore';
+
+const Container = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
+z-index: 1;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+margin: 3vh 3vw;
+padding: 0 10vw;
+transition-duration: 0.3s;
+&.dim {
+  filter: blur(2px);
+  background-color: rgb(100,100,100);
+}
+`;
 
 class App extends React.Component {
   constructor() {
@@ -19,7 +41,8 @@ class App extends React.Component {
         accuracy: 0,
         location: 0,
         value: 0
-      }
+      },
+      showModal: false
     }
   }
 
@@ -89,18 +112,37 @@ class App extends React.Component {
         reviews: this.extractReviews(rooms.data[0].reviews),
         ratings: this.extractRatings(rooms.data[0].reviews)
       });
-      console.log(JSON.stringify(this.state.reviews.slice(0,6)));
     });
+  }
+
+  showAllReviews() {
+    this.setState({
+      showModal: true
+    })
+    console.log('Showing Modal...');
+  }
+
+  close() {
+    this.setState({
+      showModal: false
+    })
   }
 
   render() {
 
     return !this.state.reviews.length ? <h1>Loading...</h1> :
-    <div>
-      <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
-      <StyledRatingGraphs ratings={this.state.ratings}/>
-      <StyledReviewList reviews={this.state.reviews} />
-    </div>
+    <>
+    {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings} close={this.close.bind(this)}/>) : null}
+        <Container className={this.state.showModal ? 'dim' : ''}>
+            <>
+                <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
+                <StyledRatingGraphs ratings={this.state.ratings}/>
+                {/* only render the top 6 arbitrarily sorted reviews */}
+                <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
+                {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>}
+            </>
+        </Container>
+      </>
   }
 }
 

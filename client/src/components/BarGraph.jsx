@@ -1,60 +1,59 @@
 import React from 'react';
 import styled from 'styled-components';
 import fonts from './Fonts.js';
+import {margins} from './Constants.jsx';
 
 const OuterContainer = styled.div`
 display: flex;
-justify-content: flex-end;
+justify-content: space-between;
 align-items: center;
-margin: 0 5vw;
-height: 10vh;
-min-width: 32vw;
+height: 4vh;
 `;
 
 const InnerContainer = styled.div`
 display: flex;
-justify-content: space-between;
 align-items: center;
-margin: 0 2vw;
-min-width: 30vw;
+margin-left: ${margins.width};
 `;
 
 const Underlay = styled.div`
-display: inline-block;
+display: flex;
 background-color: rgb(221,221,221);
-height: 1vh;
+height: ${margins.barHeight};
+z-index: 1;
 border-radius: 30px;
-width: ${props => props.width}px;
+min-width: ${props => props.width}px;
 `;
 
 const Text = styled.p`
 display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.normal};
-font-size: calc(14px + 1vw);
+font-size: ${fonts.medium};
 `;
 
 const Bar = styled.div`
-height: 1vh;
+height: ${margins.barHeight};
 display: flex;
-width: ${props => props.width}px;
+z-index: 2;
+min-width: ${props => props.width}px;
 border-radius: 30px;
 background-color: black;
 `;
 
 const BarGraph = ({text, rating}) => {
-  const maxWidth = 200; // width in px for higher accuracy
+  const maxWidth = margins.barWidth; // width in px for higher accuracy
   const proportion = Math.floor((rating / 5.0) * maxWidth);
   rating = rating.toFixed(1);
   return (
     <OuterContainer>
-      <InnerContainer>
         <Text>{text}</Text>
+      <InnerContainer>
         <Underlay width={maxWidth}>
           <Bar width={proportion}></Bar>
         </Underlay>
-      </InnerContainer>
         <Text>{rating}</Text>
+      </InnerContainer>
     </OuterContainer>
   );
 }

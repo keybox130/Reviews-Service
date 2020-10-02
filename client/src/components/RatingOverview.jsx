@@ -1,28 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
 import fonts from './Fonts.js';
-
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-`;
-
-const Container = styled.div`
-display: inline-block;
-margin: 5vh 5vw;
-`;
+import {FlexRow, FlexColumn, margins} from './Constants.jsx';
 
 const Header = styled.h1`
 display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.bold};
-font-size: calc(24px + 1vw);
+font-size: ${fonts.header};
 margin-top: 4vh;
+margin-left: 1vw;
 `;
 
 const Star = styled.img`
-max-height: 4vh;
-margin: 4vh 2vw;
+max-height: 2vh;
+margin-top: 18px;
+margin-left: ${margins.width};
 object-fit: contain;
 align-self: center;
 flex: 0 0 auto;
@@ -30,12 +23,12 @@ flex: 0 0 auto;
 
 const RatingOverview = ({average, numReviews}) => {
   return (
-    <Container>
+    <FlexColumn>
       <FlexRow>
-        <Star src='/static/star.jpg'></Star>
+        <Star src='/static/star.png'></Star>
         <Header>{`${average} (${numReviews} reviews)`}</Header>
       </FlexRow>
-    </Container>
+    </FlexColumn>
   );
 }
 

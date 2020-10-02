@@ -1,8 +1,9 @@
 const fonts = {
   family: `'Nunito', sans-serif`,
-  small: `12`,
-  medium: `14`,
-  large: `18`,
+  small: `14px`,
+  medium: `18px`,
+  large: `22px`,
+  header: `25px`,
   thin: `200`,
   normal: `400`,
   bold: `600`,
