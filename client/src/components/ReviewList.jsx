@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledReview from './Review.jsx';
 import styled from 'styled-components';
-import {FlexRow, FlexColumn} from './Flex.jsx';
+import {FlexRow, FlexColumn} from './Constants.jsx';
 
 const ReviewList = ( {reviews} ) => {
   let reviewCols = [[], []];

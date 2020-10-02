@@ -2,7 +2,7 @@ import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
 import fonts from './Fonts.js';
-import {FlexRow, FlexColumn, margins} from './Flex.jsx';
+import {FlexRow, FlexColumn, Container} from './Constants.jsx';
 
 const ProfileImage = styled.img`
 max-height: 10vh;
@@ -26,12 +26,6 @@ font-weight: ${fonts.thin};
 font-size: ${fonts.medium};
 margin-bottom: 20px;
 margin-top: -10px;
-`;
-
-const Container = styled.div`
-display: inline-block;
-margin: 0vh ${margins.width};
-max-width: 35vw;
 `;
 
 class Review extends React.Component {

@@ -3,7 +3,7 @@ const fonts = {
   small: `14px`,
   medium: `18px`,
   large: `22px`,
-  header: `30px`,
+  header: `25px`,
   thin: `200`,
   normal: `400`,
   bold: `600`,
