@@ -2,47 +2,35 @@ import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
 import fonts from './Fonts.js';
-
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-margin-bottom: 5vh;
-`;
-
-const FlexColumn = styled.div`
-display: flex;
-flex-direction: column;
-margin-left: 3vw;
-`;
+import {FlexRow, FlexColumn} from './Flex.jsx';
 
 const ProfileImage = styled.img`
-max-height: 15vh;
+max-height: 10vh;
 display: inline-block;
 border-radius: 50%;
-mix-blend-mode: darken;
+mix-blend-mode: multiply;
 `;
 
 const Name = styled.p`
 display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.bold};
-font-size: calc(18px + 1vw);
-margin-top: 1vh;
-margin-bottom: 1vh;
+font-size: ${fonts.large};
+margin-top: 10px;
 `;
 
 const Date = styled.p`
 display: inline;
 font-family: ${fonts.family};
 font-weight: ${fonts.thin};
-font-size: calc(12px + 1vw);
-margin-bottom: 1vh;
-margin-top: 1vh;
+font-size: ${fonts.medium};
+margin-bottom: 20px;
+margin-top: -10px;
 `;
 
 const Container = styled.div`
 display: inline-block;
-margin: 5vh 5vw;
+margin: 0vh 5vw;
 max-width: 35vw;
 `;
 

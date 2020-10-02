@@ -1,11 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
-
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-`;
+import {FlexRow} from './Flex.jsx';
 
 const Container = styled.div`
 display: inline-block;

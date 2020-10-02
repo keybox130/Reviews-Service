@@ -2,14 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
 
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-`;
-
 const Container = styled.div`
-display: inline-block;
-max-width: 100vw;
+display: flex;
+max-width: 50vw;
 `;
 
 const RatingGraphsColumn = ({ratings}) => {

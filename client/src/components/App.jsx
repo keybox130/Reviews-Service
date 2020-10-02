@@ -15,18 +15,16 @@ const Container = styled.div.attrs(props => {
   }
 })`
 z-index: 1;
-position: absolute;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
 margin: 3vh 3vw;
+padding: 0 10vw;
 transition-duration: 0.3s;
 &.dim {
   filter: blur(2px);
   background-color: rgb(100,100,100);
 }
-`;
-
-const FlexRow = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 class App extends React.Component {
@@ -130,8 +128,6 @@ class App extends React.Component {
     })
   }
 
-  // {this.state.showModal ? 'dim' : ''}
-
   render() {
 
     return !this.state.reviews.length ? <h1>Loading...</h1> :
@@ -139,19 +135,11 @@ class App extends React.Component {
     {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings} close={this.close.bind(this)}/>) : null}
         <Container className={this.state.showModal ? 'dim' : ''}>
             <>
-              <FlexRow>
                 <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} />
-              </FlexRow>
-              <FlexRow>
                 <StyledRatingGraphs ratings={this.state.ratings}/>
-              </FlexRow>
-              {/* only render the top 6 arbitrarily sorted reviews */}
-              <FlexRow>
+                {/* only render the top 6 arbitrarily sorted reviews */}
                 <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
-              </FlexRow>
-              <FlexRow>
-              {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>}
-              </FlexRow>
+                {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showAllReviews.bind(this)}/>}
             </>
         </Container>
       </>

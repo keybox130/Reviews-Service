@@ -6,9 +6,10 @@ const OuterContainer = styled.div`
 display: flex;
 justify-content: flex-end;
 align-items: center;
-margin: 0 5vw;
-height: 10vh;
-min-width: 12vw;
+height: 5vh;
+margin-bottom: 2vh;
+margin-left: 3vw;
+min-width: 10vw;
 `;
 
 const InnerContainer = styled.div`
@@ -16,13 +17,13 @@ display: flex;
 justify-content: space-between;
 align-items: center;
 margin: 0 2vw;
-min-width: 30vw;
+min-width: 10vw;
 `;
 
 const Underlay = styled.div`
 display: inline-block;
 background-color: rgb(221,221,221);
-height: 8px;
+height: 6px;
 border-radius: 30px;
 width: ${props => props.width}px;
 `;
@@ -31,11 +32,11 @@ const Text = styled.p`
 display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.normal};
-font-size: calc(14px + 1vw);
+font-size: ${fonts.large};
 `;
 
 const Bar = styled.div`
-height: 8px;
+height: 6px;
 display: flex;
 width: ${props => props.width}px;
 border-radius: 30px;

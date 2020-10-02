@@ -16,7 +16,7 @@ min-width: 15vw;
 outline:none;
 font-weight: ${fonts.normal};
 font-family: ${fonts.family};
-font-size: calc(${fonts.small}px + 1vw);
+font-size: ${fonts.small};
 transition-duration: 0.1s;
 :hover{
   cursor: pointer;

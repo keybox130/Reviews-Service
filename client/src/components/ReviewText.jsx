@@ -6,19 +6,24 @@ const Text = styled.p`
 display: inline;
 font-family: ${fonts.family};
 font-weight: ${fonts.normal};
-font-size: calc(14px + 1vw);
+font-size: ${fonts.medium};
 `;
 
 const ReadMore = styled.a`
 font-family: ${fonts.family};
-font-weight: ${fonts.bold};
-font-size: calc(14px + 1vw);
+font-weight: ${fonts.normal};
+font-size: ${fonts.medium};
 text-decoration: underline;
 display: inline;
 cursor: pointer;
 :active {
   color: rgb(113, 113, 113);
 }
+`;
+
+const Container = styled.div`
+display: inline-block;
+margin: 0vh 5vw;
 `;
 
 const ReviewText = ({text, onClick, expanded}) => {

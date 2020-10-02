@@ -1,22 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
 import fonts from './Fonts.js';
-
-const FlexRow = styled.div`
-display: flex;
-flex-direction: row;
-`;
+import {FlexRow} from './Flex.jsx';
 
 const Container = styled.div`
-display: inline-block;
-margin: 5vh 5vw;
+margin: 1vh 2vw;
+display: flex;
 `;
 
 const Header = styled.h1`
 display: inline-block;
 font-family: ${fonts.family};
 font-weight: ${fonts.bold};
-font-size: calc(24px + 1vw);
+font-size: ${fonts.header};
 margin-top: 4vh;
 `;
 
