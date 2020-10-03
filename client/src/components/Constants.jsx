@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const margins = {
-  width: `3vw`,
   barWidth: `150`,
   modalBarWidth: `75`,
   barHeight: `4px`,
@@ -61,12 +60,16 @@ margin: 0 0;
 
 const FlexColumn = styled.div.attrs(props => {
   return {
-    className: props.justify
+    className: props.className
   }
 })`
 display: flex;
 flex-direction: column;
 margin-left: 1vw;
+&.modal {
+  margin-left: -20px;
+  margin-top: -50px;
+}
 `;
 
 const Container = styled.div.attrs(props => {
@@ -76,7 +79,7 @@ const Container = styled.div.attrs(props => {
   }
 })`
 display: inline-block;
-margin: 1vh ${margins.width};
+margin: 1vh 3vw;
 width: 25vw;
 `;
 

@@ -7,12 +7,12 @@ display: inline-block;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.bold};
 font-size: ${props => props.fontSize};
-margin-left: 10px;
+margin-left: ${props => props.marginLeft};
 `;
 
 const Star = styled.img`
 display: inline-block;
-margin-left: 0;
+margin-left: ${props => props.marginLeft};
 max-width: ${props => props.imageSize};
 `;
 
@@ -20,11 +20,12 @@ const RatingOverview = ({average, numReviews, isModal}) => {
   // size of text/star depends on whether this is a modal or not
   const fontSize = isModal ? Fonts.largeHeader : Fonts.header;
   const imageSize = isModal ? margins.modalImageSize : margins.imageSize;
+  const marginLeft = isModal ? `10px` : 0;
   return (
     <FlexRow>
       <Container className='header'>
-        <Star imageSize={imageSize} src="/static/star.png"></Star>
-        <Header fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
+        <Star marginLeft={marginLeft} imageSize={imageSize} src="/static/star.png"></Star>
+        <Header marginLeft={marginLeft} fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
       </Container>
     </FlexRow>
   );

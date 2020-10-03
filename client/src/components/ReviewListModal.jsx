@@ -6,7 +6,8 @@ const ScrollableFlexColumn = styled.div`
 display: flex;
 flex-direction: column;
 overflow-y: scroll;
-height: 500px;
+height: 80vh;
+margin-left: -10vw;
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -63,10 +64,10 @@ class ReviewListModal extends React.Component {
   // check if scrollbar is at bottom
   checkScrollBar() {
     if (this.myRef.current) {
-      const lastReview = this.refList[this.refList.length-4].current;
+      const lastReview = this.refList[this.refList.length-5].current;
       const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
       const pageOffset = this.myRef.current.scrollTop;
-      // console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
+      console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
       if (pageOffset >= lastElementOffset) {
         this.loadMoreReviews();
       }

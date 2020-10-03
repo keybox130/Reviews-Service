@@ -13,7 +13,6 @@ margin-right: ${props => props.rightMargin};
 const InnerContainer = styled.div`
 display: flex;
 align-items: center;
-margin-left: ${margins.width};
 `;
 
 const Underlay = styled.div`
