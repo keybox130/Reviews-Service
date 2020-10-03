@@ -67,7 +67,7 @@ class ReviewListModal extends React.Component {
       const lastReview = this.refList[this.refList.length-5].current;
       const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
       const pageOffset = this.myRef.current.scrollTop;
-      console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
+      // console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
       if (pageOffset >= lastElementOffset) {
         this.loadMoreReviews();
       }

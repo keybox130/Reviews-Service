@@ -6,7 +6,7 @@ import StyledReviewList from './ReviewList.jsx';
 import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
 import styled from 'styled-components';
-import { FlexRow } from './Constants.jsx';
+import { FlexRow, animation } from './Constants.jsx';
 import { createGlobalStyle } from 'styled-components'
 
 import _ from 'underscore';
@@ -22,7 +22,7 @@ margin: 3vh 3vw;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
-transition-duration: 0.3s;
+transition-duration: ${animation.dimDuration}ms;
 &.dim {
   filter: blur(2px);
   background-color: rgb(100,100,100);
@@ -46,6 +46,10 @@ class App extends React.Component {
       },
       showModal: false
     }
+
+    // update state of modal using ref
+    this.modal = React.createRef();
+
   }
 
   componentDidMount() {
@@ -123,14 +127,23 @@ class App extends React.Component {
   showModal() {
     this.setState({
       showModal: true
-    })
+    }, () => {
+      this.modal.current.setTransition(`enter`);
+    });
   }
 
-  // closes the modal
+  // closes the modal after showing a transition
   closeModal() {
-    this.setState({
-      showModal: false
-    })
+    console.log(`Closing modal...`);
+    this.modal.current.setTransition(`exit`, () => {
+      console.log(`Exiting modal...`)
+      setTimeout(() => {
+        this.setState({
+          showModal: false
+        });
+        console.log('Closed modal');
+      }, animation.slideDuration);
+    });
   }
 
   render() {
@@ -138,22 +151,22 @@ class App extends React.Component {
     // show a loading message until all reviews are loaded
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <>
-      {this.state.showModal ? (<StyledAppModal reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null}
+      {this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null}
       {/* show a transition if the modal is displayed */}
         <ReviewPage className={this.state.showModal ? 'dim' : null}>
           <FlexRow justify="left">
             {/* rating overview banner */}
             <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false}/>
           </FlexRow>
-          <FlexRow justify="center">
+          <FlexRow justify='center'>
             {/* rating graphs */}
             <StyledRatingGraphs ratings={this.state.ratings} isModal={false}/>
           </FlexRow>
-          <FlexRow justify="center">
+          <FlexRow justify='center'>
             {/* only render the top 6 arbitrarily sorted reviews */}
             <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
           </FlexRow>
-          <FlexRow justify="left">
+          <FlexRow justify='left'>
             {/* show all reviews button */}
             {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>}
           </FlexRow>

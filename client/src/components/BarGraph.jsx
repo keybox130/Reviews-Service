@@ -20,6 +20,7 @@ display: flex;
 background-color: rgb(221,221,221);
 height: ${margins.barHeight};
 z-index: 1;
+mix-blend-mode: multiply;
 border-radius: 30px;
 min-width: ${props => props.width}px;
 `;
@@ -28,6 +29,7 @@ const Bar = styled.div`
 height: ${margins.barHeight};
 display: flex;
 z-index: 2;
+mix-blend-mode: multiply;
 min-width: ${props => props.width}px;
 border-radius: 30px;
 background-color: black;

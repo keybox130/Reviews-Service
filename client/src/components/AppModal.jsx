@@ -3,9 +3,14 @@ import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
 import styled from 'styled-components';
-import {Fonts, FlexColumn, Container} from './Constants.jsx';
+import {Fonts, FlexColumn, Container, animation} from './Constants.jsx';
 
-const ReviewModal = styled.div`
+const ReviewModal = styled.div.attrs(props => {
+  console.log(props);
+  return {
+    className: props.className
+  }
+})`
 z-index: 2;
 position: absolute;
 display: flex;
@@ -19,6 +24,48 @@ height: 80vh;
 max-width: 60vw;
 margin: 5vh 20vw;
 padding-top: 5vh;
+box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translate(0px, 100%);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0px, 100%);
+  }
+}
+
+&.enter {
+  animation-name: slideIn;
+  animation-duration: ${animation.slideDuration}ms;
+  animation-fill-mode: both;
+  /* should start animation after dim/blur animation completes */
+  animation-delay: ${animation.dimDuration}ms;
+  animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+}
+
+&.exit {
+  animation-name: slideOut;
+  animation-duration: ${animation.slideDuration}ms;
+  animation-fill-mode: both;
+  animation-delay: ${animation.dimDuration}ms;
+  /* should start animation after dim/blur animation completes */
+  animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+}
+
 `;
 
 const CloseButton = styled.button`
@@ -41,42 +88,26 @@ const CloseButton = styled.button`
   }
 `;
 
-// const CloseButton = styled.button`
-// border-radius: 10px;
-// color: rgb(34, 34, 34);
-// border-style: solid;
-// border-color: rgb(34, 34, 34);
-// background-color: white;
-// display: flex;
-// justify-content: center;
-// text-align: center;
-// padding: 13px 23px;
-// margin-left: -1vw;
-// max-width: 12vw;
-// outline:none;
-// font-weight: ${Fonts.bold};
-// font-family: ${Fonts.family};
-// font-size: ${Fonts.large};
-// transition-duration: 0.5s;
-// :hover{
-//   cursor: pointer;
-//   background-color: rgb(247, 247, 247);
-// }
-// `;
-
 class AppModal extends React.Component {
-  constructor({reviews, ratings, close, callback}) {
+  constructor({reviews, ratings, close, callback, transition}) {
     super();
     this.state = {
       reviews: reviews,
       ratings: ratings,
-      close: close
+      close: close,
+      transition: transition
     }
+  }
+
+  setTransition(transition, callback) {
+    this.setState({
+      transition: transition
+    }, callback);
   }
 
   render() {
     return (
-      <ReviewModal>
+      <ReviewModal className={this.state.transition}>
         <FlexColumn className='modal'>
           <Container>
             <CloseButton onClick={this.state.close}>x</CloseButton>

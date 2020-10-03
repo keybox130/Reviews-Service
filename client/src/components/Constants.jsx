@@ -8,6 +8,11 @@ const margins = {
   modalImageSize: `30px`
 }
 
+const animation = {
+  slideDuration: `400`, // in ms
+  dimDuration: `200` // in ms
+}
+
 const Fonts = {
   family: `'Nunito', sans-serif`,
   small: `15px`,
@@ -83,4 +88,4 @@ margin: 1vh 3vw;
 width: 25vw;
 `;
 
-export {FlexRow, FlexColumn, Container, Text, Fonts, margins};
+export {FlexRow, FlexColumn, Container, Text, Fonts, animation, margins};
