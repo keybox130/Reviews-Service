@@ -11,7 +11,8 @@ const margins = {
 
 const animation = {
   slideDuration: `400`, // in ms
-  dimDuration: `400` // in ms
+  dimDuration: `400`, // in ms
+  clickDuration: `400` //in ms
 }
 
 const Fonts = {

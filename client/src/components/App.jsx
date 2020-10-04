@@ -129,14 +129,15 @@ class App extends React.Component {
   getAllStays() {
     axios.get('/stays')
     .then(rooms => {
+      const index = Math.round(Math.random() * 100);
       this.setState({
-        reviews: this.extractReviews(rooms.data[0].reviews),
-        ratings: this.extractRatings(rooms.data[0].reviews)
+        reviews: this.extractReviews(rooms.data[index].reviews),
+        ratings: this.extractRatings(rooms.data[index].reviews)
       });
     });
   }
 
-  // shows the modal
+  // shows the modal (delay handled within modal's css animation)
   showModal() {
     this.setState({
       showModal: true
@@ -159,12 +160,15 @@ class App extends React.Component {
 
   render() {
 
+    const Modal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
     // show a loading message until all reviews are loaded
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <>
-      {this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null}
+
+      {Modal}
+
+      {/* show a transition if the modal is displayed */}
       <Body className={this.state.showModal ? 'dim' : null}>
-        {/* show a transition if the modal is displayed */}
         <ReviewComponent>
           <FlexRow justify='left'>
             {/* rating overview banner */}

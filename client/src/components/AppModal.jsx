@@ -75,6 +75,7 @@ const CloseButton = styled.button`
   max-height: 8vh;
   margin-left: -25px;
   padding: 13px 23px;
+  margin-bottom: 10px;
   outline:none;
   font-weight: ${Fonts.normal};
   font-family: ${Fonts.family};
