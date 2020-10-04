@@ -57,7 +57,8 @@ class App extends React.Component {
         location: 0,
         value: 0
       },
-      showModal: false
+      showModal: false, // whether to show modal
+      showButton: true // whether to render showAll button
     }
 
     // update state of modal using ref
@@ -66,7 +67,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllStays();
+    const stayId = Math.round(Math.random() * 100);
+    this.getStay(stayId);
   }
 
   // extracts reviews for our service
@@ -125,14 +127,13 @@ class App extends React.Component {
     return ratings;
   }
 
-  // gets first stay from the server (will be refactored to get stay based on id)
-  getAllStays() {
-    axios.get('/stays')
+  // gets a stay from the server based on id
+  getStay(stayId) {
+    axios.get(`/stays/:${stayId}`)
     .then(rooms => {
-      const index = Math.round(Math.random() * 100);
       this.setState({
-        reviews: this.extractReviews(rooms.data[index].reviews),
-        ratings: this.extractRatings(rooms.data[index].reviews)
+        reviews: this.extractReviews(rooms.data.reviews),
+        ratings: this.extractRatings(rooms.data.reviews)
       });
     });
   }
@@ -142,6 +143,12 @@ class App extends React.Component {
     this.setState({
       showModal: true
     }, () => {
+      // click button animation
+      setTimeout(() => {
+        this.setState({
+          showButton: false
+        })
+      }, Number(animation.clickDuration))
       this.modal.current.setTransition(`enter`);
     });
   }
@@ -152,7 +159,8 @@ class App extends React.Component {
       setTimeout(() => {
         // un-dim the page after modal transition completes
         this.setState({
-          showModal: false
+          showModal: false,
+          showButton: true
         });
       }, animation.slideDuration);
     });
@@ -160,31 +168,35 @@ class App extends React.Component {
 
   render() {
 
-    const Modal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
+    // pop-up review modal
+    const ReviewModal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
+    // show all reviews button
+    const ShowAllButton = this.state.showButton ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/> : null;
     // show a loading message until all reviews are loaded
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <>
 
-      {Modal}
+      { ReviewModal }
 
       {/* show a transition if the modal is displayed */}
       <Body className={this.state.showModal ? 'dim' : null}>
         <ReviewComponent>
           <FlexRow justify='left'>
             {/* rating overview banner */}
-            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false}/>
+            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
           </FlexRow>
           <FlexRow justify='center'>
             {/* rating graphs */}
-            <StyledRatingGraphs ratings={this.state.ratings} isModal={false}/>
+            <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
           </FlexRow>
           <FlexRow justify='center'>
             {/* only render the top 6 arbitrarily sorted reviews */}
             <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
           </FlexRow>
           <FlexRow justify='left'>
-            {/* show all reviews button */}
-            {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>}
+
+            { ShowAllButton }
+
           </FlexRow>
         </ReviewComponent>
       </Body>
