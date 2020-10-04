@@ -150,7 +150,7 @@ class App extends React.Component {
     this.modal.current.setTransition(`exit`, () => {
       console.log(`Exiting modal...`)
       setTimeout(() => {
-        // un-dim  the page after modal transition completes
+        // un-dim the page after modal transition completes
         this.setState({
           showModal: false
         });
@@ -168,7 +168,7 @@ class App extends React.Component {
       <Body className={this.state.showModal ? 'dim' : null}>
         {/* show a transition if the modal is displayed */}
         <ReviewComponent>
-          <FlexRow justify="left">
+          <FlexRow justify='left'>
             {/* rating overview banner */}
             <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false}/>
           </FlexRow>

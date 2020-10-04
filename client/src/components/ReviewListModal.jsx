@@ -5,20 +5,27 @@ import styled from 'styled-components';
 import {FlexRow} from './Constants.jsx';
 import _ from 'underscore';
 
-const ScrollableFlexColumn = styled.div`
+const ScrollableFlexColumn = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
 display: flex;
 flex-direction: column;
-overflow-y: scroll;
 height: 80vh;
 margin-left: -10vw;
+overflow-y: scroll;
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  margin-top: 5vh;
-  margin-bottom: 5vh;
+&.scroll {
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+  }
 }
 
 ::-webkit-scrollbar-thumb {
@@ -29,6 +36,11 @@ margin-left: -10vw;
 }
 `;
 
+const EmptyPlaceholder = styled.div`
+display: flex;
+width: 15vw;
+`;
+
 class ReviewListModal extends React.Component {
 
   constructor({reviews}) {
@@ -37,67 +49,99 @@ class ReviewListModal extends React.Component {
     this.numReviewsToShow = 6;
 
     this.state = {
-      reviews: reviews,
-      renderedReviews: reviews.slice(0, this.numReviewsToShow),
-      filteredReviews: reviews.slice(0, this.numReviewsToShow)
+      allReviews: reviews,
+      filteredReviews: reviews, // reviews filtered by search term
+      viewableReviews: reviews.slice(0, this.numReviewsToShow), // reviews which are actually rendered
+      searching: false,
+      reviewComponents: null
     }
-    this.myRef = React.createRef();
+    this.scrollWindow = React.createRef();
     this.refList = [];
   }
 
   componentDidMount() {
-    this.myRef.current.addEventListener('scroll', e => {
+    this.scrollWindow.current.addEventListener('scroll', e => {
       this.checkScrollBar(e);
     });
   }
 
   // load more reviews if the scroll bar is at the bottom
   loadMoreReviews() {
-    const end = this.state.renderedReviews.length;
-    const nextReviews = this.state.reviews.slice(end, end + this.numReviewsToShow);
-    const newRendered = [...this.state.renderedReviews, ...nextReviews];
+    const end = this.state.viewableReviews.length;
+    const nextReviews = this.state.filteredReviews.slice(end, end + this.numReviewsToShow)
+    const newRendered = [...this.state.viewableReviews, ...nextReviews];
     this.setState({
-      renderedReviews: newRendered
+      viewableReviews: newRendered
     })
   }
 
-  // check if scrollbar is at bottom
+  // check if scrollbar is at bottom and load more reviews
   checkScrollBar(e) {
-    const lastReview = this.refList[this.refList.length-6].current;
+    const lastReview = this.refList[this.refList.length-1].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-    const pageOffset = e.target.scrollTop;
-    console.log(pageOffset, lastElementOffset)
-    if (pageOffset >= lastElementOffset) {
+    const modalOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
+    if (modalOffset >= lastElementOffset) {
       this.loadMoreReviews();
     }
   }
 
-  // save DOM refs of reviews in list
+  // save DOM refs of filtered reviews
   saveRef(ref) {
     this.refList.push(ref);
   }
 
   // filter the rendered reviews by the search term
   search(e) {
-    const term = e.target.value;
-    // let filtered = _.filter(this.state.renderedReviews, (review) => {
-    //   return review.text.includes(term) || review.
-    // })
+    // clear the ref list so already rendered reviews don't clash with filtered ones in scroll window
+    this.refList.splice(0);
+    const searchTerm = e.target.value;
+    let filtered = null;
+
+    if (searchTerm) {
+      filtered = _.filter(this.state.allReviews, (review) => {
+          return review.reviewText.includes(searchTerm);
+      });
+    } else {
+      // show all rendered reviews
+      filtered = this.state.allReviews;
+    }
+    this.setState({
+      filteredReviews: filtered,
+      viewableReviews: null
+    }, () => {
+      // reset scroll bar
+      if (this.scrollWindow.current) {
+        this.scrollWindow.current.scrollTop = 0;
+      }
+      // this is a workaround to make sure the state updates with viewable reviews
+      this.setState({
+        viewableReviews: filtered.slice(0, this.numReviewsToShow)
+      })
+    });
   }
 
   render() {
+    const areViewableReviews = this.state.viewableReviews && this.state.viewableReviews.length;
+    let reviewComponents = null;
+    if (areViewableReviews) {
+      reviewComponents = this.state.viewableReviews.map((review, i) => {
+        return (
+          <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} callback={this.saveRef.bind(this)}/>
+          );
+        });
+    } else {
+      // empty placeholder
+      reviewComponents = [<StyledReview text='' name='' date='' userIcon='' key={-1}/>];
+    }
     return (
       <>
         <FlexRow>
           <StyledSearchBar callback={this.search.bind(this)} />
         </FlexRow>
         <FlexRow>
-          <ScrollableFlexColumn ref={this.myRef}>
-            {this.state.renderedReviews.map((review, i) => {
-              return (
-                <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} callback={this.saveRef.bind(this)}/>
-                );
-            })}
+          {/* only show the scroll bar track if there are viewable reviews */}
+          <ScrollableFlexColumn className={areViewableReviews ? 'scroll' : null} ref={this.scrollWindow}>
+            {reviewComponents}
           </ScrollableFlexColumn>
         </FlexRow>
       </>
