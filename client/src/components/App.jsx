@@ -11,8 +11,27 @@ import { createGlobalStyle } from 'styled-components'
 
 import _ from 'underscore';
 
+
+// fake body div used for dimming the whole page
+const Body = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
+
+transition-duration: ${animation.dimDuration}ms;
+&.dim {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(100,100,100);
+}
+`;
+
 // flex column of all components
-const ReviewPage = styled.div.attrs(props => {
+const ReviewComponent = styled.div.attrs(props => {
   return {
     className: props.className
   }
@@ -22,11 +41,6 @@ margin: 3vh 3vw;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
-transition-duration: ${animation.dimDuration}ms;
-&.dim {
-  filter: blur(2px);
-  background-color: rgb(100,100,100);
-}
 `;
 
 class App extends React.Component {
@@ -134,10 +148,10 @@ class App extends React.Component {
 
   // closes the modal after showing a transition
   closeModal() {
-    console.log(`Closing modal...`);
     this.modal.current.setTransition(`exit`, () => {
       console.log(`Exiting modal...`)
       setTimeout(() => {
+        // un-dim  the page after modal transition completes
         this.setState({
           showModal: false
         });
@@ -152,8 +166,9 @@ class App extends React.Component {
     return !this.state.reviews.length ? <h1>Loading...</h1> :
     <>
       {this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null}
-      {/* show a transition if the modal is displayed */}
-        <ReviewPage className={this.state.showModal ? 'dim' : null}>
+      <Body className={this.state.showModal ? 'dim' : null}>
+        {/* show a transition if the modal is displayed */}
+        <ReviewComponent>
           <FlexRow justify="left">
             {/* rating overview banner */}
             <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false}/>
@@ -170,8 +185,9 @@ class App extends React.Component {
             {/* show all reviews button */}
             {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>}
           </FlexRow>
-        </ReviewPage>
-      </>
+        </ReviewComponent>
+      </Body>
+    </>
   }
 }
 

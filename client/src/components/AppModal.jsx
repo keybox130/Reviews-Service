@@ -115,7 +115,6 @@ class AppModal extends React.Component {
           <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true}/>
           <StyledRatingGraphs ratings={this.state.ratings} isModal={true}/>
         </FlexColumn>
-        {/* render the full list */}
         <FlexColumn>
           <StyledReviewListModal reviews={this.state.reviews.sort()} />
         </FlexColumn>

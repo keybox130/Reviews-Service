@@ -12,21 +12,17 @@ margin-left: -10vw;
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   margin-top: 5vh;
   margin-bottom: 5vh;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  :hover {
+    background: #555;
+  }
 }
 `;
 
@@ -47,7 +43,7 @@ class ReviewListModal extends React.Component {
 
   componentDidMount() {
     this.myRef.current.addEventListener('scroll', e => {
-      this.checkScrollBar();
+      this.checkScrollBar(e);
     });
   }
 
@@ -62,15 +58,12 @@ class ReviewListModal extends React.Component {
   }
 
   // check if scrollbar is at bottom
-  checkScrollBar() {
-    if (this.myRef.current) {
-      const lastReview = this.refList[this.refList.length-5].current;
-      const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-      const pageOffset = this.myRef.current.scrollTop;
-      // console.log(`scrollHeight: ${pageOffset}, lastElementOffset: ${lastElementOffset}, # of elements: ${this.refList.length}`);
-      if (pageOffset >= lastElementOffset) {
-        this.loadMoreReviews();
-      }
+  checkScrollBar(e) {
+    const lastReview = this.refList[this.refList.length-5].current;
+    const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
+    const pageOffset = e.target.scrollTop;
+    if (pageOffset >= lastElementOffset) {
+      this.loadMoreReviews();
     }
   }
 
