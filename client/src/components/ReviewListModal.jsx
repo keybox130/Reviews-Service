@@ -92,7 +92,7 @@ class ReviewListModal extends React.Component {
 
   // filter the rendered reviews by the search term
   search(e) {
-    // clear the ref list so already rendered reviews don't clash with filtered ones in scroll window
+    // clear the ref list so already rendered reviews don't clash with filtered ones within checkScrollBar
     this.refList.splice(0);
     const searchTerm = e.target.value.toLowerCase();
     let filtered = null;

@@ -24,7 +24,11 @@ border-radius: 30px;
 min-width: ${props => props.width}px;
 `;
 
-const Bar = styled.div`
+const Bar = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
 height: ${margins.barHeight};
 display: flex;
 mix-blend-mode: multiply;
@@ -44,24 +48,30 @@ min-width: ${props => props.width}px;
 
 animation-name: expand;
 animation-duration: ${animation.slideDuration}ms;
-animation-fill-mode: forwards;
-/* should start animation after dim/blur animation completes */
+animation-fill-mode: both;
 animation-timing-function: ease-out;
+
+&.modal {
+  /* start bar load animation after modal finishes displaying */
+  animation-delay: ${Number(animation.slideDuration) + Number(animation.dimDuration)}ms;
 }
 
+}
 `;
 
 const BarGraph = ({text, rating, isModal}) => {
   const maxWidth = isModal ? margins.modalBarWidth : margins.barWidth; // width in px for higher accuracy
   const rightMargin = isModal ? `10vw` : `0`;
   const proportion = Math.floor((rating / 5.0) * maxWidth);
+  // whether to delay bar load animation for modal
+  const className = isModal ? `modal` : null;
   rating = rating.toFixed(1);
   return (
     <OuterContainer rightMargin={rightMargin}>
         <Text>{text}</Text>
       <InnerContainer>
         <Underlay width={maxWidth}>
-          <Bar width={proportion}></Bar>
+          <Bar width={proportion} className={className} ></Bar>
         </Underlay>
         <Text className='rating'>{rating}</Text>
       </InnerContainer>
