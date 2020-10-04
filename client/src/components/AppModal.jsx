@@ -21,8 +21,8 @@ border-width: 5px;
 border-radius: 15px;
 height: 85vh;
 max-width: 60vw;
-margin: 7vh 20vw;
-padding-top: 5vh;
+margin: 5vh 20vw;
+padding-top: 7vh;
 box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
 @keyframes slideIn {
