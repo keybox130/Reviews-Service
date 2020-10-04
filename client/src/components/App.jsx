@@ -11,9 +11,8 @@ import { createGlobalStyle } from 'styled-components'
 
 import _ from 'underscore';
 
-
 // fake body div used for dimming the whole page
-const Body = styled.div.attrs(props => {
+const Dimmable = styled.div.attrs(props => {
   return {
     className: props.className
   }
@@ -140,6 +139,7 @@ class App extends React.Component {
 
   // shows the modal (delay handled within modal's css animation)
   showModal() {
+    // document.body.classList.add('disableScroll');
     this.setState({
       showModal: true
     }, () => {
@@ -158,6 +158,7 @@ class App extends React.Component {
     this.modal.current.setTransition(`exit`, () => {
       setTimeout(() => {
         // un-dim the page after modal transition completes
+        // document.body.classList.remove('disableScroll');
         this.setState({
           showModal: false,
           showButton: true
@@ -179,7 +180,7 @@ class App extends React.Component {
       { ReviewModal }
 
       {/* show a transition if the modal is displayed */}
-      <Body className={this.state.showModal ? 'dim' : null}>
+      <Dimmable className={this.state.showModal ? 'dim' : null}>
         <ReviewComponent>
           <FlexRow justify='left'>
             {/* rating overview banner */}
@@ -199,7 +200,7 @@ class App extends React.Component {
 
           </FlexRow>
         </ReviewComponent>
-      </Body>
+      </Dimmable>
     </>
   }
 }
