@@ -86,6 +86,9 @@ const Container = styled.div.attrs(props => {
 display: inline-block;
 margin: 1vh 3vw;
 width: 25vw;
+&.header {
+  margin-top: -3vh;
+}
 `;
 
 export {FlexRow, FlexColumn, Container, Text, Fonts, animation, margins};

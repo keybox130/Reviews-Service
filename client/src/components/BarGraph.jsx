@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {margins, Text, Fonts} from './Constants.jsx';
+import {margins, Text, Fonts, animation} from './Constants.jsx';
 
 const OuterContainer = styled.div`
 display: flex;
@@ -28,9 +28,27 @@ const Bar = styled.div`
 height: ${margins.barHeight};
 display: flex;
 mix-blend-mode: multiply;
-min-width: ${props => props.width}px;
 border-radius: 30px;
 background-color: black;
+min-width: ${props => props.width}px;
+
+@keyframes expand {
+  0% {
+    opacity: 0;
+    min-width: 0px;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+animation-name: expand;
+animation-duration: ${animation.slideDuration}ms;
+animation-fill-mode: forwards;
+/* should start animation after dim/blur animation completes */
+animation-timing-function: ease-out;
+}
+
 `;
 
 const BarGraph = ({text, rating, isModal}) => {

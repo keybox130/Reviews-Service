@@ -6,6 +6,7 @@ const Button = styled.button`
 border-radius: 10px;
 color: rgb(34, 34, 34);
 border-style: solid;
+border-width: 1px;
 border-color: rgb(34, 34, 34);
 background-color: white;
 display: flex;
@@ -20,6 +21,7 @@ font-family: ${Fonts.family};
 font-size: ${Fonts.large};
 transition-duration: 0.5s;
 cursor: pointer;
+mix-blend-mode: multiply;
 :hover{
   background-color: rgb(247, 247, 247);
 }

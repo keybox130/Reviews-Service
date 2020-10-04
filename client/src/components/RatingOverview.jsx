@@ -8,6 +8,7 @@ font-family: ${Fonts.family};
 font-weight: ${Fonts.bold};
 font-size: ${props => props.fontSize};
 margin-left: ${props => props.marginLeft};
+margin-bottom: -5vh;
 `;
 
 const Star = styled.img`
@@ -22,7 +23,7 @@ const RatingOverview = ({average, numReviews, isModal}) => {
   // size of text/star depends on whether this is a modal or not
   const fontSize = isModal ? Fonts.largeHeader : Fonts.header;
   const imageSize = isModal ? margins.modalImageSize : margins.imageSize;
-  const marginLeft = isModal ? `-5px` : 0;
+  const marginLeft = isModal ? `10px` : `5px`;
   return (
     <FlexRow>
       <Container className='header'>
