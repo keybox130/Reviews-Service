@@ -60,8 +60,6 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
   animation-name: slideOut;
   animation-duration: ${animation.slideDuration}ms;
   animation-fill-mode: both;
-  animation-delay: ${animation.dimDuration}ms;
-  /* should start animation after dim/blur animation completes */
   animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
 }
 
@@ -74,8 +72,8 @@ const CloseButton = styled.button`
   display: flex;
   justify-content: center;
   text-align: center;
-  max-height: 10vh;
-  margin-left: -8px;
+  max-height: 8vh;
+  margin-left: -25px;
   padding: 13px 23px;
   outline:none;
   font-weight: ${Fonts.normal};

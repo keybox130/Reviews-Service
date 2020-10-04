@@ -94,12 +94,15 @@ class ReviewListModal extends React.Component {
   search(e) {
     // clear the ref list so already rendered reviews don't clash with filtered ones in scroll window
     this.refList.splice(0);
-    const searchTerm = e.target.value;
+    const searchTerm = e.target.value.toLowerCase();
     let filtered = null;
 
     if (searchTerm) {
       filtered = _.filter(this.state.allReviews, (review) => {
-          return review.reviewText.includes(searchTerm);
+        debugger;
+          return review.reviewText.toLowerCase().includes(searchTerm) ||
+            review.name.toLowerCase().includes(searchTerm) ||
+            review.date.toLowerCase().includes(searchTerm);
       });
     } else {
       // show all rendered reviews

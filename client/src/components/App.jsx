@@ -148,13 +148,11 @@ class App extends React.Component {
   // closes the modal after showing a transition
   closeModal() {
     this.modal.current.setTransition(`exit`, () => {
-      console.log(`Exiting modal...`)
       setTimeout(() => {
         // un-dim the page after modal transition completes
         this.setState({
           showModal: false
         });
-        console.log('Closed modal');
       }, animation.slideDuration);
     });
   }

@@ -5,12 +5,13 @@ const margins = {
   modalBarWidth: `75`,
   barHeight: `4px`,
   imageSize: `20px`,
-  modalImageSize: `30px`
+  modalImageSize: `30px`,
+  modalLeftMargin: `-10px`
 }
 
 const animation = {
   slideDuration: `400`, // in ms
-  dimDuration: `200` // in ms
+  dimDuration: `400` // in ms
 }
 
 const Fonts = {

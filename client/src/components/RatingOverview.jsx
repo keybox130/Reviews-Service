@@ -14,6 +14,7 @@ const Star = styled.img`
 display: inline-block;
 mix-blend-mode: multiply;
 margin-left: ${props => props.marginLeft};
+margin-right: 10px;
 max-width: ${props => props.imageSize};
 `;
 
@@ -21,7 +22,7 @@ const RatingOverview = ({average, numReviews, isModal}) => {
   // size of text/star depends on whether this is a modal or not
   const fontSize = isModal ? Fonts.largeHeader : Fonts.header;
   const imageSize = isModal ? margins.modalImageSize : margins.imageSize;
-  const marginLeft = isModal ? `10px` : 0;
+  const marginLeft = isModal ? `-5px` : 0;
   return (
     <FlexRow>
       <Container className='header'>
