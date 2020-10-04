@@ -12,6 +12,7 @@ margin-left: ${props => props.marginLeft};
 
 const Star = styled.img`
 display: inline-block;
+mix-blend-mode: multiply;
 margin-left: ${props => props.marginLeft};
 max-width: ${props => props.imageSize};
 `;

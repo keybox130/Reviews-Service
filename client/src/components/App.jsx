@@ -18,7 +18,6 @@ const Body = styled.div.attrs(props => {
     className: props.className
   }
 })`
-
 transition-duration: ${animation.dimDuration}ms;
 &.dim {
   position: fixed;

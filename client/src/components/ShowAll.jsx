@@ -19,8 +19,8 @@ font-weight: ${Fonts.bold};
 font-family: ${Fonts.family};
 font-size: ${Fonts.large};
 transition-duration: 0.5s;
+cursor: pointer;
 :hover{
-  cursor: pointer;
   background-color: rgb(247, 247, 247);
 }
 `;

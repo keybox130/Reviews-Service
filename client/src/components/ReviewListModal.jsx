@@ -1,6 +1,9 @@
 import React from 'react';
 import StyledReview from './Review.jsx';
+import StyledSearchBar from './SearchBar.jsx';
 import styled from 'styled-components';
+import {FlexRow} from './Constants.jsx';
+import _ from 'underscore';
 
 const ScrollableFlexColumn = styled.div`
 display: flex;
@@ -35,7 +38,8 @@ class ReviewListModal extends React.Component {
 
     this.state = {
       reviews: reviews,
-      renderedReviews: reviews.slice(0, this.numReviewsToShow)
+      renderedReviews: reviews.slice(0, this.numReviewsToShow),
+      filteredReviews: reviews.slice(0, this.numReviewsToShow)
     }
     this.myRef = React.createRef();
     this.refList = [];
@@ -59,9 +63,10 @@ class ReviewListModal extends React.Component {
 
   // check if scrollbar is at bottom
   checkScrollBar(e) {
-    const lastReview = this.refList[this.refList.length-5].current;
+    const lastReview = this.refList[this.refList.length-6].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
     const pageOffset = e.target.scrollTop;
+    console.log(pageOffset, lastElementOffset)
     if (pageOffset >= lastElementOffset) {
       this.loadMoreReviews();
     }
@@ -72,15 +77,30 @@ class ReviewListModal extends React.Component {
     this.refList.push(ref);
   }
 
+  // filter the rendered reviews by the search term
+  search(e) {
+    const term = e.target.value;
+    // let filtered = _.filter(this.state.renderedReviews, (review) => {
+    //   return review.text.includes(term) || review.
+    // })
+  }
+
   render() {
     return (
-      <ScrollableFlexColumn ref={this.myRef}>
-        {this.state.renderedReviews.map((review, i) => {
-          return (
-            <StyledReview review={review} key={(i)} callback={this.saveRef.bind(this)}/>
-            );
-        })}
-      </ScrollableFlexColumn>
+      <>
+        <FlexRow>
+          <StyledSearchBar callback={this.search.bind(this)} />
+        </FlexRow>
+        <FlexRow>
+          <ScrollableFlexColumn ref={this.myRef}>
+            {this.state.renderedReviews.map((review, i) => {
+              return (
+                <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} callback={this.saveRef.bind(this)}/>
+                );
+            })}
+          </ScrollableFlexColumn>
+        </FlexRow>
+      </>
     );
   }
 

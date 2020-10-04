@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import {Fonts, FlexColumn, Container, animation} from './Constants.jsx';
 
 const ReviewModal = styled.div.attrs(props => {
-  console.log(props);
   return {
     className: props.className
   }
@@ -20,9 +19,9 @@ background-color: white;
 border-style: none;
 border-width: 5px;
 border-radius: 15px;
-height: 80vh;
+height: 85vh;
 max-width: 60vw;
-margin: 5vh 20vw;
+margin: 7vh 20vw;
 padding-top: 5vh;
 box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 

@@ -28,11 +28,14 @@ margin-top: -15px;
 `;
 
 class Review extends React.Component {
-  constructor({review, callback}) {
+  constructor({text, name, date, userIcon, callback}) {
     super();
     this.state = {
-      review: review,
-      text: review.reviewText,
+      fullText: text,
+      text: text,
+      name: name,
+      date: date,
+      userIcon: userIcon,
       showAllText: true,
       mountRef: callback ? callback : null
     }
@@ -55,9 +58,9 @@ class Review extends React.Component {
 
     if (shouldShorten) {
       // cut text to the nearest word
-      let nearestWord = this.state.text.indexOf(' ', textCutoff);
+      let nearestWord = this.state.fullText.indexOf(' ', textCutoff);
       this.setState({
-        text: this.state.text.slice(0, nearestWord) + ' ',
+        text: this.state.fullText.slice(0, nearestWord) + ' ',
         showAllText: !shouldShorten
       });
     }
@@ -66,7 +69,7 @@ class Review extends React.Component {
   // reset shortened text to original on click
   onClick() {
     this.setState({
-      text: this.state.review.reviewText,
+      text: this.state.fullText,
       showAllText: true
     });
   }
@@ -75,10 +78,10 @@ class Review extends React.Component {
     return (
       <Container ref={this.myRef}>
         <FlexRow>
-          <ProfileImage src={this.state.review.userIcon}></ProfileImage>
+          <ProfileImage src={this.state.userIcon}></ProfileImage>
           <FlexColumn>
-            <Name>{this.state.review.name}</Name>
-            <Date>{this.state.review.date}</Date>
+            <Name>{this.state.name}</Name>
+            <Date>{this.state.date}</Date>
           </FlexColumn>
         </FlexRow>
         <FlexRow>

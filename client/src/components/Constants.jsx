@@ -51,7 +51,7 @@ const Text = styled.p.attrs(props => {
     className: props.className
   }
 })`
-display: flex;
+display: inline;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.normal};
 font-size: ${Fonts.medium};
@@ -78,7 +78,6 @@ margin-left: 1vw;
 `;
 
 const Container = styled.div.attrs(props => {
-  console.log(props.className);
   return {
     className: props.className
   }
