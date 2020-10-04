@@ -75,7 +75,7 @@ class ReviewListModal extends React.Component {
     })
   }
 
-  // check if scrollbar is at bottom and load more reviews
+  // check if scrollbar is at bottom and load more reviews if it is
   checkScrollBar(e) {
     const lastReview = this.refList[this.refList.length-1].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
@@ -99,10 +99,9 @@ class ReviewListModal extends React.Component {
 
     if (searchTerm) {
       filtered = _.filter(this.state.allReviews, (review) => {
-        debugger;
-          return review.reviewText.toLowerCase().includes(searchTerm) ||
-            review.name.toLowerCase().includes(searchTerm) ||
-            review.date.toLowerCase().includes(searchTerm);
+        return review.reviewText.toLowerCase().includes(searchTerm) ||
+          review.name.toLowerCase().includes(searchTerm) ||
+          review.date.toLowerCase().includes(searchTerm);
       });
     } else {
       // show all rendered reviews
