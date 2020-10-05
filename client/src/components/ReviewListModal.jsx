@@ -2,7 +2,7 @@ import React from 'react';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
 import styled from 'styled-components';
-import {FlexRow} from './Constants.jsx';
+import {FlexRow, animation} from './Constants.jsx';
 import _ from 'underscore';
 
 const ScrollableFlexColumn = styled.div.attrs(props => {
@@ -55,6 +55,7 @@ class ReviewListModal extends React.Component {
       searching: false,
       reviewComponents: null
     }
+    this.initialRender = true;
     this.scrollWindow = React.createRef();
     this.refList = [];
   }
@@ -111,10 +112,7 @@ class ReviewListModal extends React.Component {
       filteredReviews: filtered,
       viewableReviews: null
     }, () => {
-      // reset scroll bar
-      if (this.scrollWindow.current) {
-        this.scrollWindow.current.scrollTop = 0;
-      }
+
       // this is a workaround to make sure the state updates with viewable reviews
       this.setState({
         viewableReviews: filtered.slice(0, this.numReviewsToShow)
@@ -124,15 +122,24 @@ class ReviewListModal extends React.Component {
 
   render() {
     const areViewableReviews = this.state.viewableReviews && this.state.viewableReviews.length;
+    // React review components generated here to keep return statement a bit cleaner
     let reviewComponents = null;
     if (areViewableReviews) {
-      reviewComponents = this.state.viewableReviews.map((review, i) => {
+      reviewComponents = _.map(this.state.viewableReviews, (review, i) => {
+        // animate each review successively after the dim and modal slide animations
+        let delay = Number(animation.reviewSlideDelay * (i)) + Number(animation.modalSlideDuration) + Number(animation.dimDuration);
+        delay = delay.toString();
+        console.log(delay);
         return (
-          <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} callback={this.saveRef.bind(this)}/>
+          <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} showAnimation={this.initialRender} delay={delay} callback={this.saveRef.bind(this)}/>
           );
-        });
+        }, this);
+      // only show review transition effect once on modal
+      if (this.initialRender) {
+        this.initialRender = false;
+      }
     } else {
-      // empty placeholder
+      // empty placeholder to maintain modal width
       reviewComponents = [<StyledReview text='' name='' date='' userIcon='' key={-1}/>];
     }
     return (

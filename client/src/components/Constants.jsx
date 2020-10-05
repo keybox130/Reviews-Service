@@ -1,18 +1,21 @@
 import styled from 'styled-components';
 
+// constant
 const margins = {
   barWidth: `150`,
   modalBarWidth: `75`,
   barHeight: `4px`,
   imageSize: `20px`,
   modalImageSize: `30px`,
-  modalLeftMargin: `-10px`
 }
 
+// animation durations, in ms
 const animation = {
-  slideDuration: `400`, // in ms
-  dimDuration: `400`, // in ms
-  clickDuration: `400` //in ms
+  modalSlideDuration: `400`,
+  dimDuration: `400`,
+  clickDuration: `400`,
+  reviewSlideDuration: `300`,
+  reviewSlideDelay: `100`
 }
 
 const Fonts = {

@@ -49,7 +49,7 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
 &.enter {
   animation-name: slideIn;
-  animation-duration: ${animation.slideDuration}ms;
+  animation-duration: ${animation.modalSlideDuration}ms;
   animation-fill-mode: both;
   /* should start animation after dim/blur animation completes */
   animation-delay: ${animation.dimDuration}ms;
@@ -58,7 +58,7 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
 &.exit {
   animation-name: slideOut;
-  animation-duration: ${animation.slideDuration}ms;
+  animation-duration: ${animation.modalSlideDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
 }
