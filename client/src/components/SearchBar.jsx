@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexRow, Container, Fonts} from './Constants.jsx';
+import {FlexRow, Container, Fonts, animation} from './Constants.jsx';
 
 const Magnifier = styled.svg`
 display: flex;
@@ -27,7 +27,6 @@ text-overflow: ellipsis;
 
 const SearchContainer = styled.div`
 display: flex;
-width: 100%;
 margin-left: -7vw;
 margin-top: -4vh;
 border: none;
@@ -37,6 +36,25 @@ align-items: center;
 padding: 12px 12px 12px 16px;
 border-radius: 100px;
 box-shadow: rgb(176, 176, 176) 0px 0px 0px 1px inset;
+
+@keyframes expandSearch {
+  0% {
+    transform-origin: center left;
+    transform: scale(0, 1);
+  }
+  100% {
+    transform-origin: center left;
+    transform: scale(1, 1);
+    width: 100%
+  }
+}
+
+animation-name: expandSearch;
+animation-duration: ${animation.modalSlideDuration}ms;
+animation-delay: 500ms;
+animation-fill-mode: both;
+animation-timing-function: linear;
+
 `;
 
 class SearchBar extends React.Component {

@@ -139,17 +139,18 @@ class App extends React.Component {
 
   // shows the modal (delay handled within modal's css animation)
   showModal() {
-    this.setState({
-      showModal: true
-    }, () => {
-      // hide button after click animation completes
-      setTimeout(() => {
+    // hide button after click animation completes
+    setTimeout(() => {
+      this.setState({
+        showButton: false
+      }, () => {
         this.setState({
-          showButton: false
-        })
-      }, Number(animation.clickDuration))
-      this.modal.current.setTransition(`enter`);
-    });
+          showModal: true
+        }, () => {
+          this.modal.current.setTransition(`enter`);
+        });
+      })
+    }, Number(animation.clickDuration));
   }
 
   // closes the modal after showing a transition

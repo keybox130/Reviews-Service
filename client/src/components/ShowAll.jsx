@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import {FlexColumn, Container, animation, Fonts} from './Constants.jsx';
 
 const Button = styled.button.attrs(props => {
-  console.log(props.className);
   return {
     className: props.className
   }
@@ -42,7 +41,7 @@ mix-blend-mode: multiply;
   }
 
   100% {
-    transform: scale(1.0, 1.0);
+    transform: scale(0.9, 0.9);
   }
 }
 

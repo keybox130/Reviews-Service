@@ -129,7 +129,6 @@ class ReviewListModal extends React.Component {
         // animate each review successively after the dim and modal slide animations
         let delay = Number(animation.reviewSlideDelay * (i)) + Number(animation.modalSlideDuration) + Number(animation.dimDuration);
         delay = delay.toString();
-        console.log(delay);
         return (
           <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} showAnimation={this.initialRender} delay={delay} callback={this.saveRef.bind(this)}/>
           );
