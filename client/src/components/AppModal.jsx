@@ -72,10 +72,11 @@ const CloseButton = styled.button`
   display: flex;
   justify-content: center;
   text-align: center;
-  max-height: 8vh;
-  margin-left: -25px;
-  padding: 13px 23px;
-  margin-bottom: 10px;
+  max-height: 10vh;
+  max-width: 10vw;
+  margin-left: -15px;
+  margin-top: -10px;
+  padding: 13px 15px;
   outline:none;
   font-weight: ${Fonts.normal};
   font-family: ${Fonts.family};
@@ -84,6 +85,16 @@ const CloseButton = styled.button`
     cursor: pointer;
     background-color: rgb(247, 247, 247);
   }
+`;
+
+const X = styled.svg`
+display: block;
+fill: none;
+height: 16px;
+width: 16px;
+stroke: currentcolor;
+stroke-width: 3;
+overflow: visible;
 `;
 
 class AppModal extends React.Component {
@@ -108,7 +119,11 @@ class AppModal extends React.Component {
       <ReviewModal className={this.state.transition}>
         <FlexColumn className='modal'>
           <Container>
-            <CloseButton onClick={this.state.close}>x</CloseButton>
+            <CloseButton onClick={this.state.close}>
+              <X viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' role='presentation' focusable='false'>
+                <path d="m6 6 20 20"></path><path d="m26 6-20 20"></path>
+              </X>
+            </CloseButton>
           </Container>
           <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true}/>
           <StyledRatingGraphs ratings={this.state.ratings} isModal={true}/>

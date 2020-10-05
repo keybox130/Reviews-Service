@@ -43,7 +43,11 @@ width: 25vw;
 @keyframes slideInLeft {
   0% {
     opacity: 0;
-    transform: translateX(-200px);
+    transform: translateX(-150px);
+  }
+
+  75% {
+    opacity: 0.7;
   }
 
   100% {
@@ -52,7 +56,27 @@ width: 25vw;
   }
 }
 
+@keyframes slideOutLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-200px);
+  }
+}
+
 &.effectSlideInLeft
+{
+  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation-delay: ${props => props.delay}ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+}
+
+&.effectSlideOutLeft
 {
   animation: slideInLeft ${animation.reviewSlideDuration}ms;
   animation-delay: ${props => props.delay}ms;

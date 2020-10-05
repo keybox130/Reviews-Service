@@ -139,7 +139,6 @@ class App extends React.Component {
 
   // shows the modal (delay handled within modal's css animation)
   showModal() {
-    // document.body.classList.add('disableScroll');
     this.setState({
       showModal: true
     }, () => {
@@ -158,12 +157,11 @@ class App extends React.Component {
     this.modal.current.setTransition(`exit`, () => {
       setTimeout(() => {
         // un-dim the page after modal transition completes
-        // document.body.classList.remove('disableScroll');
         this.setState({
           showModal: false,
           showButton: true
         });
-      }, animation.slideDuration);
+      }, Number(animation.modalSlideDuration));
     });
   }
 
