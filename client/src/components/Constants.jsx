@@ -10,12 +10,14 @@ const margins = {
 }
 
 // animation durations, in ms
-// modal animation flow: click + dim animations => slide animation => rating bar/search bar animation
+// modal animation flow: click animation => dim animation => slide animation => rating bar/search bar animation
+
 const animation = {
   modalSlideDuration: `400`,
   barDuration: `400`,
   dimDuration: `400`,
   clickDuration: `200`,
+  searchExpandDuration: `200`,
   reviewSlideDuration: `300`,
   reviewSlideDelay: `100`
 }
