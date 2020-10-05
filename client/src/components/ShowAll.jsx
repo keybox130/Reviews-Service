@@ -17,7 +17,7 @@ display: flex;
 justify-content: center;
 text-align: center;
 padding: 13px 23px;
-margin-left: -1vw;
+margin-left: -20px;
 max-width: 12vw;
 max-height: 8vh;
 outline:none;

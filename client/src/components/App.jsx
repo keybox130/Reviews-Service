@@ -13,18 +13,48 @@ import _ from 'underscore';
 
 // fake body div used for dimming the whole page
 const Dimmable = styled.div.attrs(props => {
+  console.log(props.className)
   return {
     className: props.className
   }
 })`
-transition-duration: ${animation.dimDuration}ms;
-&.dim {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgb(100,100,100);
+
+@keyframes dimPage {
+  0% {
+    background-color: none;
+  }
+  100% {
+    background-color: rgb(100,100,100);
+  }
+}
+
+@keyframes unDimPage {
+  0% {
+    background-color: rgb(100,100,100);
+  }
+  100% {
+    background-color: none;
+  }
+}
+
+width: 100%;
+height: 100%;
+position: fixed;
+left: 0;
+top: 0;
+
+&.dimEnter {
+  animation-name: dimPage;
+  animation-duration: ${animation.dimDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+}
+
+&.dimExit {
+  animation-name: unDimPage;
+  animation-duration: ${animation.dimDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
 }
 `;
 
@@ -40,6 +70,54 @@ padding: 0 10vw;
 display: flex;
 flex-direction: column;
 `;
+
+// fake body div used for dimming the whole page
+/*const Dimmable = styled.div.attrs(props => {
+  console.log(document.body.scrollTop);
+  return {
+    className: props.className
+  }
+})`
+
+
+&.dim {
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  margin: 0 0;
+  top: 0;
+  left: 0;
+  position: absolute;
+  @keyframes dimPage {
+    0% {
+      background-color: none;
+    }
+    100% {
+      background-color: rgb(100,100,100);
+    }
+  }
+
+  animation-name: dimPage;
+  animation-duration: ${animation.dimDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+}
+`;
+
+// block of all components
+const ReviewComponent = styled.div.attrs(props => {
+  return {
+    className: props.className
+  }
+})`
+z-index: 1;
+display: flex;
+flex-direction: column;
+justify-content: center;
+min-width: 90vw;
+min-height: 90vh;
+margin: auto auto;
+`;*/
 
 class App extends React.Component {
   constructor() {
@@ -57,7 +135,9 @@ class App extends React.Component {
         value: 0
       },
       showModal: false, // whether to show modal
-      showButton: true // whether to render showAll button
+      showButton: true, // whether to render showAll button
+      dimClass: null
+
     }
 
     // update state of modal using ref
@@ -144,23 +224,31 @@ class App extends React.Component {
       this.setState({
         showButton: false
       }, () => {
-        this.setState({
-          showModal: true
-        }, () => {
-          this.modal.current.setTransition(`enter`);
+          this.setState({
+            dimClass: `dimEnter`,
+            showModal: true
+          }, () => {
+            this.modal.current.setTransition(`enter`);
+          });
         });
-      })
-    }, Number(animation.clickDuration));
+      }, Number(animation.clickDuration));
   }
 
   // closes the modal after showing a transition
   closeModal() {
+    // close the modal first
     this.modal.current.setTransition(`exit`, () => {
+      // un-dim the page after modal animation
       setTimeout(() => {
-        // un-dim the page after modal transition completes
         this.setState({
-          showModal: false,
-          showButton: true
+          showButton: true,
+          dimClass: `dimExit`
+        }, () => {
+          setTimeout(() => {
+            this.setState({
+              showModal: false,
+            })
+          }, Number(animation.dimDuration));
         });
       }, Number(animation.modalSlideDuration));
     });
@@ -179,7 +267,7 @@ class App extends React.Component {
       { ReviewModal }
 
       {/* show a transition if the modal is displayed */}
-      <Dimmable className={this.state.showModal ? 'dim' : null}>
+      <Dimmable className={this.state.dimClass}>
         <ReviewComponent>
           <FlexRow justify='left'>
             {/* rating overview banner */}

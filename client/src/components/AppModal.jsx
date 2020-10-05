@@ -10,8 +10,8 @@ const ReviewModal = styled.div.attrs(props => {
     className: props.className
   }
 })`
-z-index: 2;
-position: absolute;
+z-index: 3;
+position: fixed;
 display: flex;
 flex-direction: row;
 justify-content: flex-start;
@@ -21,7 +21,8 @@ border-width: 5px;
 border-radius: 15px;
 height: 85vh;
 max-width: 60vw;
-margin: 5vh 20vw;
+margin: 0 20vw;
+margin-top: 2vh;
 padding-top: 7vh;
 box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
