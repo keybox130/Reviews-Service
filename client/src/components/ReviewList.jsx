@@ -17,20 +17,24 @@ const ReviewList = ( {reviews} ) => {
 
   return (
     <>
-      <FlexColumn>
-      {reviewCols[0].map((review, i) => {
-        return (
-          <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)}/>
-        );
-      })}
-      </FlexColumn>
-      <FlexColumn>
-        {reviewCols[1].map((review, i) => {
+      <FlexRow>
+        <FlexColumn>
+        {reviewCols[0].map((review, i) => {
           return (
             <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)}/>
           );
         })}
-      </FlexColumn>
+        </FlexColumn>
+      </FlexRow>
+      <FlexRow>
+        <FlexColumn>
+          {reviewCols[1].map((review, i) => {
+            return (
+              <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)}/>
+            );
+          })}
+        </FlexColumn>
+      </FlexRow>
     </>
   );
 }

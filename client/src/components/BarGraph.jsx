@@ -47,13 +47,13 @@ min-width: ${props => props.width}px;
 }
 
 animation-name: expand;
-animation-duration: ${animation.slideDuration}ms;
+animation-duration: ${animation.modalSlideDuration}ms;
 animation-fill-mode: both;
 animation-timing-function: ease-out;
 
 &.modal {
   /* start bar load animation after modal finishes displaying */
-  animation-delay: ${Number(animation.slideDuration) + Number(animation.dimDuration)}ms;
+  animation-delay: ${Number(animation.barDuration) + Number(animation.dimDuration)}ms;
 }
 
 }

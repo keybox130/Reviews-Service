@@ -32,7 +32,8 @@ const Container = styled.div.attrs(props => {
     className: props.className
   }
 })`
-display: inline-block;
+display: flex;
+flex-direction: column;
 margin: 1vh 3vw;
 width: 25vw;
 

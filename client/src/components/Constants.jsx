@@ -12,8 +12,9 @@ const margins = {
 // animation durations, in ms
 const animation = {
   modalSlideDuration: `400`,
+  barDuration: `400`,
   dimDuration: `400`,
-  clickDuration: `400`,
+  clickDuration: `200`,
   reviewSlideDuration: `300`,
   reviewSlideDelay: `100`
 }

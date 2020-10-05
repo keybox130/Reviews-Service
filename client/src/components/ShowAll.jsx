@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexColumn, Container, Fonts} from './Constants.jsx';
+import {FlexColumn, Container, animation, Fonts} from './Constants.jsx';
 
 const Button = styled.button.attrs(props => {
+  console.log(props.className);
   return {
     className: props.className
   }
@@ -31,28 +32,58 @@ mix-blend-mode: multiply;
   background-color: rgb(247, 247, 247);
 }
 
-&.clicked {
+@keyframes press {
+  0% {
+    transform: scale(1.0, 1.0);;
+  }
 
+  10% {
+    transform: scale(0.8, 0.8);
+  }
+
+  100% {
+    transform: scale(1.0, 1.0);
+  }
+}
+
+&.clicked {
+  animation-name: press;
+  animation-duration: ${animation.clickDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
 }
 
 `;
 
-const ShowAll = ({numReviews, onClick}) => {
-
-  let className = null;
-
-  const click = (e) => {
-    className = `clicked`;
-    onClick(e);
+class ShowAll extends React.Component {
+  constructor({numReviews, onClick}) {
+    super();
+    this.state = {
+      clicked: false,
+      numReviews: numReviews,
+      className: null
+    }
+    this.onClick = onClick;
   }
 
-  return (
-    <FlexColumn>
-      <Container>
-        <Button onClick={click} className={className}>{`Show all ${numReviews} reviews`}</Button>
-      </Container>
-    </FlexColumn>
-  );
+
+  click(e) {
+    this.setState({
+      className: `clicked`
+    }, () => {
+      this.onClick(e);
+    });
+  }
+
+  render() {
+    return (
+      <FlexColumn>
+        <Container>
+          <Button onClick={this.click.bind(this)} className={this.state.className}>{`Show all ${this.state.numReviews} reviews`}</Button>
+        </Container>
+      </FlexColumn>
+    );
+  }
 }
 
 const StyledShowAll = styled(ShowAll)`

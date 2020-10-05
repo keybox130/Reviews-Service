@@ -142,7 +142,7 @@ class App extends React.Component {
     this.setState({
       showModal: true
     }, () => {
-      // click button animation
+      // hide button after click animation completes
       setTimeout(() => {
         this.setState({
           showButton: false
@@ -171,8 +171,8 @@ class App extends React.Component {
     const ReviewModal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
     // show all reviews button
     const ShowAllButton = this.state.showButton ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/> : null;
-    // show a loading message until all reviews are loaded
-    return !this.state.reviews.length ? <h1>Loading...</h1> :
+    // only render when state updates
+    return !this.state.reviews.length ? null :
     <>
 
       { ReviewModal }
@@ -199,6 +199,7 @@ class App extends React.Component {
           </FlexRow>
         </ReviewComponent>
       </Dimmable>
+
     </>
   }
 }
