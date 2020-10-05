@@ -7,7 +7,6 @@ import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
 import styled from 'styled-components';
 import { FlexRow, animation } from './Constants.jsx';
-import { createGlobalStyle } from 'styled-components'
 
 import _ from 'underscore';
 
@@ -24,26 +23,35 @@ const Dimmable = styled.div.attrs(props => {
     background-color: none;
   }
   100% {
-    background-color: rgb(100,100,100);
+    opacity: 0.5;
+    background-color: rgb(0,0,0);
   }
 }
 
 @keyframes unDimPage {
   0% {
-    background-color: rgb(100,100,100);
+    opacity: 0.5;
+    background-color: rgb(0,0,0);
   }
   100% {
     background-color: none;
   }
 }
 
-width: 100%;
-height: 100%;
-position: fixed;
-left: 0;
-top: 0;
+&.none {
+  display: none;
+  width: 0%;
+  height: 0%;
+}
 
 &.dimEnter {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  animation-direction: forwards;
   animation-name: dimPage;
   animation-duration: ${animation.dimDuration}ms;
   animation-fill-mode: both;
@@ -51,6 +59,13 @@ top: 0;
 }
 
 &.dimExit {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  animation-direction: forwards;
   animation-name: unDimPage;
   animation-duration: ${animation.dimDuration}ms;
   animation-fill-mode: both;
@@ -136,7 +151,7 @@ class App extends React.Component {
       },
       showModal: false, // whether to show modal
       showButton: true, // whether to render showAll button
-      dimClass: null
+      dimClass: `none`
 
     }
 
@@ -247,6 +262,7 @@ class App extends React.Component {
           setTimeout(() => {
             this.setState({
               showModal: false,
+              dimClass: `none`
             })
           }, Number(animation.dimDuration));
         });
@@ -264,10 +280,10 @@ class App extends React.Component {
     return !this.state.reviews.length ? null :
     <>
 
+
       { ReviewModal }
 
       {/* show a transition if the modal is displayed */}
-      <Dimmable className={this.state.dimClass}>
         <ReviewComponent>
           <FlexRow justify='left'>
             {/* rating overview banner */}
@@ -287,7 +303,8 @@ class App extends React.Component {
 
           </FlexRow>
         </ReviewComponent>
-      </Dimmable>
+
+      <Dimmable className={this.state.dimClass} />
 
     </>
   }

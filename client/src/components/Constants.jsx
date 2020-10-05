@@ -46,11 +46,12 @@ margin-bottom: 1vh;
 
 &.center {
   justify-content: center;
+  margin: auto auto;
 }
 
 &.left {
   justify-content: flex-start;
-  margin: 0 5vw;
+  margin: 0 6vw;
 }
 
 `;
