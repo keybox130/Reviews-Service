@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexColumn, Container, animation, Fonts} from './Constants.jsx';
+import {FlexColumn, Container, Animation, Fonts} from './Constants.jsx';
 
 const Button = styled.button.attrs(props =>
   ({className: props.className})
@@ -15,7 +15,7 @@ display: flex;
 justify-content: center;
 text-align: center;
 padding: 13px 23px;
-margin-left: -20px;
+margin-left: -5px;
 max-width: 12vw;
 max-height: 8vh;
 outline:none;
@@ -45,7 +45,7 @@ mix-blend-mode: multiply;
 
 &.clicked {
   animation-name: press;
-  animation-duration: ${animation.clickDuration}ms;
+  animation-duration: ${Animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
 import styled from 'styled-components';
-import {FlexRow, animation} from './Constants.jsx';
+import {FlexRow, Animation} from './Constants.jsx';
 import _ from 'underscore';
 
 const ScrollableFlexColumn = styled.div.attrs(props =>
@@ -120,7 +120,7 @@ class ReviewListModal extends React.Component {
     if (areViewableReviews) {
       reviewComponents = _.map(this.state.viewableReviews, (review, i) => {
         // animate each review successively after the dim and modal slide animations
-        let delay = Number(animation.reviewSlideDelay * (i)) + Number(animation.modalSlideDuration) + Number(animation.dimDuration);
+        let delay = Number(Animation.reviewSlideDelay * (i)) + Number(Animation.modalSlideDuration) + Number(Animation.dimDuration);
         delay = delay.toString();
         return (
           <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} showAnimation={this.initialRender} delay={delay} callback={this.saveRef.bind(this)}/>

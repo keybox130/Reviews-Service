@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-// constant
-const margins = {
+const Margins = {
   barWidth: `150`,
   modalBarWidth: `75`,
   barHeight: `4px`,
@@ -11,8 +10,7 @@ const margins = {
 
 // animation durations, in ms
 // modal animation flow: click animation => dim animation => slide animation => rating bar/search bar animation
-
-const animation = {
+const Animation = {
   modalSlideDuration: `400`,
   barDuration: `400`,
   dimDuration: `400`,
@@ -42,16 +40,10 @@ display: flex;
 flex-direction: row;
 margin-bottom: 1vh;
 
-&.center {
-  justify-content: center;
-  margin: auto auto;
-}
-
 &.left {
   justify-content: flex-start;
   margin: 0 6vw;
 }
-
 `;
 
 const Text = styled.p.attrs(props =>
@@ -93,4 +85,4 @@ width: 25vw;
 }
 `;
 
-export {FlexRow, FlexColumn, Container, Text, Fonts, animation, margins};
+export {FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins};

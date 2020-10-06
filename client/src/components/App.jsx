@@ -6,7 +6,7 @@ import StyledReviewList from './ReviewList.jsx';
 import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
 import styled from 'styled-components';
-import { FlexRow, animation } from './Constants.jsx';
+import { FlexRow, Animation } from './Constants.jsx';
 
 import _ from 'underscore';
 
@@ -38,16 +38,16 @@ const Dimmable = styled.div.attrs(props =>
 }
 
 &.dimEnter {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   z-index: 2;
   left: 0;
   top: 0;
   animation-direction: forwards;
   animation-name: dimPage;
-  animation-duration: ${animation.dimDuration}ms;
-  animation-delay: ${animation.clickDuration}ms;
+  animation-duration: ${Animation.dimDuration}ms;
+  animation-delay: ${Animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
@@ -61,8 +61,8 @@ const Dimmable = styled.div.attrs(props =>
   top: 0;
   animation-direction: forwards;
   animation-name: unDimPage;
-  animation-duration: ${animation.dimDuration}ms;
-  animation-delay: ${animation.clickDuration}ms;
+  animation-duration: ${Animation.dimDuration}ms;
+  animation-delay: ${Animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
@@ -77,13 +77,13 @@ margin: 3vh 3vw;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
-transition-duration: ${animation.dimDuration}ms;
+transition-duration: ${Animation.dimDuration}ms;
 &.blur {
   filter: blur(2px);
 }
 `;
 
-class App extends React.Component {
+class ReviewApp extends React.Component {
   constructor() {
     super();
 
@@ -189,7 +189,7 @@ class App extends React.Component {
         this.setState({
           showButton: false
         });
-      }, Number(animation.clickDuration))
+      }, Number(Animation.clickDuration))
     )
     .then(() => {
       // dim the page
@@ -214,7 +214,7 @@ class App extends React.Component {
           this.setState({
             dimClass: `dimExit`
           });
-      }, Number(animation.modalSlideDuration)))
+      }, Number(Animation.modalSlideDuration)))
       .then(() => {
         // reshow the button and hide modal/dim class
         setTimeout(() => {
@@ -223,8 +223,9 @@ class App extends React.Component {
             showModal: false,
             dimClass: `none`
           })
-        }, Number(animation.dimDuration));
-    })});
+        }, Number(Animation.dimDuration))
+      });
+    });
   }
 
   render() {
@@ -235,6 +236,7 @@ class App extends React.Component {
     const ShowAllButton = this.state.showButton ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/> : null;
     // only render when state updates
     return !this.state.reviews.length ? null :
+
     <>
 
       { ReviewModal }
@@ -245,11 +247,11 @@ class App extends React.Component {
             {/* rating overview banner */}
             <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
           </FlexRow>
-          <FlexRow justify='center'>
+          <FlexRow justify='left'>
             {/* rating graphs */}
             <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
           </FlexRow>
-          <FlexRow justify='center'>
+          <FlexRow justify='left'>
             {/* only render the top 6 arbitrarily sorted reviews */}
             <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
           </FlexRow>
@@ -263,7 +265,8 @@ class App extends React.Component {
       <Dimmable className={this.state.dimClass} />
 
     </>
+
   }
 }
 
-export default App;
+export default ReviewApp;

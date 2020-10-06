@@ -16,7 +16,7 @@ const ReviewList = ( {reviews} ) => {
       {reviewRows.map((reviewRow, i) => {
         return (
           <FlexRow key={i*3}>
-            <StyledReview text={reviewRow[0].reviewText} name={reviewRow[0].name} date={reviewRow[0].date} userIcon={reviewRow[0].userIcon} key={(i*3)+1}/>
+            <StyledReview text={reviewRow[0].reviewText} name={reviewRow[0].name} date={reviewRow[0].date} userIcon={reviewRow[0].userIcon} key={(i*3)+1} />
             {reviewRow.length === 2 ? <StyledReview text={reviewRow[1].reviewText} name={reviewRow[1].name} date={reviewRow[1].date} userIcon={reviewRow[1].userIcon} key={(i*3)+2}/> : null}
           </FlexRow>
         );

@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import {FlexRow, FlexColumn, Fonts, animation} from './Constants.jsx';
+import {FlexRow, FlexColumn, Fonts, Animation} from './Constants.jsx';
 
 const ProfileImage = styled.img`
 max-height: 7vh;
@@ -69,7 +69,7 @@ margin-top: 3vh;
 
 &.effectSlideInLeft
 {
-  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${props => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
@@ -77,7 +77,7 @@ margin-top: 3vh;
 
 &.effectSlideOutLeft
 {
-  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${props => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
@@ -138,14 +138,14 @@ class Review extends React.Component {
     return (
       <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
-          <ProfileImage src={this.state.userIcon}></ProfileImage>
+          <ProfileImage src={this.state.userIcon} />
           <FlexColumn>
             <Name>{this.state.name}</Name>
             <Date>{this.state.date}</Date>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
+          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText} />
         </FlexRow>
       </FlexContainer>
     );

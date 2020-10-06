@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Container, Text, Fonts, margins} from './Constants.jsx';
+import {Text, Fonts} from './Constants.jsx';
 
 const ReadMore = styled.a`
 font-family: ${Fonts.family};

@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const db = require('./db.js');
 const path = require('path');
-const port = 3000;
+const port = 3003;
 
 // send app and js bundle
 app.use(express.static(__dirname + '/../../client/dist'));
