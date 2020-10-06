@@ -39,6 +39,7 @@ class ReviewListModal extends React.Component {
   constructor({reviews}) {
     super();
 
+    // the number of reviews to load at a time
     this.numReviewsToShow = 8;
 
     this.state = {
@@ -48,8 +49,12 @@ class ReviewListModal extends React.Component {
       searching: false,
       reviewComponents: null
     }
+
+    // whether this is the modal's first time rendering list of reviews
     this.initialRender = true;
     this.scrollWindow = React.createRef();
+
+    // list of review DOM refs
     this.refList = [];
   }
 
@@ -73,8 +78,8 @@ class ReviewListModal extends React.Component {
   checkScrollBar(e) {
     const lastReview = this.refList[this.refList.length-1].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-    const modalOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
-    if (modalOffset >= lastElementOffset) {
+    const scrollOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
+    if (scrollOffset >= lastElementOffset) {
       this.loadMoreReviews();
     }
   }
@@ -105,7 +110,6 @@ class ReviewListModal extends React.Component {
       filteredReviews: filtered,
       viewableReviews: null
     }, () => {
-
       // this is a workaround to make sure the state updates with viewable reviews
       this.setState({
         viewableReviews: filtered.slice(0, this.numReviewsToShow)

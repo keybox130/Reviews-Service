@@ -131,7 +131,7 @@ class AppModal extends React.Component {
           <StyledReviewListModal reviews={this.state.reviews.sort()} />
         </FlexColumn>
       </ReviewModal>
-      );
+    );
   }
 }
 

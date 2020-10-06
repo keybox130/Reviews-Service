@@ -59,10 +59,12 @@ animation-timing-function: ease-out;
 const BarGraph = ({text, rating, isModal}) => {
   const maxWidth = isModal ? Margins.modalBarWidth : Margins.barWidth; // width in px for higher accuracy
   const rightMargin = isModal ? `10vw` : `0`;
+  // bar width
   const proportion = Math.floor((rating / 5.0) * Number(maxWidth));
   // whether to delay bar load animation for modal
   const className = isModal ? `modal` : null;
   rating = rating.toFixed(1);
+
   return (
     <OuterContainer rightMargin={rightMargin}>
         <Text>{text}</Text>

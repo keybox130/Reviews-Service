@@ -22,7 +22,6 @@ outline:none;
 font-weight: ${Fonts.bold};
 font-family: ${Fonts.family};
 font-size: ${Fonts.large};
-transition-duration: 0.5s;
 cursor: pointer;
 mix-blend-mode: multiply;
 :hover{
@@ -34,7 +33,7 @@ mix-blend-mode: multiply;
     transform: scale(1.0, 1.0);
   }
 
-  10% {
+  50% {
     transform: scale(0.85, 0.85);
   }
 
