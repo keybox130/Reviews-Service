@@ -52,7 +52,7 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
   animation-fill-mode: both;
   /* should start animation after dim/blur animation completes */
   animation-delay: ${animation.dimDuration}ms;
-  animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+  animation-timing-function: cubic-bezier(0, 0, 0.2, 1.0);
 }
 
 &.exit {

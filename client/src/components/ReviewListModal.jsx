@@ -34,11 +34,6 @@ overflow-y: scroll;
 }
 `;
 
-const EmptyPlaceholder = styled.div`
-display: flex;
-width: 15vw;
-`;
-
 class ReviewListModal extends React.Component {
 
   constructor({reviews}) {

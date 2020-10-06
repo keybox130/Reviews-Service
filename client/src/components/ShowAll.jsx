@@ -31,15 +31,15 @@ mix-blend-mode: multiply;
 
 @keyframes press {
   0% {
-    transform: scale(1.0, 1.0);;
+    transform: scale(1.0, 1.0);
   }
 
   10% {
-    transform: scale(0.8, 0.8);
+    transform: scale(0.85, 0.85);
   }
 
   100% {
-    transform: scale(0.9, 0.9);
+    transform: scale(0.87, 0.87);
   }
 }
 
