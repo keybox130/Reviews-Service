@@ -1,39 +1,40 @@
 import React from 'react';
 import styled from 'styled-components';
-import fonts from './Fonts.js';
-import {FlexRow, FlexColumn, margins} from './Constants.jsx';
+import {FlexRow, Container, Fonts, margins} from './Constants.jsx';
 
 const Header = styled.h1`
 display: inline-block;
-font-family: ${fonts.family};
-font-weight: ${fonts.bold};
-font-size: ${fonts.header};
-margin-top: 4vh;
-margin-left: 1vw;
+font-family: ${Fonts.family};
+font-weight: ${Fonts.bold};
+font-size: ${props => props.fontSize};
+margin-left: ${props => props.marginLeft};
+margin-bottom: -5vh;
 `;
 
 const Star = styled.img`
-max-height: 2vh;
-margin-top: 18px;
-margin-left: ${margins.width};
-object-fit: contain;
-align-self: center;
-flex: 0 0 auto;
+display: inline-block;
+mix-blend-mode: multiply;
+margin-left: ${props => props.marginLeft};
+margin-right: 10px;
+max-width: ${props => props.imageSize};
 `;
 
-const RatingOverview = ({average, numReviews}) => {
+const RatingOverview = ({average, numReviews, isModal}) => {
+  // size of text/star depends on whether this is a modal or not
+  const fontSize = isModal ? Fonts.largeHeader : Fonts.header;
+  const imageSize = isModal ? margins.modalImageSize : margins.imageSize;
+  const marginLeft = isModal ? `10px` : `5px`;
   return (
-    <FlexColumn>
-      <FlexRow>
-        <Star src='/static/star.png'></Star>
-        <Header>{`${average} (${numReviews} reviews)`}</Header>
-      </FlexRow>
-    </FlexColumn>
+    <FlexRow>
+      <Container className='header'>
+        <Star marginLeft={marginLeft} imageSize={imageSize} src="/static/star.png"></Star>
+        <Header marginLeft={marginLeft} fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
+      </Container>
+    </FlexRow>
   );
 }
 
 const StyledRatingOverview = styled(RatingOverview)`
-display: inline-block;
 `;
 
 export default StyledRatingOverview;

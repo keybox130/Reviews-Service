@@ -1,11 +1,10 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import fonts from './Fonts.js';
-import {FlexRow, FlexColumn, Container} from './Constants.jsx';
+import {FlexRow, FlexColumn, Container, Fonts} from './Constants.jsx';
 
 const ProfileImage = styled.img`
-max-height: 10vh;
+max-height: 7vh;
 display: inline-block;
 border-radius: 50%;
 mix-blend-mode: multiply;
@@ -13,27 +12,30 @@ mix-blend-mode: multiply;
 
 const Name = styled.p`
 display: inline-block;
-font-family: ${fonts.family};
-font-weight: ${fonts.bold};
-font-size: ${fonts.large};
+font-family: ${Fonts.family};
+font-weight: ${Fonts.bold};
+font-size: ${Fonts.large};
 margin-top: 10px;
 `;
 
 const Date = styled.p`
 display: inline;
-font-family: ${fonts.family};
-font-weight: ${fonts.thin};
-font-size: ${fonts.medium};
+font-family: ${Fonts.family};
+font-weight: ${Fonts.thin};
+font-size: ${Fonts.small};
 margin-bottom: 20px;
-margin-top: -10px;
+margin-top: -15px;
 `;
 
 class Review extends React.Component {
-  constructor({review, callback}) {
+  constructor({text, name, date, userIcon, callback}) {
     super();
     this.state = {
-      review: review,
-      text: review.reviewText,
+      fullText: text,
+      text: text,
+      name: name,
+      date: date,
+      userIcon: userIcon,
       showAllText: true,
       mountRef: callback ? callback : null
     }
@@ -56,9 +58,9 @@ class Review extends React.Component {
 
     if (shouldShorten) {
       // cut text to the nearest word
-      let nearestWord = this.state.text.indexOf(' ', textCutoff);
+      let nearestWord = this.state.fullText.indexOf(' ', textCutoff);
       this.setState({
-        text: this.state.text.slice(0, nearestWord) + ' ',
+        text: this.state.fullText.slice(0, nearestWord) + ' ',
         showAllText: !shouldShorten
       });
     }
@@ -67,7 +69,7 @@ class Review extends React.Component {
   // reset shortened text to original on click
   onClick() {
     this.setState({
-      text: this.state.review.reviewText,
+      text: this.state.fullText,
       showAllText: true
     });
   }
@@ -76,10 +78,10 @@ class Review extends React.Component {
     return (
       <Container ref={this.myRef}>
         <FlexRow>
-          <ProfileImage src={this.state.review.userIcon}></ProfileImage>
+          <ProfileImage src={this.state.userIcon}></ProfileImage>
           <FlexColumn>
-            <Name>{this.state.review.name}</Name>
-            <Date>{this.state.review.date}</Date>
+            <Name>{this.state.name}</Name>
+            <Date>{this.state.date}</Date>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
@@ -91,7 +93,6 @@ class Review extends React.Component {
 }
 
 const StyledReview = styled(Review)`
-display: inline-block;
 `;
 
 export default StyledReview;
