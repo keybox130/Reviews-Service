@@ -27,17 +27,15 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
-const Container = styled.div.attrs(props =>
+const FlexContainer = styled.div.attrs(props =>
   ({className: props.className})
 )`
 display: flex;
 flex-direction: column;
-margin: 1vh 3vw;
+margin-left 3vw;
+margin-right: 3vw;
 width: 25vw;
-
-&.header {
-  margin-top: -3vh;
-}
+margin-top: 3vh;
 
 @keyframes slideInLeft {
   0% {
@@ -138,7 +136,7 @@ class Review extends React.Component {
 
   render() {
     return (
-      <Container className={this.className} delay={this.delay} ref={this.myRef}>
+      <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
           <ProfileImage src={this.state.userIcon}></ProfileImage>
           <FlexColumn>
@@ -149,7 +147,7 @@ class Review extends React.Component {
         <FlexRow>
           <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
         </FlexRow>
-      </Container>
+      </FlexContainer>
     );
   }
 }

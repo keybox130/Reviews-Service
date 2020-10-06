@@ -39,7 +39,7 @@ class ReviewListModal extends React.Component {
   constructor({reviews}) {
     super();
 
-    this.numReviewsToShow = 6;
+    this.numReviewsToShow = 8;
 
     this.state = {
       allReviews: reviews,

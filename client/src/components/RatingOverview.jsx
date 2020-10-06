@@ -11,6 +11,10 @@ margin-left: ${props => props.marginLeft};
 margin-bottom: -5vh;
 `;
 
+const Overlay = styled.div`
+background
+`
+
 const Star = styled.img`
 display: inline-block;
 mix-blend-mode: multiply;

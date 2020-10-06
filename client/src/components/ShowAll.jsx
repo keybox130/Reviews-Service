@@ -63,7 +63,6 @@ class ShowAll extends React.Component {
     this.onClick = onClick;
   }
 
-
   click(e) {
     this.setState({
       className: `clicked`
