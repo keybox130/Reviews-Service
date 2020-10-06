@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexRow, Container, Fonts} from './Constants.jsx';
+import {FlexRow, Container, Fonts, animation} from './Constants.jsx';
 
 const Magnifier = styled.svg`
 display: flex;
@@ -25,9 +25,10 @@ flex: 1 1 0%;
 text-overflow: ellipsis;
 `;
 
-const SearchContainer = styled.div`
+const SearchContainer = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 display: flex;
-width: 100%;
 margin-left: -7vw;
 margin-top: -4vh;
 border: none;
@@ -37,22 +38,78 @@ align-items: center;
 padding: 12px 12px 12px 16px;
 border-radius: 100px;
 box-shadow: rgb(176, 176, 176) 0px 0px 0px 1px inset;
+min-width: 70%;
+
+@keyframes expandSearch {
+  0% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes shrinkSearch {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 70%;
+  }
+}
+
+&.hasFocus {
+  animation-name: expandSearch;
+  animation-duration: ${animation.searchExpandDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+}
+
+&.lostFocus {
+  animation-name: shrinkSearch;
+  animation-duration: ${animation.searchExpandDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+}
+
 `;
 
 class SearchBar extends React.Component {
+
   constructor({callback}) {
     super();
-    this.search = callback;
+    this.state = {
+      focus: null
+    }
+    this.searchCallback = callback;
+  }
+
+  // expand the search bar
+  expand() {
+    this.setState({
+      focus: `hasFocus`
+    })
+  }
+
+  // shrink the search bar
+  shrink() {
+    this.setState({
+      focus: `lostFocus`
+    })
   }
 
   render() {
+
+    let delay = Number(animation.dimDuration) + Number(animation.modalSlideDuration);
+    delay = delay.toString();
+
     return (
-      <SearchContainer>
+      <SearchContainer className={this.state.focus} delay={delay}>
         {/* Magnifier SVG */}
-        <Magnifier viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false">
-          <g fill="none"><path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"></path></g>
+        <Magnifier viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' focusable='false'>
+          <g fill='none'><path d='m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9'></path></g>
         </Magnifier>
-        <Input placeholder="Search reviews" autocomplete="off" type="text" onChange={this.search}></Input>
+        <Input placeholder='Search reviews...' autocomplete='off' type='text' onFocus={this.expand.bind(this)} onBlur={this.shrink.bind(this)} onChange={this.searchCallback}></Input>
       </SearchContainer>
     );
   }

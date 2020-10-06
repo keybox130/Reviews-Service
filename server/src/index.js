@@ -7,11 +7,12 @@ const port = 3000;
 // send app and js bundle
 app.use(express.static(__dirname + '/../../client/dist'));
 
-// return all stays (remove once endpoints based on stay id implemented)
-app.get('/stays', (req, res) => {
-  db.Room.find({}).exec()
-  .then(docs => {
-    res.status(200).send(docs);
+// return a stay matching the provided roomId
+app.get('/stays/:id', (req, res) => {
+  const roomId = req.params.id.slice(1);
+  db.Room.find({room_id: roomId}).exec()
+  .then(room => {
+    res.status(200).send(room[0]);
   })
   .catch(err => {
     res.status(404).send(err);

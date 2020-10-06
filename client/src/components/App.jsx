@@ -7,39 +7,80 @@ import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
 import styled from 'styled-components';
 import { FlexRow, animation } from './Constants.jsx';
-import { createGlobalStyle } from 'styled-components'
 
 import _ from 'underscore';
 
+// overlay used for dimming the whole page
+const Dimmable = styled.div.attrs(props =>
+    ({className: props.className})
+)`
 
-// fake body div used for dimming the whole page
-const Body = styled.div.attrs(props => {
-  return {
-    className: props.className
+@keyframes dimPage {
+  0% {
+    filter: none;
+    background-color: none;
   }
-})`
-transition-duration: ${animation.dimDuration}ms;
-&.dim {
+  100% {
+    opacity: 0.5;
+    background-color: rgb(0,0,0);
+  }
+}
+
+@keyframes unDimPage {
+  0% {
+    opacity: 0.5;
+    background-color: rgb(0,0,0);
+  }
+  100% {
+    filter: none;
+    background-color: none;
+  }
+}
+
+&.dimEnter {
+  width: 100vw;
+  height: 100vh;
   position: fixed;
+  z-index: 2;
   left: 0;
   top: 0;
+  animation-direction: forwards;
+  animation-name: dimPage;
+  animation-duration: ${animation.dimDuration}ms;
+  animation-delay: ${animation.clickDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+}
+
+&.dimExit {
   width: 100%;
   height: 100%;
-  background-color: rgb(100,100,100);
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  animation-direction: forwards;
+  animation-name: unDimPage;
+  animation-duration: ${animation.dimDuration}ms;
+  animation-delay: ${animation.clickDuration}ms;
+  animation-fill-mode: both;
+  animation-timing-function: linear;
 }
 `;
 
 // flex column of all components
-const ReviewComponent = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const ReviewComponent = styled.div.attrs(props =>
+    ({className: props.className})
+)`
 z-index: 1;
 margin: 3vh 3vw;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
+transition-duration: ${animation.dimDuration}ms;
+&.blur {
+  filter: blur(2px);
+}
 `;
 
 class App extends React.Component {
@@ -57,7 +98,10 @@ class App extends React.Component {
         location: 0,
         value: 0
       },
-      showModal: false
+      showModal: false, // whether to show modal
+      showButton: true, // whether to render showAll button
+      dimClass: `none` // which direction to animate
+
     }
 
     // update state of modal using ref
@@ -66,7 +110,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getAllStays();
+    const stayId = Math.round(Math.random() * 100);
+    this.getStay(stayId);
   }
 
   // extracts reviews for our service
@@ -125,65 +170,98 @@ class App extends React.Component {
     return ratings;
   }
 
-  // gets first stay from the server (will be refactored to get stay based on id)
-  getAllStays() {
-    axios.get('/stays')
+  // gets a stay from the server based on id
+  getStay(stayId) {
+    axios.get(`/stays/:${stayId}`)
     .then(rooms => {
       this.setState({
-        reviews: this.extractReviews(rooms.data[0].reviews),
-        ratings: this.extractRatings(rooms.data[0].reviews)
+        reviews: this.extractReviews(rooms.data.reviews),
+        ratings: this.extractRatings(rooms.data.reviews)
       });
     });
   }
 
-  // shows the modal
+  // shows the modal (delay handled within modal's css animation)
   showModal() {
-    this.setState({
-      showModal: true
-    }, () => {
+    Promise.resolve(
+      // hide button after click animation completes
+      setTimeout(() => {
+        this.setState({
+          showButton: false
+        });
+      }, Number(animation.clickDuration))
+    )
+    .then(() => {
+      // dim the page
+      this.setState({
+        dimClass: `dimEnter`,
+        showModal: true
+      });
+    })
+    .then(() => {
+      // modal animation
       this.modal.current.setTransition(`enter`);
-    });
+    })
   }
 
   // closes the modal after showing a transition
   closeModal() {
+    // close the modal first
     this.modal.current.setTransition(`exit`, () => {
-      setTimeout(() => {
-        // un-dim the page after modal transition completes
-        this.setState({
-          showModal: false
-        });
-      }, animation.slideDuration);
-    });
+      Promise.resolve(
+        // un-dim the page after modal slide animation completes
+        setTimeout(() => {
+          this.setState({
+            dimClass: `dimExit`
+          });
+      }, Number(animation.modalSlideDuration)))
+      .then(() => {
+        // reshow the button and hide modal/dim class
+        setTimeout(() => {
+          this.setState({
+            showButton: true,
+            showModal: false,
+            dimClass: `none`
+          })
+        }, Number(animation.dimDuration));
+    })});
   }
 
   render() {
 
-    // show a loading message until all reviews are loaded
-    return !this.state.reviews.length ? <h1>Loading...</h1> :
+    // pop-up review modal
+    const ReviewModal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
+    // show all reviews button
+    const ShowAllButton = this.state.showButton ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/> : null;
+    // only render when state updates
+    return !this.state.reviews.length ? null :
     <>
-      {this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null}
-      <Body className={this.state.showModal ? 'dim' : null}>
-        {/* show a transition if the modal is displayed */}
-        <ReviewComponent>
+
+      { ReviewModal }
+
+      {/* show a transition if the modal is displayed */}
+        <ReviewComponent className={this.state.showModal ? `blur` : null}>
           <FlexRow justify='left'>
             {/* rating overview banner */}
-            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false}/>
+            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
           </FlexRow>
           <FlexRow justify='center'>
             {/* rating graphs */}
-            <StyledRatingGraphs ratings={this.state.ratings} isModal={false}/>
+            <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
           </FlexRow>
           <FlexRow justify='center'>
             {/* only render the top 6 arbitrarily sorted reviews */}
             <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
           </FlexRow>
           <FlexRow justify='left'>
-            {/* show all reviews button */}
-            {this.state.showModal ? null : <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>}
+
+            { ShowAllButton }
+
           </FlexRow>
         </ReviewComponent>
-      </Body>
+
+      <Dimmable className={this.state.dimClass} />
+
     </>
   }
 }

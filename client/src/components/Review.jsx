@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import {FlexRow, FlexColumn, Container, Fonts} from './Constants.jsx';
+import {FlexRow, FlexColumn, Fonts, animation} from './Constants.jsx';
 
 const ProfileImage = styled.img`
 max-height: 7vh;
@@ -27,8 +27,68 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
+const Container = styled.div.attrs(props =>
+  ({className: props.className})
+)`
+display: flex;
+flex-direction: column;
+margin: 1vh 3vw;
+width: 25vw;
+
+&.header {
+  margin-top: -3vh;
+}
+
+@keyframes slideInLeft {
+  0% {
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(-150px);
+  }
+
+  75% {
+    opacity: 0.7;
+  }
+
+  100% {
+    opacity: 1;
+    filter: none;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-200px);
+  }
+}
+
+&.effectSlideInLeft
+{
+  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation-delay: ${props => props.delay}ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+}
+
+&.effectSlideOutLeft
+{
+  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation-delay: ${props => props.delay}ms;
+  animation-fill-mode: both;
+  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+}
+
+`;
+
 class Review extends React.Component {
-  constructor({text, name, date, userIcon, callback}) {
+  constructor({text, name, date, userIcon, showAnimation, delay, callback}) {
     super();
     this.state = {
       fullText: text,
@@ -40,6 +100,8 @@ class Review extends React.Component {
       mountRef: callback ? callback : null
     }
 
+    this.className = showAnimation ? 'effectSlideInLeft' : null;
+    this.delay = delay;
     // add a ref for scroll bar DOM manipulation
     this.myRef = React.createRef();
   }
@@ -76,7 +138,7 @@ class Review extends React.Component {
 
   render() {
     return (
-      <Container ref={this.myRef}>
+      <Container className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
           <ProfileImage src={this.state.userIcon}></ProfileImage>
           <FlexColumn>

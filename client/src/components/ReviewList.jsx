@@ -4,34 +4,24 @@ import styled from 'styled-components';
 import {FlexRow, FlexColumn} from './Constants.jsx';
 
 const ReviewList = ( {reviews} ) => {
-  let reviewCols = [[], []];
+  let reviewRows = [];
 
-  // split reviews into chunks
+  // split reviews into rows
   for (let i = 0; i < reviews.length; i += 2) {
-    reviewCols[0].push(reviews[i]);
-  }
-
-  for (let i = 1; i < reviews.length; i += 2) {
-    reviewCols[1].push(reviews[i]);
+    reviewRows.push(reviews.slice(i, i+2));
   }
 
   return (
-    <>
-      <FlexColumn>
-      {reviewCols[0].map((review, i) => {
+    <FlexColumn>
+      {reviewRows.map((reviewRow, i) => {
         return (
-          <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)}/>
+          <FlexRow key={i*3}>
+            <StyledReview text={reviewRow[0].reviewText} name={reviewRow[0].name} date={reviewRow[0].date} userIcon={reviewRow[0].userIcon} key={(i*3)+1}/>
+            {reviewRow.length === 2 ? <StyledReview text={reviewRow[1].reviewText} name={reviewRow[1].name} date={reviewRow[1].date} userIcon={reviewRow[1].userIcon} key={(i*3)+2}/> : null}
+          </FlexRow>
         );
       })}
-      </FlexColumn>
-      <FlexColumn>
-        {reviewCols[1].map((review, i) => {
-          return (
-            <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)}/>
-          );
-        })}
-      </FlexColumn>
-    </>
+    </FlexColumn>
   );
 }
 
