@@ -27,11 +27,9 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
-const Container = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const Container = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 display: flex;
 flex-direction: column;
 margin: 1vh 3vw;
@@ -44,6 +42,7 @@ width: 25vw;
 @keyframes slideInLeft {
   0% {
     opacity: 0;
+    filter: blur(4px);
     transform: translateX(-150px);
   }
 
@@ -53,6 +52,7 @@ width: 25vw;
 
   100% {
     opacity: 1;
+    filter: none;
     transform: translateX(0);
   }
 }

@@ -35,11 +35,9 @@ const Fonts = {
   veryBold: `700`
 }
 
-const FlexRow = styled.div.attrs(props => {
-  return {
-    className: props.justify
-  }
-})`
+const FlexRow = styled.div.attrs(props =>
+  ({className: props.justify})
+)`
 display: flex;
 flex-direction: row;
 margin-bottom: 1vh;
@@ -56,11 +54,9 @@ margin-bottom: 1vh;
 
 `;
 
-const Text = styled.p.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const Text = styled.p.attrs(props =>
+  ({className: props.className})
+)`
 display: inline;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.normal};
@@ -73,25 +69,22 @@ margin: 0 0;
 }
 `;
 
-const FlexColumn = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const FlexColumn = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 display: flex;
 flex-direction: column;
 margin-left: 1vw;
+
 &.modal {
   margin-left: -20px;
   margin-top: -50px;
 }
 `;
 
-const Container = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const Container = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 display: inline-block;
 margin: 1vh 3vw;
 width: 25vw;

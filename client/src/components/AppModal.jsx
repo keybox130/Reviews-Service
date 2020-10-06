@@ -5,11 +5,9 @@ import StyledReviewListModal from './ReviewListModal.jsx';
 import styled from 'styled-components';
 import {Fonts, FlexColumn, Container, animation} from './Constants.jsx';
 
-const ReviewModal = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const ReviewModal = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 z-index: 3;
 position: fixed;
 display: flex;

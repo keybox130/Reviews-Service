@@ -2,11 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import {FlexColumn, Container, animation, Fonts} from './Constants.jsx';
 
-const Button = styled.button.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const Button = styled.button.attrs(props =>
+  ({className: props.className})
+)`
 border-radius: 8px;
 color: rgb(34, 34, 34);
 border-style: solid;

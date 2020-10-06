@@ -24,11 +24,9 @@ border-radius: 30px;
 min-width: ${props => props.width}px;
 `;
 
-const Bar = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const Bar = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 height: ${margins.barHeight};
 display: inline-block;
 mix-blend-mode: multiply;
@@ -56,7 +54,6 @@ animation-timing-function: ease-out;
   animation-delay: ${Number(animation.barDuration) + Number(animation.dimDuration)}ms;
 }
 
-}
 `;
 
 const BarGraph = ({text, rating, isModal}) => {

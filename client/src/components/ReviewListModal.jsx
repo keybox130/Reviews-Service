@@ -5,11 +5,9 @@ import styled from 'styled-components';
 import {FlexRow, animation} from './Constants.jsx';
 import _ from 'underscore';
 
-const ScrollableFlexColumn = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const ScrollableFlexColumn = styled.div.attrs(props =>
+  ({className: props.className})
+)`
 display: flex;
 flex-direction: column;
 height: 80vh;

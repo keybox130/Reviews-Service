@@ -10,16 +10,14 @@ import { FlexRow, animation } from './Constants.jsx';
 
 import _ from 'underscore';
 
-// fake body div used for dimming the whole page
-const Dimmable = styled.div.attrs(props => {
-  console.log(props.className)
-  return {
-    className: props.className
-  }
-})`
+// overlay used for dimming the whole page
+const Dimmable = styled.div.attrs(props =>
+    ({className: props.className})
+)`
 
 @keyframes dimPage {
   0% {
+    filter: none;
     background-color: none;
   }
   100% {
@@ -34,14 +32,9 @@ const Dimmable = styled.div.attrs(props => {
     background-color: rgb(0,0,0);
   }
   100% {
+    filter: none;
     background-color: none;
   }
-}
-
-&.none {
-  display: none;
-  width: 0%;
-  height: 0%;
 }
 
 &.dimEnter {
@@ -54,6 +47,7 @@ const Dimmable = styled.div.attrs(props => {
   animation-direction: forwards;
   animation-name: dimPage;
   animation-duration: ${animation.dimDuration}ms;
+  animation-delay: ${animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
@@ -68,71 +62,26 @@ const Dimmable = styled.div.attrs(props => {
   animation-direction: forwards;
   animation-name: unDimPage;
   animation-duration: ${animation.dimDuration}ms;
+  animation-delay: ${animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
 `;
 
 // flex column of all components
-const ReviewComponent = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
+const ReviewComponent = styled.div.attrs(props =>
+    ({className: props.className})
+)`
 z-index: 1;
 margin: 3vh 3vw;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
-`;
-
-// fake body div used for dimming the whole page
-/*const Dimmable = styled.div.attrs(props => {
-  console.log(document.body.scrollTop);
-  return {
-    className: props.className
-  }
-})`
-
-
-&.dim {
-  z-index: 2;
-  width: 100vw;
-  height: 100vh;
-  margin: 0 0;
-  top: 0;
-  left: 0;
-  position: absolute;
-  @keyframes dimPage {
-    0% {
-      background-color: none;
-    }
-    100% {
-      background-color: rgb(100,100,100);
-    }
-  }
-
-  animation-name: dimPage;
-  animation-duration: ${animation.dimDuration}ms;
-  animation-fill-mode: both;
-  animation-timing-function: linear;
+transition-duration: ${animation.dimDuration}ms;
+&.blur {
+  filter: blur(2px);
 }
 `;
-
-// block of all components
-const ReviewComponent = styled.div.attrs(props => {
-  return {
-    className: props.className
-  }
-})`
-z-index: 1;
-display: flex;
-flex-direction: column;
-justify-content: center;
-min-width: 90vw;
-min-height: 90vh;
-margin: auto auto;
-`;*/
 
 class App extends React.Component {
   constructor() {
@@ -151,7 +100,7 @@ class App extends React.Component {
       },
       showModal: false, // whether to show modal
       showButton: true, // whether to render showAll button
-      dimClass: `none`
+      dimClass: `none` // which direction to animate
 
     }
 
@@ -234,40 +183,48 @@ class App extends React.Component {
 
   // shows the modal (delay handled within modal's css animation)
   showModal() {
-    // hide button after click animation completes
-    setTimeout(() => {
-      this.setState({
-        showButton: false
-      }, () => {
-          this.setState({
-            dimClass: `dimEnter`,
-            showModal: true
-          }, () => {
-            this.modal.current.setTransition(`enter`);
-          });
+    Promise.resolve(
+      // hide button after click animation completes
+      setTimeout(() => {
+        this.setState({
+          showButton: false
         });
-      }, Number(animation.clickDuration));
+      }, Number(animation.clickDuration))
+    )
+    .then(() => {
+      // dim the page
+      this.setState({
+        dimClass: `dimEnter`,
+        showModal: true
+      });
+    })
+    .then(() => {
+      // modal animation
+      this.modal.current.setTransition(`enter`);
+    })
   }
 
   // closes the modal after showing a transition
   closeModal() {
     // close the modal first
     this.modal.current.setTransition(`exit`, () => {
-      // un-dim the page after modal animation
-      setTimeout(() => {
-        this.setState({
-          showButton: true,
-          dimClass: `dimExit`
-        }, () => {
-          setTimeout(() => {
-            this.setState({
-              showModal: false,
-              dimClass: `none`
-            })
-          }, Number(animation.dimDuration));
-        });
-      }, Number(animation.modalSlideDuration));
-    });
+      Promise.resolve(
+        // un-dim the page after modal slide animation completes
+        setTimeout(() => {
+          this.setState({
+            dimClass: `dimExit`
+          });
+      }, Number(animation.modalSlideDuration)))
+      .then(() => {
+        // reshow the button and hide modal/dim class
+        setTimeout(() => {
+          this.setState({
+            showButton: true,
+            showModal: false,
+            dimClass: `none`
+          })
+        }, Number(animation.dimDuration));
+    })});
   }
 
   render() {
@@ -280,11 +237,10 @@ class App extends React.Component {
     return !this.state.reviews.length ? null :
     <>
 
-
       { ReviewModal }
 
       {/* show a transition if the modal is displayed */}
-        <ReviewComponent>
+        <ReviewComponent className={this.state.showModal ? `blur` : null}>
           <FlexRow justify='left'>
             {/* rating overview banner */}
             <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
