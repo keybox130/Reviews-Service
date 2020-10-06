@@ -17,7 +17,8 @@ const Animation = {
   clickDuration: `200`,
   searchExpandDuration: `200`,
   reviewSlideDuration: `300`,
-  reviewSlideDelay: `100`
+  reviewSlideDelay: `100`,
+  starLoadDuration: `600`
 }
 
 const Fonts = {

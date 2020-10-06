@@ -55,7 +55,7 @@ margin-left: 15px;
 }
 
 animation-name: loadStar;
-animation-duration: ${Animation.modalSlideDuration}ms;
+animation-duration: ${Animation.starLoadDuration}ms;
 animation-fill-mode: both;
 animation-timing-function: ease-out;
 
@@ -71,11 +71,11 @@ const RatingOverview = ({average, numReviews, isModal}) => {
   const imageSize = isModal ? Margins.modalImageSize : Margins.imageSize;
   const className = isModal ? `modal` : null;
   // get percentage of star to render
-  const percentage = Math.round((average / 5.0) * 100);
+  const percentage = Math.round((average / 5.0) * 100).toString();
   return (
     <FlexRow>
       <Container className='header'>
-        <StarUnderlay className={className} percentage={percentage} imageSize={imageSize} src="/static/star.png"/>
+        <StarUnderlay className={className} imageSize={imageSize} src="/static/star.png"/>
         <Star className={className} percentage={percentage} imageSize={imageSize} src="/static/star.png" />
         <Header className={className} fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
       </Container>

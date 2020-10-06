@@ -110,7 +110,8 @@ class ReviewApp extends React.Component {
   }
 
   componentDidMount() {
-    const stayId = Math.round(Math.random() * 100);
+    const stayId = Math.ceil(Math.random() * 100);
+    console.log(stayId);
     this.getStay(stayId);
   }
 
@@ -118,10 +119,7 @@ class ReviewApp extends React.Component {
   extractReviews(reviews) {
     const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return reviews.map(review => {
-      // map the date to month/year only
-      const month = months[Number(review.date.slice(5, 7))];
-      const year = review.date.slice(0, 4);
-      review.date = month.toString() + ' ' + year;
+      review.date = review.month + ' ' + review.year;
       review = _.pick(review,
         'date',
         'name',
