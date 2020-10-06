@@ -229,43 +229,47 @@ class ReviewApp extends React.Component {
   }
 
   render() {
-
     // pop-up review modal
-    const ReviewModal = this.state.showModal ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />) : null;
+    const ReviewModal = this.state.showModal
+      ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />)
+      : null;
     // show all reviews button
-    const ShowAllButton = this.state.showButton ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/> : null;
+    const ShowAllButton = this.state.showButton
+      ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>
+      : null;
     // only render when state updates
-    return !this.state.reviews.length ? null :
+    return !this.state.reviews.length
+      ? null
+      : (
+        <>
 
-    <>
+        { ReviewModal }
 
-      { ReviewModal }
+        {/* show a transition if the modal is displayed */}
+          <ReviewComponent className={this.state.showModal ? `blur` : null}>
+            <FlexRow justify='left'>
+              {/* rating overview banner */}
+              <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
+            </FlexRow>
+            <FlexRow justify='left'>
+              {/* rating graphs */}
+              <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
+            </FlexRow>
+            <FlexRow justify='left'>
+              {/* only render the top 6 arbitrarily sorted reviews */}
+              <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
+            </FlexRow>
+            <FlexRow justify='left'>
 
-      {/* show a transition if the modal is displayed */}
-        <ReviewComponent className={this.state.showModal ? `blur` : null}>
-          <FlexRow justify='left'>
-            {/* rating overview banner */}
-            <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
-          </FlexRow>
-          <FlexRow justify='left'>
-            {/* rating graphs */}
-            <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
-          </FlexRow>
-          <FlexRow justify='left'>
-            {/* only render the top 6 arbitrarily sorted reviews */}
-            <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
-          </FlexRow>
-          <FlexRow justify='left'>
+              { ShowAllButton }
 
-            { ShowAllButton }
+            </FlexRow>
+          </ReviewComponent>
 
-          </FlexRow>
-        </ReviewComponent>
+        <Dimmable className={this.state.dimClass} />
 
-      <Dimmable className={this.state.dimClass} />
-
-    </>
-
+        </>
+      );
   }
 }
 

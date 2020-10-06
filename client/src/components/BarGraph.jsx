@@ -17,6 +17,8 @@ align-items: center;
 
 const Underlay = styled.div`
 display: flex;
+align-self: flex-start;
+margin-top: 10px;
 background-color: rgb(221,221,221);
 height: ${Margins.barHeight};
 mix-blend-mode: multiply;
@@ -57,8 +59,12 @@ animation-timing-function: ease-out;
 `;
 
 const BarGraph = ({text, rating, isModal}) => {
-  const maxWidth = isModal ? Margins.modalBarWidth : Margins.barWidth; // width in px for higher accuracy
-  const rightMargin = isModal ? `10vw` : `0`;
+  const maxWidth = isModal
+    ? Margins.modalBarWidth
+    : Margins.barWidth; // width in px for higher accuracy
+  const rightMargin = isModal
+    ? `10vw`
+    : `0`;
   // bar width
   const proportion = Math.floor((rating / 5.0) * Number(maxWidth));
   // whether to delay bar load animation for modal

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 const Margins = {
   barWidth: `150`,
   modalBarWidth: `75`,
-  barHeight: `4px`,
+  barHeight: `3px`,
   imageSize: `20px`,
   modalImageSize: `30px`,
 }
@@ -57,6 +57,7 @@ margin: 0 0;
 
 &.rating {
   font-size ${Fonts.small};
+  font-weight: ${Fonts.bold};
   padding-left: 10px;
 }
 `;
@@ -81,7 +82,8 @@ display: inline-block;
 margin: 1vh 3vw;
 width: 25vw;
 &.header {
-  margin-top: -3vh;
+  height: 6vh;
+  margin-top: 0vh;
 }
 `;
 

@@ -75,7 +75,6 @@ min-width: 70%;
 `;
 
 class SearchBar extends React.Component {
-
   constructor({callback}) {
     super();
     this.state = {
@@ -87,19 +86,18 @@ class SearchBar extends React.Component {
   // expand the search bar
   expand() {
     this.setState({
-      focus: `hasFocus`
-    })
+      focus: `hasFocus`,
+    });
   }
 
   // shrink the search bar
   shrink() {
     this.setState({
-      focus: `lostFocus`
-    })
+      focus: `lostFocus`,
+    });
   }
 
   render() {
-
     let delay = Number(Animation.dimDuration) + Number(Animation.modalSlideDuration);
     delay = delay.toString();
 

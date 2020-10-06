@@ -111,6 +111,14 @@ class Review extends React.Component {
     this.shortenText();
   }
 
+  // reset shortened text to original on click
+  onClick() {
+    this.setState({
+      text: this.state.fullText,
+      showAllText: true,
+    });
+  }
+
   // shortens the review text according to AirBnB style, if needed
   shortenText() {
     const textCutoff = 180;
@@ -124,14 +132,6 @@ class Review extends React.Component {
         showAllText: !shouldShorten
       });
     }
-  }
-
-  // reset shortened text to original on click
-  onClick() {
-    this.setState({
-      text: this.state.fullText,
-      showAllText: true
-    });
   }
 
   render() {

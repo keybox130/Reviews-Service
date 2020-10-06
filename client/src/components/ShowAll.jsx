@@ -14,14 +14,16 @@ background-color: white;
 display: flex;
 justify-content: center;
 text-align: center;
+white-space: nowrap;
+flex: 0 0 auto;
 padding: 13px 23px;
-margin-left: -5px;
-max-width: 12vw;
+margin-top: 3vh;
+max-width: 10vw;
 max-height: 8vh;
 outline:none;
 font-weight: ${Fonts.bold};
 font-family: ${Fonts.family};
-font-size: ${Fonts.large};
+font-size: ${Fonts.small};
 cursor: pointer;
 mix-blend-mode: multiply;
 :hover{
@@ -55,9 +57,8 @@ class ShowAll extends React.Component {
   constructor({numReviews, onClick}) {
     super();
     this.state = {
-      clicked: false,
       numReviews: numReviews,
-      className: null
+      className: null,
     }
     this.onClick = onClick;
   }

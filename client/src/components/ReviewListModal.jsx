@@ -152,7 +152,6 @@ class ReviewListModal extends React.Component {
       </>
     );
   }
-
 }
 
 const StyledReviewListModal = styled(ReviewListModal)`

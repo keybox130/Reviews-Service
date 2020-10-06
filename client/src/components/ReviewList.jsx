@@ -24,7 +24,7 @@ const ReviewList = ( {reviews} ) => {
       })}
     </FlexColumn>
   );
-}
+};
 
 const StyledReviewList = styled(ReviewList)`
 `;

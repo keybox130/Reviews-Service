@@ -15,7 +15,6 @@ cursor: pointer;
 `;
 
 const ReviewText = ({text, onClick, expanded}) => {
-
   const link = expanded ? null : <ReadMore onClick={onClick}>read more...</ReadMore>;
 
   return (
@@ -24,7 +23,7 @@ const ReviewText = ({text, onClick, expanded}) => {
       {link}
     </div>
   );
-}
+};
 
 const StyledReviewText = styled(ReviewText)`
 `;
