@@ -35,7 +35,6 @@ overflow-y: scroll;
 `;
 
 class ReviewListModal extends React.Component {
-
   constructor({reviews}) {
     super();
 
@@ -46,8 +45,6 @@ class ReviewListModal extends React.Component {
       allReviews: reviews,
       filteredReviews: reviews, // reviews filtered by search term
       viewableReviews: reviews.slice(0, this.numReviewsToShow), // reviews which are actually rendered
-      searching: false,
-      reviewComponents: null
     }
 
     // whether this is the modal's first time rendering list of reviews

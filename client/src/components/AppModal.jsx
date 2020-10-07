@@ -1,12 +1,12 @@
 import React from 'react';
+import styled from 'styled-components';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
-import styled from 'styled-components';
 import {Fonts, FlexColumn, Container, Animation} from './Constants.jsx';
 
-const ReviewModal = styled.div.attrs(props =>
-  ({className: props.className})
+const ReviewModal = styled.div.attrs((props) =>
+  ({ className: props.className }),
 )`
 z-index: 3;
 position: fixed;
@@ -61,7 +61,6 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
 }
-
 `;
 
 const CloseButton = styled.button`
@@ -100,16 +99,16 @@ class AppModal extends React.Component {
   constructor({reviews, ratings, close, callback, transition}) {
     super();
     this.state = {
-      reviews: reviews,
-      ratings: ratings,
-      close: close,
-      transition: transition
-    }
+      reviews,
+      ratings,
+      close,
+      transition,
+    };
   }
 
   setTransition(transition, callback) {
     this.setState({
-      transition: transition
+      transition,
     }, callback);
   }
 

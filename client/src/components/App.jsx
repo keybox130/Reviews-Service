@@ -106,18 +106,17 @@ class ReviewApp extends React.Component {
 
     // update state of modal using ref
     this.modal = React.createRef();
+    this.closeModal = this.closeModal.bind(this);
 
   }
 
   componentDidMount() {
     const stayId = Math.ceil(Math.random() * 100);
-    console.log(stayId);
     this.getStay(stayId);
   }
 
   // extracts reviews for our service
   extractReviews(reviews) {
-    const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     return reviews.map(review => {
       review.date = review.month + ' ' + review.year;
       review = _.pick(review,
@@ -132,7 +131,6 @@ class ReviewApp extends React.Component {
 
   // extracts average ratings for our service
   extractRatings(reviews) {
-
     let overallAverage = 0;
 
     let ratings = {
@@ -171,12 +169,12 @@ class ReviewApp extends React.Component {
   // gets a stay from the server based on id
   getStay(stayId) {
     axios.get(`/stays/:${stayId}`)
-    .then(rooms => {
-      this.setState({
-        reviews: this.extractReviews(rooms.data.reviews),
-        ratings: this.extractRatings(rooms.data.reviews)
+      .then((rooms) => {
+        this.setState({
+          reviews: this.extractReviews(rooms.data.reviews),
+          ratings: this.extractRatings(rooms.data.reviews),
+        });
       });
-    });
   }
 
   // shows the modal (delay handled within modal's css animation)
@@ -187,84 +185,93 @@ class ReviewApp extends React.Component {
         this.setState({
           showButton: false
         });
-      }, Number(Animation.clickDuration))
+      }, Number(Animation.clickDuration)),
     )
-    .then(() => {
-      // dim the page
-      this.setState({
-        dimClass: `dimEnter`,
-        showModal: true
+      .then(() => {
+        // dim the page
+        this.setState({
+          dimClass: 'dimEnter',
+          showModal: true,
+        });
+      })
+      .then(() => {
+        // modal animation
+        this.modal.current.setTransition('enter');
       });
-    })
-    .then(() => {
-      // modal animation
-      this.modal.current.setTransition(`enter`);
-    })
   }
 
   // closes the modal after showing a transition
   closeModal() {
     // close the modal first
-    this.modal.current.setTransition(`exit`, () => {
+    this.modal.current.setTransition('exit', () => {
       Promise.resolve(
         // un-dim the page after modal slide animation completes
         setTimeout(() => {
           this.setState({
-            dimClass: `dimExit`
+            dimClass: 'dimExit',
           });
-      }, Number(Animation.modalSlideDuration)))
-      .then(() => {
-        // reshow the button and hide modal/dim class
-        setTimeout(() => {
-          this.setState({
-            showButton: true,
-            showModal: false,
-            dimClass: `none`
-          })
-        }, Number(Animation.dimDuration))
-      });
+        }, Number(Animation.modalSlideDuration)),
+      )
+        .then(() => {
+          // reshow the button and hide modal/dim class
+          setTimeout(() => {
+            this.setState({
+              showButton: true,
+              showModal: false,
+              dimClass: 'none',
+            })
+          }, Number(Animation.dimDuration))
+        });
     });
   }
 
   render() {
+    const { dimClass, reviews, ratings, close, showModal, showButton } = this.state;
     // pop-up review modal
-    const ReviewModal = this.state.showModal
-      ? (<StyledAppModal ref={this.modal} reviews={this.state.reviews} ratings={this.state.ratings} close={this.closeModal.bind(this)} />)
-      : null;
     // show all reviews button
-    const ShowAllButton = this.state.showButton
-      ? <StyledShowAll numReviews={this.state.reviews.length} onClick={this.showModal.bind(this)}/>
+    const ShowAllButton = showButton
+      ? <StyledShowAll numReviews={reviews.length} onClick={showModal} />
       : null;
     // only render when state updates
-    return !this.state.reviews.length
+    return !reviews.length
       ? null
       : (
         <>
 
-        { ReviewModal }
+          { showModal
+            ? (
+              <StyledAppModal
+                ref={this.modal}
+                reviews={reviews}
+                ratings={ratings}
+                close={close}
+              />
+            )
+            : null
+          }
 
-        {/* show a transition if the modal is displayed */}
-          <ReviewComponent className={this.state.showModal ? `blur` : null}>
-            <FlexRow justify='left'>
+          {/* show a transition if the modal is displayed */}
+          <ReviewComponent className={showModal ? 'blur' : null}>
+            <FlexRow justify="left">
               {/* rating overview banner */}
-              <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={false} />
+              <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal={false} />
             </FlexRow>
-            <FlexRow justify='left'>
+            <FlexRow justify="left">
               {/* rating graphs */}
-              <StyledRatingGraphs ratings={this.state.ratings} isModal={false} />
+              <StyledRatingGraphs ratings={ratings} isModal={false} />
             </FlexRow>
-            <FlexRow justify='left'>
+            <FlexRow justify="left">
               {/* only render the top 6 arbitrarily sorted reviews */}
-              <StyledReviewList reviews={this.state.reviews.sort().slice(0, 6)} />
+              <StyledReviewList reviews={reviews.sort().slice(0, 6)} />
             </FlexRow>
-            <FlexRow justify='left'>
+            <FlexRow justify="left">
 
               { ShowAllButton }
 
             </FlexRow>
           </ReviewComponent>
 
-        <Dimmable className={this.state.dimClass} />
+          <Dimmable className={dimClass} />
 
         </>
       );
