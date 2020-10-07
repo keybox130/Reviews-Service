@@ -50,17 +50,17 @@ mix-blend-mode: multiply;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
-
 `;
 
 class ShowAll extends React.Component {
-  constructor( { numReviews, onClick } ) {
+  constructor({ numReviews, onClick }) {
     super();
     this.state = {
       numReviews,
       className: null,
     };
-    this.onClick = this.click.bind(this);
+    this.onClick = onClick;
+    this.click = this.click.bind(this);
   }
 
   click(e) {
@@ -77,7 +77,7 @@ class ShowAll extends React.Component {
     return (
       <FlexColumn>
         <Container>
-          <Button onClick={this.onClick} className={className}>{`Show all ${numReviews} reviews`}</Button>
+          <Button onClick={this.click} className={className}>{`Show all ${numReviews} reviews`}</Button>
         </Container>
       </FlexColumn>
     );

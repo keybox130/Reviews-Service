@@ -83,6 +83,56 @@ transition-duration: ${Animation.dimDuration}ms;
 }
 `;
 
+// extracts average ratings for our service
+const extractRatings = (reviews) => {
+  let overallAverage = 0;
+  const ratings = {
+    cleanliness: 0,
+    communication: 0,
+    checkIn: 0,
+    accuracy: 0,
+    location: 0,
+    value: 0
+  }
+
+  // sum all rating types
+  _.each(reviews, review => {
+    ratings.cleanliness += review.rating.cleanliness;
+    ratings.communication += review.rating.communication;
+    ratings.checkIn += review.rating.checkIn;
+    ratings.accuracy += review.rating.accuracy;
+    ratings.location += review.rating.location;
+    ratings.value += review.rating.value;
+  });
+
+  // get average of each rating type
+  _.each(ratings, (value, key) => {
+    const average = value / reviews.length;
+    ratings[key] = average;
+    overallAverage += average;
+  });
+
+  // average of all rating types
+  overallAverage /= Object.keys(ratings).length;
+  ratings.average = overallAverage.toFixed(2);
+
+  return ratings;
+};
+
+// extracts reviews for our service
+const extractReviews = (reviews) => {
+  return reviews.map(review => {
+    review.date = `${review.month} ${review.year}`;
+    review = _.pick(review,
+      'date',
+      'name',
+      'reviewText',
+      'userIcon'
+    );
+    return review;
+  });
+};
+
 class ReviewApp extends React.Component {
   constructor() {
     super();
@@ -96,18 +146,18 @@ class ReviewApp extends React.Component {
         checkIn: 0,
         accuracy: 0,
         location: 0,
-        value: 0
+        value: 0,
       },
       showModal: false, // whether to show modal
       showButton: true, // whether to render showAll button
-      dimClass: `none` // which direction to animate
+      dimClass: 'none', // which direction to animate
 
-    }
+    };
 
     // update state of modal using ref
     this.modal = React.createRef();
-    this.closeModal = this.closeModal.bind(this);
-
+    this.hideModal = this.hideModal.bind(this);
+    this.renderModal = this.renderModal.bind(this);
   }
 
   componentDidMount() {
@@ -115,70 +165,44 @@ class ReviewApp extends React.Component {
     this.getStay(stayId);
   }
 
-  // extracts reviews for our service
-  extractReviews(reviews) {
-    return reviews.map(review => {
-      review.date = review.month + ' ' + review.year;
-      review = _.pick(review,
-        'date',
-        'name',
-        'reviewText',
-        'userIcon'
-      );
-      return review;
-    });
-  }
-
-  // extracts average ratings for our service
-  extractRatings(reviews) {
-    let overallAverage = 0;
-
-    let ratings = {
-      cleanliness: 0,
-      communication: 0,
-      checkIn: 0,
-      accuracy: 0,
-      location: 0,
-      value: 0
-    }
-
-    // sum all rating types
-    _.each(reviews, review => {
-      ratings.cleanliness += review.rating.cleanliness;
-      ratings.communication += review.rating.communication;
-      ratings.checkIn += review.rating.checkIn;
-      ratings.accuracy += review.rating.accuracy;
-      ratings.location += review.rating.location;
-      ratings.value += review.rating.value;
-    });
-
-    // get average of each rating type
-    _.each(ratings, (value, key) => {
-      let average = value / reviews.length;
-      ratings[key] = average;
-      overallAverage += average;
-    })
-
-    // average of all rating types
-    overallAverage /= Object.keys(ratings).length;
-    ratings.average = overallAverage.toFixed(2);
-
-    return ratings;
-  }
-
   // gets a stay from the server based on id
   getStay(stayId) {
     axios.get(`/stays/:${stayId}`)
       .then((rooms) => {
         this.setState({
-          reviews: this.extractReviews(rooms.data.reviews),
-          ratings: this.extractRatings(rooms.data.reviews),
+          reviews: extractReviews(rooms.data.reviews),
+          ratings: extractRatings(rooms.data.reviews),
         });
       });
   }
 
+  // hides the modal after showing a transition
+  hideModal() {
+    // close the modal first
+    this.modal.current.setTransition('exit', () => {
+      Promise.resolve(
+        // un-dim the page after modal slide animation completes
+        setTimeout(() => {
+          this.setState({
+            dimClass: 'dimExit',
+          });
+        }, Number(Animation.modalSlideDuration)),
+      )
+        .then(() => {
+          // reshow the button and hide modal/dim class
+          setTimeout(() => {
+            this.setState({
+              showButton: true,
+              showModal: false,
+              dimClass: 'none',
+            });
+          }, Number(Animation.dimDuration));
+        });
+    });
+  }
+
   // shows the modal (delay handled within modal's css animation)
-  showModal() {
+  renderModal() {
     Promise.resolve(
       // hide button after click animation completes
       setTimeout(() => {
@@ -200,37 +224,14 @@ class ReviewApp extends React.Component {
       });
   }
 
-  // closes the modal after showing a transition
-  closeModal() {
-    // close the modal first
-    this.modal.current.setTransition('exit', () => {
-      Promise.resolve(
-        // un-dim the page after modal slide animation completes
-        setTimeout(() => {
-          this.setState({
-            dimClass: 'dimExit',
-          });
-        }, Number(Animation.modalSlideDuration)),
-      )
-        .then(() => {
-          // reshow the button and hide modal/dim class
-          setTimeout(() => {
-            this.setState({
-              showButton: true,
-              showModal: false,
-              dimClass: 'none',
-            })
-          }, Number(Animation.dimDuration))
-        });
-    });
-  }
-
   render() {
-    const { dimClass, reviews, ratings, close, showModal, showButton } = this.state;
+    const {
+      dimClass, reviews, ratings, close, showButton, showModal,
+    } = this.state;
     // pop-up review modal
     // show all reviews button
     const ShowAllButton = showButton
-      ? <StyledShowAll numReviews={reviews.length} onClick={showModal} />
+      ? <StyledShowAll numReviews={reviews.length} onClick={this.renderModal} />
       : null;
     // only render when state updates
     return !reviews.length
@@ -244,7 +245,7 @@ class ReviewApp extends React.Component {
                 ref={this.modal}
                 reviews={reviews}
                 ratings={ratings}
-                close={close}
+                close={this.hideModal}
               />
             )
             : null

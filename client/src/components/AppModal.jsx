@@ -113,21 +113,26 @@ class AppModal extends React.Component {
   }
 
   render() {
+    const {
+      transition, close, ratings, reviews,
+    } = this.state;
+
     return (
-      <ReviewModal className={this.state.transition}>
-        <FlexColumn className='modal'>
+      <ReviewModal className={transition}>
+        <FlexColumn className="modal">
           <Container>
-            <CloseButton onClick={this.state.close}>
-              <X viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' role='presentation' focusable='false'>
-                <path d="m6 6 20 20"></path><path d="m26 6-20 20"></path>
+            <CloseButton onClick={close}>
+              <X viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                role="presentation" focusable="false">
+                <path d="m6 6 20 20" /><path d="m26 6-20 20" />
               </X>
             </CloseButton>
           </Container>
-          <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true} />
-          <StyledRatingGraphs ratings={this.state.ratings} isModal={true} />
+          <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
+          <StyledRatingGraphs ratings={ratings} isModal />
         </FlexColumn>
         <FlexColumn>
-          <StyledReviewListModal reviews={this.state.reviews.sort()} />
+          <StyledReviewListModal reviews={reviews.sort()} />
         </FlexColumn>
       </ReviewModal>
     );
