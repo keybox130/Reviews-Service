@@ -71,8 +71,8 @@ const RatingOverview = ({ average, numReviews, isModal }) => {
   return (
     <FlexRow>
       <Container className="header">
-        <StarUnderlay className={className} imageSize={imageSize} src="/static/star.png" />
-        <Star className={className} percentage={percentage} imageSize={imageSize} src="/static/star.png" />
+        <StarUnderlay className={className} imageSize={imageSize} src="/reviews-static/star.png" />
+        <Star className={className} percentage={percentage} imageSize={imageSize} src="/reviews-static/star.png" />
         <Header className={className} fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
       </Container>
     </FlexRow>

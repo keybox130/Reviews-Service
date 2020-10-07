@@ -145,7 +145,6 @@ class ReviewApp extends React.Component {
       showModal: false, // whether to show modal
       showButton: true, // whether to render showAll button
       dimClass: 'none', // which direction to animate
-
     };
 
     // update state of modal using ref

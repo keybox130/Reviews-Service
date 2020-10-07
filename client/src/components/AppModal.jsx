@@ -8,6 +8,7 @@ import {
 } from './Constants.jsx';
 
 const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
+top: 0;
 z-index: 3;
 position: fixed;
 display: flex;
