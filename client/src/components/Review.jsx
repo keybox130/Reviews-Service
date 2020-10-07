@@ -29,7 +29,7 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
-const FlexContainer = styled.div.attrs((props) => ({className: props.className}))`
+const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
 flex-direction: column;
 margin-left 3vw;

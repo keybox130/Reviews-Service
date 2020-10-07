@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import _ from 'underscore';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
-import {FlexRow, Animation} from './Constants.jsx';
+import {
+  FlexRow, Animation,
+} from './Constants.jsx';
 
 const ScrollableFlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
@@ -33,7 +35,7 @@ overflow-y: scroll;
 `;
 
 class ReviewListModal extends React.Component {
-  constructor({reviews}) {
+  constructor({ reviews }) {
     super();
 
     // the number of reviews to load at a time
@@ -76,7 +78,7 @@ class ReviewListModal extends React.Component {
 
   // check if scrollbar is at bottom and load more reviews if it is
   checkScrollBar(e) {
-    const lastReview = this.refList[this.refList.length-1].current;
+    const lastReview = this.refList[this.refList.length - 1].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
     const scrollOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
     if (scrollOffset >= lastElementOffset) {
@@ -101,7 +103,6 @@ class ReviewListModal extends React.Component {
 
     if (searchTerm) {
       filtered = _.filter(allReviews, (review) => {
-        debugger;
         return review.reviewText.toLowerCase().includes(searchTerm)
         || review.name.toLowerCase().includes(searchTerm)
         || review.month.toLowerCase().includes(searchTerm)

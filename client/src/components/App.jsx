@@ -222,7 +222,6 @@ class ReviewApp extends React.Component {
     const {
       dimClass, reviews, ratings, showButton, showModal,
     } = this.state;
-    // pop-up review modal
     // show all reviews button
     const ShowAllButton = showButton
       ? <StyledShowAll numReviews={reviews.length} onClick={this.renderModal} />
@@ -232,7 +231,7 @@ class ReviewApp extends React.Component {
       ? null
       : (
         <>
-
+          {/* pop-up review modal */}
           { showModal
             ? (
               <StyledAppModal

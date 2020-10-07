@@ -91,14 +91,14 @@ const initDB = () => {
   for (let i = 0; i < numRooms; i++) {
     const numReviews = getRandomInt(20, 50);
     // a room has many reviews
-    let room = {
+    const room = {
       room_id: i + 1,
       reviews: [],
     };
     // generate 'numRooms' random rooms
     for (let i = 0; i < numReviews; i++) {
       // give each room 30 reviews (for now) by sampling from array of generated reviews
-      let randomReview = reviewSamples[getRandomInt(0, reviewSamples.length - 1)];
+      const randomReview = reviewSamples[getRandomInt(0, reviewSamples.length - 1)];
       room.reviews.push(randomReview);
     }
     rooms.push(room);

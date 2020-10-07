@@ -6,10 +6,10 @@ const Margins = {
   barHeight: '3px',
   imageSize: '20px',
   modalImageSize: '30px',
-}
+};
 
 // animation durations, in ms
-// modal animation flow: click animation => dim animation => slide animation => rating bar/search bar animation
+// flow: click animation => dim animation => slide animation => rating bar/search bar animation
 const Animation = {
   modalSlideDuration: '400',
   barDuration: '400',
@@ -32,7 +32,7 @@ const Fonts = {
   normal: '400',
   bold: '600',
   veryBold: '700',
-}
+};
 
 const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
 display: flex;
@@ -80,4 +80,6 @@ width: 25vw;
 }
 `;
 
-export {FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins };
+export {
+  FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins,
+};
