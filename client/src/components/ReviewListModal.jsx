@@ -101,9 +101,11 @@ class ReviewListModal extends React.Component {
 
     if (searchTerm) {
       filtered = _.filter(allReviews, (review) => {
+        debugger;
         return review.reviewText.toLowerCase().includes(searchTerm)
         || review.name.toLowerCase().includes(searchTerm)
-        || review.date.toLowerCase().includes(searchTerm);
+        || review.month.toLowerCase().includes(searchTerm)
+        || review.year.toLowerCase().includes(searchTerm);
       });
     } else {
       // show all rendered reviews
@@ -122,7 +124,7 @@ class ReviewListModal extends React.Component {
 
   render() {
     const { viewableReviews } = this.state;
-    const areViewableReviews = viewableReviews.length;
+    const areViewableReviews = viewableReviews && viewableReviews.length;
     // React review components generated here to keep return statement a bit cleaner
     let reviewComponents = null;
     if (areViewableReviews) {
@@ -135,7 +137,8 @@ class ReviewListModal extends React.Component {
           <StyledReview
             text={review.reviewText}
             name={review.name}
-            date={review.date}
+            month={review.month}
+            year={review.year}
             userIcon={review.userIcon}
             key={(i)}
             showAnimation={this.initialRender}
@@ -150,7 +153,7 @@ class ReviewListModal extends React.Component {
       }
     } else {
       // empty placeholder to maintain modal width
-      reviewComponents = [<StyledReview text="" name="" date="" userIcon="" key={-1}/>];
+      reviewComponents = [<StyledReview text="" name="" date="" userIcon="" key={-1} />];
     }
     return (
       <>

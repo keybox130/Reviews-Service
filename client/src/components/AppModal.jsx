@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
-import {Fonts, FlexColumn, Container, Animation} from './Constants.jsx';
+import {
+  Fonts, FlexColumn, Container, Animation,
+} from './Constants.jsx';
 
-const ReviewModal = styled.div.attrs((props) =>
-  ({ className: props.className }),
-)`
+const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
 z-index: 3;
 position: fixed;
 display: flex;
@@ -96,7 +96,7 @@ overflow: visible;
 `;
 
 class AppModal extends React.Component {
-  constructor({reviews, ratings, close, callback, transition}) {
+  constructor({ reviews, ratings, close, callback, transition }) {
     super();
     this.state = {
       reviews,
@@ -122,9 +122,14 @@ class AppModal extends React.Component {
         <FlexColumn className="modal">
           <Container>
             <CloseButton onClick={close}>
-              <X viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
-                role="presentation" focusable="false">
-                <path d="m6 6 20 20" /><path d="m26 6-20 20" />
+              <X
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                role="presentation"
+              >
+                <path d="m6 6 20 20" />
+                <path d="m26 6-20 20" />
               </X>
             </CloseButton>
           </Container>

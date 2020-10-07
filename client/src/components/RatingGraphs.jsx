@@ -1,25 +1,27 @@
 import React from 'react';
-import StyledBarGraph from './BarGraph.jsx';
 import styled from 'styled-components';
-import {FlexColumn, Container} from './Constants.jsx';
+import StyledBarGraph from './BarGraph.jsx';
+import {
+  FlexColumn, Container,
+} from './Constants.jsx';
 
-const RatingGraphs = ({ratings, isModal}) => {
+const RatingGraphs = ({ ratings, isModal }) => {
   if (!isModal) {
     // render 2x3 bar graphs
     return (
       <>
         <FlexColumn>
           <Container>
-            <StyledBarGraph text='Cleanliness' rating={ratings.cleanliness} isModal={false} />
-            <StyledBarGraph text='Communication' rating={ratings.communication} isModal={false} />
-            <StyledBarGraph text='Check-in' rating={ratings.checkIn} isModal={false} />
+            <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} />
+            <StyledBarGraph text="Communication" rating={ratings.communication} />
+            <StyledBarGraph text="Check-in" rating={ratings.checkIn} />
           </Container>
         </FlexColumn>
         <FlexColumn>
           <Container>
-            <StyledBarGraph text='Accuracy' rating={ratings.accuracy} isModal={false} />
-            <StyledBarGraph text='Location' rating={ratings.location} isModal={false} />
-            <StyledBarGraph text='Value' rating={ratings.value} isModal={false} />
+            <StyledBarGraph text="Accuracy" rating={ratings.accuracy} />
+            <StyledBarGraph text="Location" rating={ratings.location} />
+            <StyledBarGraph text="Value" rating={ratings.value} />
           </Container>
         </FlexColumn>
       </>
@@ -30,12 +32,12 @@ const RatingGraphs = ({ratings, isModal}) => {
     <>
       <FlexColumn>
         <Container>
-          <StyledBarGraph text='Cleanliness' rating={ratings.cleanliness} isModal={true} />
-          <StyledBarGraph text='Accuracy' rating={ratings.accuracy} isModal={true} />
-          <StyledBarGraph text='Communication' rating={ratings.communication} isModal={true} />
-          <StyledBarGraph text='Location' rating={ratings.location} isModal={true} />
-          <StyledBarGraph text='Check-in' rating={ratings.checkIn} isModal={true} />
-          <StyledBarGraph text='Value' rating={ratings.value} isModal={true} />
+          <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
+          <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
+          <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
+          <StyledBarGraph text="Location" rating={ratings.location} isModal />
+          <StyledBarGraph text="Check-in" rating={ratings.checkIn} isModal />
+          <StyledBarGraph text="Value" rating={ratings.value} isModal />
         </Container>
       </FlexColumn>
     </>

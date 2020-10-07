@@ -1,15 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexRow, Container, Fonts, Animation, Margins} from './Constants.jsx';
+import {
+  FlexRow, Container, Fonts, Animation, Margins,
+} from './Constants.jsx';
 
-const Header = styled.h1.attrs(props =>
-  ({className: props.className})
-)`
+const Header = styled.h1.attrs((props) =>({ className: props.className }))`
 position: absolute;
 display: inline-block;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.bold};
-font-size: ${props => props.fontSize};
+font-size: ${(props) => props.fontSize};
 margin-bottom: -5vh;
 margin-left: 45px;
 &.modal {
@@ -17,9 +17,7 @@ margin-left: 45px;
 }
 `;
 
-const StarUnderlay = styled.img.attrs(props =>
-  ({className: props.className})
-)`
+const StarUnderlay = styled.img.attrs((props) => ({ className: props.className }))`
 display: inline-block;
 position: absolute;
 z-index: 0;
@@ -27,12 +25,12 @@ filter: grayscale(100%);
 mix-blend-mode: multiply;
 margin-top: 22px;
 margin-left: 15px;
-width: ${props => props.imageSize};
-height: ${props => props.imageSize};
+width: ${(props) => props.imageSize};
+height: ${(props) => props.imageSize};
 margin-left: 15px;
 `;
 
-const Star = styled.img.attrs((props) => ({className: props.className}))`
+const Star = styled.img.attrs((props) => ({ className: props.className }))`
 display: inline-block;
 z-index: 1;
 position: absolute;
@@ -63,7 +61,7 @@ animation-timing-function: ease-out;
 }
 `;
 
-const RatingOverview = ({average, numReviews, isModal}) => {
+const RatingOverview = ({ average, numReviews, isModal }) => {
   // size of text/star depends on whether this is a modal or not
   const fontSize = isModal ? Fonts.largeHeader : Fonts.header;
   const imageSize = isModal ? Margins.modalImageSize : Margins.imageSize;

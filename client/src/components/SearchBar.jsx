@@ -71,11 +71,10 @@ min-width: 70%;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
-
 `;
 
 class SearchBar extends React.Component {
-  constructor({callback}) {
+  constructor({ callback }) {
     super();
     this.state = {
       focus: null,
@@ -108,8 +107,13 @@ class SearchBar extends React.Component {
     return (
       <SearchContainer className={focus} delay={delay}>
         {/* Magnifier SVG */}
-        <Magnifier viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false">
-          <g fill="none"><path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"></path></g>
+        <Magnifier
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill="none">
+            <path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9" />
+          </g>
         </Magnifier>
         <Input placeholder="Search reviews..." autocomplete="off" type="text" onFocus={this.expand} onBlur={this.shrink} onChange={this.searchCallback} />
       </SearchContainer>

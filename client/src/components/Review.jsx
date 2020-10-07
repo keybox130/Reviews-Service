@@ -1,7 +1,9 @@
 import React from 'react';
-import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import {FlexRow, FlexColumn, Fonts, Animation} from './Constants.jsx';
+import StyledReviewText from './ReviewText.jsx'
+import {
+  FlexRow, FlexColumn, Fonts, Animation,
+} from './Constants.jsx';
 
 const ProfileImage = styled.img`
 max-height: 7vh;
@@ -27,9 +29,7 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
-const FlexContainer = styled.div.attrs(props =>
-  ({className: props.className})
-)`
+const FlexContainer = styled.div.attrs((props) => ({className: props.className}))`
 display: flex;
 flex-direction: column;
 margin-left 3vw;
@@ -70,7 +70,7 @@ margin-top: 3vh;
 &.effectSlideInLeft
 {
   animation: slideInLeft ${Animation.reviewSlideDuration}ms;
-  animation-delay: ${props => props.delay}ms;
+  animation-delay: ${(props) => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
@@ -78,7 +78,7 @@ margin-top: 3vh;
 &.effectSlideOutLeft
 {
   animation: slideInLeft ${Animation.reviewSlideDuration}ms;
-  animation-delay: ${props => props.delay}ms;
+  animation-delay: ${(props) => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
@@ -86,66 +86,73 @@ margin-top: 3vh;
 `;
 
 class Review extends React.Component {
-  constructor({text, name, date, userIcon, showAnimation, delay, callback}) {
+  constructor({ text, name, month, year, userIcon, showAnimation, delay, callback }) {
     super();
     this.state = {
       fullText: text,
-      text: text,
-      name: name,
-      date: date,
-      userIcon: userIcon,
+      text,
+      name,
+      date: `${month} ${year}`,
+      userIcon,
       showAllText: true,
-      mountRef: callback ? callback : null
-    }
+      mountRef: callback,
+    };
 
     this.className = showAnimation ? 'effectSlideInLeft' : null;
     this.delay = delay;
+    this.onClick = this.onClick.bind(this);
     // add a ref for scroll bar DOM manipulation
     this.myRef = React.createRef();
   }
 
   componentDidMount() {
-    if (this.state.mountRef) {
-      this.state.mountRef(this.myRef);
+    const { mountRef } = this.state;
+    if (mountRef) {
+      mountRef(this.myRef);
     }
     this.shortenText();
   }
 
   // reset shortened text to original on click
   onClick() {
+    const { fullText } = this.state;
     this.setState({
-      text: this.state.fullText,
+      text: fullText,
       showAllText: true,
     });
   }
 
   // shortens the review text according to AirBnB style, if needed
   shortenText() {
+    const { text, fullText } = this.state;
     const textCutoff = 180;
-    const shouldShorten = this.state.text.length > textCutoff;
+    const shouldShorten = text.length > textCutoff;
 
     if (shouldShorten) {
       // cut text to the nearest word
-      let nearestWord = this.state.fullText.indexOf(' ', textCutoff);
+      const nearestWord = fullText.indexOf(' ', textCutoff);
       this.setState({
-        text: this.state.fullText.slice(0, nearestWord) + ' ',
-        showAllText: !shouldShorten
+        text: `${fullText.slice(0, nearestWord)} `,
+        showAllText: !shouldShorten,
       });
     }
   }
 
   render() {
+    const {
+      name, date, text, userIcon, showAllText,
+    } = this.state;
     return (
       <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
-          <ProfileImage src={this.state.userIcon} />
+          <ProfileImage src={userIcon} />
           <FlexColumn>
-            <Name>{this.state.name}</Name>
-            <Date>{this.state.date}</Date>
+            <Name>{name}</Name>
+            <Date>{date}</Date>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText} />
+          <StyledReviewText text={text} onClick={this.onClick} expanded={showAllText} />
         </FlexRow>
       </FlexContainer>
     );

@@ -1,19 +1,16 @@
 import React from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import _ from 'underscore';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
 import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
-import styled from 'styled-components';
 import { FlexRow, Animation } from './Constants.jsx';
 
-import _ from 'underscore';
-
 // overlay used for dimming the whole page
-const Dimmable = styled.div.attrs(props =>
-    ({className: props.className})
-)`
+const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`
 
 @keyframes dimPage {
   0% {
@@ -69,9 +66,7 @@ const Dimmable = styled.div.attrs(props =>
 `;
 
 // flex column of all components
-const ReviewComponent = styled.div.attrs(props =>
-    ({className: props.className})
-)`
+const ReviewComponent = styled.div.attrs((props) => ({ className: props.className }))`
 z-index: 1;
 margin: 3vh 3vw;
 padding: 0 10vw;
@@ -92,11 +87,11 @@ const extractRatings = (reviews) => {
     checkIn: 0,
     accuracy: 0,
     location: 0,
-    value: 0
-  }
+    value: 0,
+  };
 
   // sum all rating types
-  _.each(reviews, review => {
+  _.each(reviews, (review) => {
     ratings.cleanliness += review.rating.cleanliness;
     ratings.communication += review.rating.communication;
     ratings.checkIn += review.rating.checkIn;
@@ -121,15 +116,14 @@ const extractRatings = (reviews) => {
 
 // extracts reviews for our service
 const extractReviews = (reviews) => {
-  return reviews.map(review => {
-    review.date = `${review.month} ${review.year}`;
-    review = _.pick(review,
-      'date',
+  return reviews.map((review) => {
+    return _.pick(review,
+      'month',
+      'year',
       'name',
       'reviewText',
-      'userIcon'
+      'userIcon',
     );
-    return review;
   });
 };
 
@@ -226,7 +220,7 @@ class ReviewApp extends React.Component {
 
   render() {
     const {
-      dimClass, reviews, ratings, close, showButton, showModal,
+      dimClass, reviews, ratings, showButton, showModal,
     } = this.state;
     // pop-up review modal
     // show all reviews button
@@ -248,18 +242,17 @@ class ReviewApp extends React.Component {
                 close={this.hideModal}
               />
             )
-            : null
-          }
+            : null }
 
           {/* show a transition if the modal is displayed */}
           <ReviewComponent className={showModal ? 'blur' : null}>
             <FlexRow justify="left">
               {/* rating overview banner */}
-              <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal={false} />
+              <StyledRatingOverview average={ratings.average} numReviews={reviews.length} />
             </FlexRow>
             <FlexRow justify="left">
               {/* rating graphs */}
-              <StyledRatingGraphs ratings={ratings} isModal={false} />
+              <StyledRatingGraphs ratings={ratings} />
             </FlexRow>
             <FlexRow justify="left">
               {/* only render the top 6 arbitrarily sorted reviews */}

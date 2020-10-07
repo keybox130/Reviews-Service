@@ -4,8 +4,8 @@ const dbo = mongoose.connection;
 
 const roomSchema = new mongoose.Schema({
   room_id: Number,
-  reviews: Array
-})
+  reviews: Array,
+});
 
 // schema of each individual review (unused)
 /* const reviewSchema = new mongoose.Schema({

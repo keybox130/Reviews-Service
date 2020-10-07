@@ -10,13 +10,13 @@ app.use(express.static(__dirname + '/../../client/dist'));
 // return a stay matching the provided roomId
 app.get('/stays/:id', (req, res) => {
   const { id } = req.params;
-  db.Room.find( {room_id: id.slice(1)} ).exec()
-  .then(room => {
-    res.status(200).send(room[0]);
-  })
-  .catch(err => {
-    res.status(404).send(err);
-  });
+  db.Room.find({ room_id: id.slice(1) }).exec()
+    .then(room => {
+      res.status(200).send(room[0]);
+    })
+    .catch(err => {
+      res.status(404).send(err);
+    });
 });
 
 app.listen(port, () => {

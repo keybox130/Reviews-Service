@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Text, Fonts} from './Constants.jsx';
+import {
+  Text, Fonts,
+} from './Constants.jsx';
 
 const ReadMore = styled.a`
 font-family: ${Fonts.family};
@@ -14,13 +16,13 @@ cursor: pointer;
 }
 `;
 
-const ReviewText = ({text, onClick, expanded}) => {
-  const link = expanded ? null : <ReadMore onClick={onClick}>read more...</ReadMore>;
-
+const ReviewText = ({ text, onClick, expanded }) => {
   return (
     <div>
       <Text>{text}</Text>
-      {link}
+      {expanded
+        ? null
+        : <ReadMore onClick={onClick}>read more...</ReadMore>}
     </div>
   );
 };
