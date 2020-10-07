@@ -1,7 +1,7 @@
 import React from 'react';
 import StyledReviewText from './ReviewText.jsx'
 import styled from 'styled-components';
-import {FlexRow, FlexColumn, Fonts, animation} from './Constants.jsx';
+import {FlexRow, FlexColumn, Fonts, Animation} from './Constants.jsx';
 
 const ProfileImage = styled.img`
 max-height: 7vh;
@@ -27,17 +27,15 @@ margin-bottom: 20px;
 margin-top: -15px;
 `;
 
-const Container = styled.div.attrs(props =>
+const FlexContainer = styled.div.attrs(props =>
   ({className: props.className})
 )`
 display: flex;
 flex-direction: column;
-margin: 1vh 3vw;
+margin-left 3vw;
+margin-right: 3vw;
 width: 25vw;
-
-&.header {
-  margin-top: -3vh;
-}
+margin-top: 3vh;
 
 @keyframes slideInLeft {
   0% {
@@ -71,7 +69,7 @@ width: 25vw;
 
 &.effectSlideInLeft
 {
-  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${props => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
@@ -79,7 +77,7 @@ width: 25vw;
 
 &.effectSlideOutLeft
 {
-  animation: slideInLeft ${animation.reviewSlideDuration}ms;
+  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${props => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
@@ -113,6 +111,14 @@ class Review extends React.Component {
     this.shortenText();
   }
 
+  // reset shortened text to original on click
+  onClick() {
+    this.setState({
+      text: this.state.fullText,
+      showAllText: true,
+    });
+  }
+
   // shortens the review text according to AirBnB style, if needed
   shortenText() {
     const textCutoff = 180;
@@ -128,28 +134,20 @@ class Review extends React.Component {
     }
   }
 
-  // reset shortened text to original on click
-  onClick() {
-    this.setState({
-      text: this.state.fullText,
-      showAllText: true
-    });
-  }
-
   render() {
     return (
-      <Container className={this.className} delay={this.delay} ref={this.myRef}>
+      <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
-          <ProfileImage src={this.state.userIcon}></ProfileImage>
+          <ProfileImage src={this.state.userIcon} />
           <FlexColumn>
             <Name>{this.state.name}</Name>
             <Date>{this.state.date}</Date>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText}/>
+          <StyledReviewText text={this.state.text} onClick={this.onClick.bind(this)} expanded={this.state.showAllText} />
         </FlexRow>
-      </Container>
+      </FlexContainer>
     );
   }
 }

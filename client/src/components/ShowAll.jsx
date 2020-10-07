@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexColumn, Container, animation, Fonts} from './Constants.jsx';
+import {FlexColumn, Container, Animation, Fonts} from './Constants.jsx';
 
 const Button = styled.button.attrs(props =>
   ({className: props.className})
@@ -14,15 +14,16 @@ background-color: white;
 display: flex;
 justify-content: center;
 text-align: center;
+white-space: nowrap;
+flex: 0 0 auto;
 padding: 13px 23px;
-margin-left: -20px;
-max-width: 12vw;
+margin-top: 3vh;
+max-width: 10vw;
 max-height: 8vh;
 outline:none;
 font-weight: ${Fonts.bold};
 font-family: ${Fonts.family};
-font-size: ${Fonts.large};
-transition-duration: 0.5s;
+font-size: ${Fonts.small};
 cursor: pointer;
 mix-blend-mode: multiply;
 :hover{
@@ -31,21 +32,21 @@ mix-blend-mode: multiply;
 
 @keyframes press {
   0% {
-    transform: scale(1.0, 1.0);;
+    transform: scale(1.0, 1.0);
   }
 
-  10% {
-    transform: scale(0.8, 0.8);
+  50% {
+    transform: scale(0.85, 0.85);
   }
 
   100% {
-    transform: scale(0.9, 0.9);
+    transform: scale(0.87, 0.87);
   }
 }
 
 &.clicked {
   animation-name: press;
-  animation-duration: ${animation.clickDuration}ms;
+  animation-duration: ${Animation.clickDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
@@ -56,13 +57,11 @@ class ShowAll extends React.Component {
   constructor({numReviews, onClick}) {
     super();
     this.state = {
-      clicked: false,
       numReviews: numReviews,
-      className: null
+      className: null,
     }
     this.onClick = onClick;
   }
-
 
   click(e) {
     this.setState({

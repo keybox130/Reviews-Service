@@ -21,7 +21,7 @@ const getRandomFloat = (min, max) => {
 // get random int between min and max, inclusive
 const getRandomInt = (min, max) => {
   let range = max - min;
-  return Math.floor(Math.random() * range) + min;
+  return Math.round(Math.random() * range) + min;
 };
 
 const generateReviewText = () => {
@@ -46,18 +46,26 @@ const getRandomPhoto = () => {
 
 // generate a random document
 const generateRandomReview = () => {
+  const minRating = getRandomInt(1, 5);
+
+  const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const month = months[getRandomInt(1, 12)];
+  const years = ['2016', '2017', '2018', '2019', '2020'];
+  const year = years[getRandomInt(0, 4)];
+
   const review = {
     userIcon: getRandomPhoto(),
     reviewText: generateReviewText(),
-    date: new Date(),
+    month,
+    year,
     name: randomNames[getRandomInt(0, randomNames.length)],
     rating: {
-      cleanliness: getRandomFloat(1, 5),
-      communication: getRandomFloat(1, 5),
-      checkIn: getRandomFloat(1, 5),
-      accuracy: getRandomFloat(1, 5),
-      location: getRandomFloat(1, 5),
-      value: getRandomFloat(1, 5)
+      cleanliness: getRandomFloat(minRating, 5),
+      communication: getRandomFloat(minRating, 5),
+      checkIn: getRandomFloat(minRating, 5),
+      accuracy: getRandomFloat(minRating, 5),
+      location: getRandomFloat(minRating, 5),
+      value: getRandomFloat(minRating, 5)
     }
   };
 
@@ -86,13 +94,13 @@ const generateRandomReviews = () => {
 const initDB = () => {
 
   const numRooms = 100;
-  const numReviews = 30;
 
   // create a random sample of reviews
   let reviewSamples = generateRandomReviews();
   let rooms = [];
 
   for (let i = 0; i < numRooms; i++) {
+    const numReviews = getRandomInt(20, 50);
     // a room has many reviews
     let room = {
       room_id: i+1,
@@ -101,7 +109,7 @@ const initDB = () => {
     // generate 'numRooms' random rooms
     for (let i = 0; i < numReviews; i++) {
       // give each room 30 reviews (for now) by sampling from array of generated reviews
-      let randomReview = reviewSamples[getRandomInt(0, reviewSamples.length)];
+      let randomReview = reviewSamples[getRandomInt(0, reviewSamples.length-1)];
       room.reviews.push(randomReview);
     }
     rooms.push(room)

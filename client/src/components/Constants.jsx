@@ -1,25 +1,24 @@
 import styled from 'styled-components';
 
-// constant
-const margins = {
+const Margins = {
   barWidth: `150`,
   modalBarWidth: `75`,
-  barHeight: `4px`,
+  barHeight: `3px`,
   imageSize: `20px`,
   modalImageSize: `30px`,
 }
 
 // animation durations, in ms
 // modal animation flow: click animation => dim animation => slide animation => rating bar/search bar animation
-
-const animation = {
+const Animation = {
   modalSlideDuration: `400`,
   barDuration: `400`,
   dimDuration: `400`,
   clickDuration: `200`,
   searchExpandDuration: `200`,
   reviewSlideDuration: `300`,
-  reviewSlideDelay: `100`
+  reviewSlideDelay: `100`,
+  starLoadDuration: `600`
 }
 
 const Fonts = {
@@ -42,16 +41,10 @@ display: flex;
 flex-direction: row;
 margin-bottom: 1vh;
 
-&.center {
-  justify-content: center;
-  margin: auto auto;
-}
-
 &.left {
   justify-content: flex-start;
   margin: 0 6vw;
 }
-
 `;
 
 const Text = styled.p.attrs(props =>
@@ -65,6 +58,7 @@ margin: 0 0;
 
 &.rating {
   font-size ${Fonts.small};
+  font-weight: ${Fonts.bold};
   padding-left: 10px;
 }
 `;
@@ -89,8 +83,9 @@ display: inline-block;
 margin: 1vh 3vw;
 width: 25vw;
 &.header {
-  margin-top: -3vh;
+  height: 6vh;
+  margin-top: 0vh;
 }
 `;
 
-export {FlexRow, FlexColumn, Container, Text, Fonts, animation, margins};
+export {FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins};

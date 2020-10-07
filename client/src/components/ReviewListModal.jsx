@@ -2,7 +2,7 @@ import React from 'react';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
 import styled from 'styled-components';
-import {FlexRow, animation} from './Constants.jsx';
+import {FlexRow, Animation} from './Constants.jsx';
 import _ from 'underscore';
 
 const ScrollableFlexColumn = styled.div.attrs(props =>
@@ -34,17 +34,13 @@ overflow-y: scroll;
 }
 `;
 
-const EmptyPlaceholder = styled.div`
-display: flex;
-width: 15vw;
-`;
-
 class ReviewListModal extends React.Component {
 
   constructor({reviews}) {
     super();
 
-    this.numReviewsToShow = 6;
+    // the number of reviews to load at a time
+    this.numReviewsToShow = 8;
 
     this.state = {
       allReviews: reviews,
@@ -53,8 +49,12 @@ class ReviewListModal extends React.Component {
       searching: false,
       reviewComponents: null
     }
+
+    // whether this is the modal's first time rendering list of reviews
     this.initialRender = true;
     this.scrollWindow = React.createRef();
+
+    // list of review DOM refs
     this.refList = [];
   }
 
@@ -78,8 +78,8 @@ class ReviewListModal extends React.Component {
   checkScrollBar(e) {
     const lastReview = this.refList[this.refList.length-1].current;
     const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
-    const modalOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
-    if (modalOffset >= lastElementOffset) {
+    const scrollOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
+    if (scrollOffset >= lastElementOffset) {
       this.loadMoreReviews();
     }
   }
@@ -110,7 +110,6 @@ class ReviewListModal extends React.Component {
       filteredReviews: filtered,
       viewableReviews: null
     }, () => {
-
       // this is a workaround to make sure the state updates with viewable reviews
       this.setState({
         viewableReviews: filtered.slice(0, this.numReviewsToShow)
@@ -125,7 +124,7 @@ class ReviewListModal extends React.Component {
     if (areViewableReviews) {
       reviewComponents = _.map(this.state.viewableReviews, (review, i) => {
         // animate each review successively after the dim and modal slide animations
-        let delay = Number(animation.reviewSlideDelay * (i)) + Number(animation.modalSlideDuration) + Number(animation.dimDuration);
+        let delay = Number(Animation.reviewSlideDelay * (i)) + Number(Animation.modalSlideDuration) + Number(Animation.dimDuration);
         delay = delay.toString();
         return (
           <StyledReview text={review.reviewText} name={review.name} date={review.date} userIcon={review.userIcon} key={(i)} showAnimation={this.initialRender} delay={delay} callback={this.saveRef.bind(this)}/>
@@ -153,7 +152,6 @@ class ReviewListModal extends React.Component {
       </>
     );
   }
-
 }
 
 const StyledReviewListModal = styled(ReviewListModal)`

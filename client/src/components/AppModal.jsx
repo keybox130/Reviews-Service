@@ -3,7 +3,7 @@ import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
 import styled from 'styled-components';
-import {Fonts, FlexColumn, Container, animation} from './Constants.jsx';
+import {Fonts, FlexColumn, Container, Animation} from './Constants.jsx';
 
 const ReviewModal = styled.div.attrs(props =>
   ({className: props.className})
@@ -48,16 +48,16 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
 &.enter {
   animation-name: slideIn;
-  animation-duration: ${animation.modalSlideDuration}ms;
+  animation-duration: ${Animation.modalSlideDuration}ms;
   animation-fill-mode: both;
   /* should start animation after dim/blur animation completes */
-  animation-delay: ${animation.dimDuration}ms;
-  animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+  animation-delay: ${Animation.dimDuration}ms;
+  animation-timing-function: cubic-bezier(0, 0, 0.2, 1.0);
 }
 
 &.exit {
   animation-name: slideOut;
-  animation-duration: ${animation.modalSlideDuration}ms;
+  animation-duration: ${Animation.modalSlideDuration}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
 }
@@ -124,14 +124,14 @@ class AppModal extends React.Component {
               </X>
             </CloseButton>
           </Container>
-          <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true}/>
-          <StyledRatingGraphs ratings={this.state.ratings} isModal={true}/>
+          <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true} />
+          <StyledRatingGraphs ratings={this.state.ratings} isModal={true} />
         </FlexColumn>
         <FlexColumn>
           <StyledReviewListModal reviews={this.state.reviews.sort()} />
         </FlexColumn>
       </ReviewModal>
-      );
+    );
   }
 }
 
