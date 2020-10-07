@@ -160,7 +160,7 @@ class ReviewApp extends React.Component {
 
   // gets a stay from the server based on id
   getStay(stayId) {
-    axios.get(`/stays/:${stayId}`)
+    axios.get(`/reviews/stays/:${stayId}`)
       .then((rooms) => {
         this.setState({
           reviews: extractReviews(rooms.data.reviews),

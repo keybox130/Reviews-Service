@@ -9,7 +9,7 @@ const port = 3003;
 app.use(express.static(path.join(__dirname, '/../../client/dist')));
 
 // return a stay matching the provided roomId
-app.get('/stays/:id', (req, res) => {
+app.get('/reviews/stays/:id', (req, res) => {
   const { id } = req.params;
   db.Room.find({ room_id: id.slice(1) }).exec()
     .then((room) => {
