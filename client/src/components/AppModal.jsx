@@ -1,13 +1,14 @@
 import React from 'react';
+import styled from 'styled-components';
 import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
-import styled from 'styled-components';
-import {Fonts, FlexColumn, Container, Animation} from './Constants.jsx';
+import {
+  Fonts, FlexColumn, Container, Animation,
+} from './Constants.jsx';
 
-const ReviewModal = styled.div.attrs(props =>
-  ({className: props.className})
-)`
+const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
+top: 0;
 z-index: 3;
 position: fixed;
 display: flex;
@@ -61,7 +62,6 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
 }
-
 `;
 
 const CloseButton = styled.button`
@@ -97,38 +97,48 @@ overflow: visible;
 `;
 
 class AppModal extends React.Component {
-  constructor({reviews, ratings, close, callback, transition}) {
+  constructor({ reviews, ratings, close, callback, transition }) {
     super();
     this.state = {
-      reviews: reviews,
-      ratings: ratings,
-      close: close,
-      transition: transition
-    }
+      reviews,
+      ratings,
+      close,
+      transition,
+    };
   }
 
   setTransition(transition, callback) {
     this.setState({
-      transition: transition
+      transition,
     }, callback);
   }
 
   render() {
+    const {
+      transition, close, ratings, reviews,
+    } = this.state;
+
     return (
-      <ReviewModal className={this.state.transition}>
-        <FlexColumn className='modal'>
+      <ReviewModal className={transition}>
+        <FlexColumn className="modal">
           <Container>
-            <CloseButton onClick={this.state.close}>
-              <X viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg' aria-hidden='true' role='presentation' focusable='false'>
-                <path d="m6 6 20 20"></path><path d="m26 6-20 20"></path>
+            <CloseButton onClick={close}>
+              <X
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                role="presentation"
+              >
+                <path d="m6 6 20 20" />
+                <path d="m26 6-20 20" />
               </X>
             </CloseButton>
           </Container>
-          <StyledRatingOverview average={this.state.ratings.average} numReviews={this.state.reviews.length} isModal={true} />
-          <StyledRatingGraphs ratings={this.state.ratings} isModal={true} />
+          <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
+          <StyledRatingGraphs ratings={ratings} isModal />
         </FlexColumn>
         <FlexColumn>
-          <StyledReviewListModal reviews={this.state.reviews.sort()} />
+          <StyledReviewListModal reviews={reviews.sort()} />
         </FlexColumn>
       </ReviewModal>
     );

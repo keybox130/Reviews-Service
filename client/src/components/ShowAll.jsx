@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import {FlexColumn, Container, Animation, Fonts} from './Constants.jsx';
+import {
+  FlexColumn, Container, Animation, Fonts,
+} from './Constants.jsx';
 
-const Button = styled.button.attrs(props =>
-  ({className: props.className})
-)`
+const Button = styled.button.attrs((props) => ({ className: props.className }))`
 border-radius: 8px;
 color: rgb(34, 34, 34);
 border-style: solid;
@@ -50,32 +50,34 @@ mix-blend-mode: multiply;
   animation-fill-mode: both;
   animation-timing-function: linear;
 }
-
 `;
 
 class ShowAll extends React.Component {
-  constructor({numReviews, onClick}) {
+  constructor({ numReviews, onClick }) {
     super();
     this.state = {
-      numReviews: numReviews,
+      numReviews,
       className: null,
-    }
+    };
     this.onClick = onClick;
+    this.click = this.click.bind(this);
   }
 
   click(e) {
     this.setState({
-      className: `clicked`
+      className: 'clicked',
     }, () => {
       this.onClick(e);
     });
   }
 
   render() {
+    const { className, numReviews } = this.state;
+
     return (
       <FlexColumn>
         <Container>
-          <Button onClick={this.click.bind(this)} className={this.state.className}>{`Show all ${this.state.numReviews} reviews`}</Button>
+          <Button onClick={this.click} className={className}>{`Show all ${numReviews} reviews`}</Button>
         </Container>
       </FlexColumn>
     );

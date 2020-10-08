@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import {Margins, Text, Animation} from './Constants.jsx';
+import { Margins, Text, Animation } from './Constants.jsx';
 
 const OuterContainer = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
 height: 4vh;
-margin-right: ${props => props.rightMargin};
+margin-right: ${(props) => props.rightMargin};
 `;
 
 const InnerContainer = styled.div`
@@ -23,18 +23,16 @@ background-color: rgb(221,221,221);
 height: ${Margins.barHeight};
 mix-blend-mode: multiply;
 border-radius: 30px;
-min-width: ${props => props.width}px;
+min-width: ${(props) => props.width}px;
 `;
 
-const Bar = styled.div.attrs(props =>
-  ({className: props.className})
-)`
+const Bar = styled.div.attrs((props) => ({ className: props.className }))`
 height: ${Margins.barHeight};
 display: inline-block;
 mix-blend-mode: multiply;
 border-radius: 30px;
 background-color: black;
-min-width: ${props => props.width}px;
+min-width: ${(props) => props.width}px;
 
 @keyframes loadRating {
   0% {
@@ -58,31 +56,31 @@ animation-timing-function: ease-out;
 
 `;
 
-const BarGraph = ({text, rating, isModal}) => {
+const BarGraph = ({ text, rating, isModal }) => {
   const maxWidth = isModal
     ? Margins.modalBarWidth
     : Margins.barWidth; // width in px for higher accuracy
   const rightMargin = isModal
-    ? `10vw`
-    : `0`;
+    ? '10vw'
+    : '0';
   // bar width
   const proportion = Math.floor((rating / 5.0) * Number(maxWidth));
   // whether to delay bar load animation for modal
-  const className = isModal ? `modal` : null;
+  const className = isModal ? 'modal' : null;
   rating = rating.toFixed(1);
 
   return (
     <OuterContainer rightMargin={rightMargin}>
-        <Text>{text}</Text>
+      <Text>{text}</Text>
       <InnerContainer>
         <Underlay width={maxWidth}>
           <Bar width={proportion.toString()} className={className} />
         </Underlay>
-        <Text className='rating'>{rating}</Text>
+        <Text className="rating">{rating}</Text>
       </InnerContainer>
     </OuterContainer>
   );
-}
+};
 
 const StyledBarGraph = styled(BarGraph)`
 `;

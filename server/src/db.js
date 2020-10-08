@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/reviews', {useNewUrlParser: true});
+
+mongoose.connect('mongodb://localhost/reviews', { useNewUrlParser: true });
 const dbo = mongoose.connection;
 
 const roomSchema = new mongoose.Schema({
   room_id: Number,
-  reviews: Array
-})
+  reviews: Array,
+});
 
 // schema of each individual review (unused)
 /* const reviewSchema = new mongoose.Schema({
@@ -29,5 +30,5 @@ const Room = mongoose.model('Room', roomSchema);
 
 module.exports = {
   dbo,
-  Room
+  Room,
 }
