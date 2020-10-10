@@ -166,6 +166,7 @@ class ReviewApp extends React.Component {
         value: 0,
       },
       showModal: false, // whether to show modal
+      buttonClass: null, // button css class
       showAllButton: true, // whether to render showAll button
       dimClass: 'none', // which direction to animate
     };
@@ -209,6 +210,7 @@ class ReviewApp extends React.Component {
           setTimeout(() => {
             this.setState({
               showAllButton: true,
+              buttonClass: null,
               showModal: false,
               dimClass: 'none',
             });
@@ -219,6 +221,9 @@ class ReviewApp extends React.Component {
 
   // shows the modal (delay handled within modal's css animation)
   renderModal() {
+    this.setState({
+      buttonClass: 'clicked',
+    });
     Promise.resolve(
       // hide button after click animation completes
       setTimeout(() => {
@@ -242,7 +247,7 @@ class ReviewApp extends React.Component {
 
   render() {
     const {
-      dimClass, reviews, ratings, showAllButton, showModal,
+      dimClass, reviews, ratings, showAllButton, showModal, buttonClass,
     } = this.state;
     // console.log(showAllButton);
     // only render when state updates
@@ -287,6 +292,7 @@ class ReviewApp extends React.Component {
                 numReviews={reviews.length}
                 onClick={this.renderModal}
                 isVisible={showAllButton}
+                buttonClass={buttonClass}
               />
 
             </FlexRow>

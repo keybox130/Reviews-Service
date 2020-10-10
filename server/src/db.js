@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost/reviews', { useNewUrlParser: true });
+mongoose.connect('mongodb://172.17.0.2/reviews', { useNewUrlParser: true });
 const dbo = mongoose.connection;
 
 const roomSchema = new mongoose.Schema({

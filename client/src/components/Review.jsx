@@ -36,7 +36,7 @@ const FlexContainer = styled.div.attrs((props) => ({ className: props.className 
 display: flex;
 flex-direction: column;
 width: 477px;
-margin-bottom: 5vh;
+margin-bottom: 40px;
 margin-right: ${(props) => props.marginRight};
 @keyframes slideInLeft {
   0% {

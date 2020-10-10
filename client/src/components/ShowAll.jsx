@@ -54,11 +54,8 @@ mix-blend-mode: multiply;
 }
 `;
 
-const ShowAll = ({ numReviews, onClick, isVisible }) => {
-  let className = null;
-
+const ShowAll = ({ numReviews, onClick, isVisible, buttonClass }) => {
   const click = (e) => {
-    className = 'clicked';
     onClick(e);
   };
 
@@ -66,10 +63,12 @@ const ShowAll = ({ numReviews, onClick, isVisible }) => {
     ? 'visible'
     : 'hidden';
 
+    console.log(buttonClass);
+
   return (
     <FlexColumn>
       <Container>
-        <Button onClick={click} visibility={visibility} className={className}>{`Show all ${numReviews} reviews`}</Button>
+        <Button onClick={click} visibility={visibility} className={buttonClass}>{`Show all ${numReviews} reviews`}</Button>
       </Container>
     </FlexColumn>
   );

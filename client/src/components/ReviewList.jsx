@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import StyledReview from './Review.jsx';
 import {
-  FlexRow, FlexColumn,
+  FlexRow,
 } from './Constants.jsx';
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
@@ -10,6 +10,11 @@ display: flex;
 flex-direction: row;
 justify-content: space-between;
 min-width: 1120px;
+`;
+
+const FlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
+display: flex;
+flex-direction: column;
 margin-top: 35px;
 `;
 
