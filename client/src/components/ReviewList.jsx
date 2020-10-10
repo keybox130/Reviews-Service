@@ -5,6 +5,14 @@ import {
   FlexRow, FlexColumn,
 } from './Constants.jsx';
 
+const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+min-width: 1120px;
+margin-top: 35px;
+`;
+
 const ReviewList = ({ reviews }) => {
   const reviewRows = [];
 
@@ -17,7 +25,7 @@ const ReviewList = ({ reviews }) => {
     <FlexColumn>
       {reviewRows.map((reviewRow, i) => {
         return (
-          <FlexRow key={i*3}>
+          <FlexContainer key={i*3}>
             <StyledReview
               text={reviewRow[0].reviewText}
               name={reviewRow[0].name}
@@ -38,7 +46,7 @@ const ReviewList = ({ reviews }) => {
                   key={(i*3)+2} />
               )
               : null}
-          </FlexRow>
+          </FlexContainer>
         );
       })}
     </FlexColumn>

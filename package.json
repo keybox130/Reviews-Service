@@ -8,7 +8,7 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "react-dev": "webpack -d",
+    "react-dev": "webpack -d --watch",
     "start": "node server/src/index.js",
     "seed": "node server/src/seed.js",
     "test": "jest --coverage"

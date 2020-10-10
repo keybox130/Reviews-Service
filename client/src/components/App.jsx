@@ -67,29 +67,32 @@ const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`
 
 const BorderTop = styled.div`
 border: 1px solid rgb(221, 221, 221);
-display: flex;
+display: relative;
 flex-direction: row;
-max-width: 72%;
-margin-top: 3vh;
-margin-left: 180px;
-margin-bottom: 4vh;
+width: 1120px;
+margin-top: 48px;
+margin-bottom: 48px;
+margin-left: auto;
+margin-right: auto;
 `;
 
 const BorderBottom = styled.div`
 border: 1px solid rgb(221, 221, 221);
 display: flex;
 flex-direction: row;
-max-width: 72%;
-margin-top: 4vh;
-margin-left: 180px;
-margin-bottom: 4vh;
+justify-content: center;
+width: 1120px;
+margin-top: 48px;
+margin-bottom: 48px;
+margin-left: auto;
+margin-right: auto;
 `;
 
 // flex column of all components
 const ReviewComponent = styled.div.attrs((props) => ({ className: props.className }))`
 z-index: 1;
-margin: 3vh 0;
-padding: 0 10vw;
+margin: 3vh auto;
+max-width: 1120px;
 display: flex;
 flex-direction: column;
 transition-duration: ${Animation.dimDuration}ms;

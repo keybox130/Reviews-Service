@@ -6,6 +6,7 @@ const OuterContainer = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
+width: 477px;
 height: 4vh;
 margin-right: ${(props) => props.rightMargin};
 `;

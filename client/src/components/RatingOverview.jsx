@@ -24,10 +24,8 @@ z-index: 0;
 filter: grayscale(100%);
 mix-blend-mode: multiply;
 margin-top: 22px;
-margin-left: 15px;
 width: ${(props) => props.imageSize};
 height: ${(props) => props.imageSize};
-margin-left: 15px;
 `;
 
 const Star = styled.img.attrs((props) => ({ className: props.className }))`
@@ -37,8 +35,6 @@ position: absolute;
 margin-top: 22px;
 width: ${(props) => props.imageSize};
 height: ${(props) => props.imageSize};
-margin-left: 15px;
-
 @keyframes loadStar {
   0% {
     clip-path: polygon(0% 0%, 0% 100%, 0% 100%, 0% 0%);
@@ -71,8 +67,8 @@ const RatingOverview = ({ average, numReviews, isModal }) => {
   return (
     <FlexRow>
       <Container className="header">
-        <StarUnderlay className={className} imageSize={imageSize} src="/reviews-static/star.png" />
-        <Star className={className} percentage={percentage} imageSize={imageSize} src="/reviews-static/star.png" />
+        <StarUnderlay className={className} imageSize={imageSize} src="https://keybox-review-static.s3-us-west-1.amazonaws.com/star.png" />
+        <Star className={className} percentage={percentage} imageSize={imageSize} src="https://keybox-review-static.s3-us-west-1.amazonaws.com/star.png" />
         <Header className={className} fontSize={fontSize}>{`${average} (${numReviews} reviews)`}</Header>
       </Container>
     </FlexRow>

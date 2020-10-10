@@ -6,7 +6,7 @@ import {
 } from './Constants.jsx';
 
 const ProfileImage = styled.img`
-max-height: 7vh;
+max-height: 56px;
 display: inline-block;
 border-radius: 50%;
 mix-blend-mode: multiply;
@@ -17,7 +17,10 @@ display: inline-block;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.bold};
 font-size: ${Fonts.large};
-margin-top: 10px;
+font-size: 18px;
+margin-top: 8px;
+padding-bottom: 5px;
+margin-left: 12px;
 `;
 
 const Date = styled.p`
@@ -25,17 +28,14 @@ display: inline;
 font-family: ${Fonts.family};
 font-weight: ${Fonts.thin};
 font-size: ${Fonts.small};
-margin-bottom: 20px;
-margin-top: -15px;
+margin-top: -20px;
+margin-left: 12px;
 `;
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
 flex-direction: column;
-margin-left 3vw;
-margin-right: 3vw;
-width: 25vw;
-margin-top: 3vh;
+width: 477px;
 
 @keyframes slideInLeft {
   0% {
@@ -82,7 +82,6 @@ margin-top: 3vh;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
-
 `;
 
 class Review extends React.Component {

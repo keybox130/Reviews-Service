@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Margins = {
-  barWidth: '130',
+  barWidth: '122',
   modalBarWidth: '75',
-  barHeight: '3px',
+  barHeight: '4px',
   imageSize: '20px',
   modalImageSize: '30px',
 };
@@ -37,11 +37,9 @@ const Fonts = {
 const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
 display: flex;
 flex-direction: row;
-margin-bottom: 1vh;
 
 &.left {
   justify-content: flex-start;
-  margin: 0 6vw;
 }
 `;
 
@@ -62,21 +60,14 @@ margin: 0 0;
 const FlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
 flex-direction: column;
-margin-left: 1vw;
-
-&.modal {
-  margin-left: -20px;
-  margin-top: -50px;
-}
 `;
 
 const Container = styled.div.attrs((props) => ({ className: props.className }))`
 display: inline-block;
-margin: 1vh 3vw;
-width: 25vw;
+width: 560px;
 &.header {
   height: 6vh;
-  margin-top: 0vh;
+  padding-bottom: 32px;
 }
 `;
 
