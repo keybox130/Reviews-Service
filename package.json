@@ -8,8 +8,8 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "react-dev": "webpack -d --watch",
-    "server-dev": "nodemon server/src/index.js",
+    "react-dev": "webpack -d",
+    "start": "node server/src/index.js",
     "seed": "node server/src/seed.js",
     "test": "jest --coverage"
   },

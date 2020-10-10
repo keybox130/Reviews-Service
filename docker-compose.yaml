@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  reviews:
+    container_name: reviews
+    restart: always
+    build: ./
+    image: chrisbelldev/reviews:main
+    ports:
+      - "3003:3003"

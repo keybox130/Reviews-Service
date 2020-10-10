@@ -17,7 +17,7 @@ text-align: center;
 white-space: nowrap;
 flex: 0 0 auto;
 padding: 13px 23px;
-margin-top: 3vh;
+margin-top: 2vh;
 max-width: 10vw;
 max-height: 8vh;
 outline:none;

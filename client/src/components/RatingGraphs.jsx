@@ -1,9 +1,23 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
-import {
-  FlexColumn, Container,
-} from './Constants.jsx';
+import { FlexColumn, Container } from './Constants.jsx';
+
+const LeftContainer = styled.div.attrs((props) => ({ className: props.className }))`
+display: inline-block;
+margin-top: 1vh;
+margin-left: 3vw;
+width: 25vw;
+}
+`;
+
+const RightContainer = styled.div.attrs((props) => ({ className: props.className }))`
+display: inline-block;
+margin-top: 1vh;
+margin-left: 5vw;
+width: 25vw;
+}
+`;
 
 const RatingGraphs = ({ ratings, isModal }) => {
   if (!isModal) {
@@ -11,18 +25,18 @@ const RatingGraphs = ({ ratings, isModal }) => {
     return (
       <>
         <FlexColumn>
-          <Container>
+          <LeftContainer>
             <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} />
             <StyledBarGraph text="Communication" rating={ratings.communication} />
             <StyledBarGraph text="Check-in" rating={ratings.checkIn} />
-          </Container>
+          </LeftContainer>
         </FlexColumn>
         <FlexColumn>
-          <Container>
+          <RightContainer>
             <StyledBarGraph text="Accuracy" rating={ratings.accuracy} />
             <StyledBarGraph text="Location" rating={ratings.location} />
             <StyledBarGraph text="Value" rating={ratings.value} />
-          </Container>
+          </RightContainer>
         </FlexColumn>
       </>
     );

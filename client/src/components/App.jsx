@@ -65,10 +65,30 @@ const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`
 }
 `;
 
+const BorderTop = styled.div`
+border: 1px solid rgb(221, 221, 221);
+display: flex;
+flex-direction: row;
+max-width: 72%;
+margin-top: 3vh;
+margin-left: 180px;
+margin-bottom: 4vh;
+`;
+
+const BorderBottom = styled.div`
+border: 1px solid rgb(221, 221, 221);
+display: flex;
+flex-direction: row;
+max-width: 72%;
+margin-top: 4vh;
+margin-left: 180px;
+margin-bottom: 4vh;
+`;
+
 // flex column of all components
 const ReviewComponent = styled.div.attrs((props) => ({ className: props.className }))`
 z-index: 1;
-margin: 3vh 3vw;
+margin: 3vh 0;
 padding: 0 10vw;
 display: flex;
 flex-direction: column;
@@ -239,8 +259,10 @@ class ReviewApp extends React.Component {
             )
             : null }
 
+
           {/* show a transition if the modal is displayed */}
           <ReviewComponent className={showModal ? 'blur' : null}>
+          <BorderTop />
             <FlexRow justify="left">
               {/* rating overview banner */}
               <StyledRatingOverview
@@ -265,6 +287,7 @@ class ReviewApp extends React.Component {
               />
 
             </FlexRow>
+          <BorderBottom />
           </ReviewComponent>
 
           <Dimmable className={dimClass} />
