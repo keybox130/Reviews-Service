@@ -19,9 +19,10 @@ border-style: none;
 border-width: 5px;
 border-radius: 15px;
 height: 85vh;
-min-width: 60vw;
+width: 1000px;
 margin: 0 20vw;
 margin-top: 2vh;
+padding: 24px;
 padding-top: 7vh;
 box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
@@ -73,8 +74,8 @@ const CloseButton = styled.button`
   text-align: center;
   max-height: 10vh;
   max-width: 10vw;
-  margin-left: -15px;
-  margin-top: -10px;
+  margin-left: 0px;
+  margin-top: -50px;
   padding: 13px 15px;
   outline:none;
   font-weight: ${Fonts.normal};
@@ -120,7 +121,7 @@ class AppModal extends React.Component {
 
     return (
       <ReviewModal className={transition}>
-        <FlexColumn className="modal">
+        <FlexColumn>
           <Container>
             <CloseButton onClick={close}>
               <X

@@ -29,8 +29,9 @@ text-overflow: ellipsis;
 
 const SearchContainer = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
-margin-left: -7vw;
-margin-top: -4vh;
+margin-left: -8vw;
+margin-top: -2vh;
+padding-top: 2vh;
 border: none;
 color: rgb(34, 34, 34);
 background-color: rgb(247, 247, 247);
@@ -38,23 +39,23 @@ align-items: center;
 padding: 12px 12px 12px 16px;
 border-radius: 100px;
 box-shadow: rgb(176, 176, 176) 0px 0px 0px 1px inset;
-min-width: 70%;
+min-width: 300px;
 
 @keyframes expandSearch {
   0% {
-    width: 70%;
+    width: 300px;
   }
   100% {
-    width: 100%;
+    width: 450px;
   }
 }
 
 @keyframes shrinkSearch {
   0% {
-    width: 100%;
+    width: 450px;
   }
   100% {
-    width: 70%;
+    width: 300px;
   }
 }
 

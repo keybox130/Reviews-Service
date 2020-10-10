@@ -34,14 +34,12 @@ const RatingGraphs = ({ ratings, isModal }) => {
   return (
     <>
       <FlexColumn>
-        <Container>
-          <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
-          <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
-          <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
-          <StyledBarGraph text="Location" rating={ratings.location} isModal />
-          <StyledBarGraph text="Check-in" rating={ratings.checkIn} isModal />
-          <StyledBarGraph text="Value" rating={ratings.value} isModal />
-        </Container>
+        <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
+        <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
+        <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
+        <StyledBarGraph text="Location" rating={ratings.location} isModal />
+        <StyledBarGraph text="Check-in" rating={ratings.checkIn} isModal />
+        <StyledBarGraph text="Value" rating={ratings.value} isModal />
       </FlexColumn>
     </>
   );

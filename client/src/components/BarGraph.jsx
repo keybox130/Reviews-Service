@@ -6,7 +6,7 @@ const OuterContainer = styled.div`
 display: flex;
 justify-content: space-between;
 align-items: center;
-width: 477px;
+width: ${(props) => props.width}px;
 height: 4vh;
 margin-right: ${(props) => props.rightMargin};
 `;
@@ -69,9 +69,12 @@ const BarGraph = ({ text, rating, isModal }) => {
   // whether to delay bar load animation for modal
   const className = isModal ? 'modal' : null;
   rating = rating.toFixed(1);
+  const modalWidth = isModal
+    ? '312'
+    : '477';
 
   return (
-    <OuterContainer rightMargin={rightMargin}>
+    <OuterContainer width={modalWidth} rightMargin={rightMargin}>
       <Text>{text}</Text>
       <InnerContainer>
         <Underlay width={maxWidth}>

@@ -36,7 +36,8 @@ const FlexContainer = styled.div.attrs((props) => ({ className: props.className 
 display: flex;
 flex-direction: column;
 width: 477px;
-
+margin-bottom: 5vh;
+margin-right: ${(props) => props.marginRight};
 @keyframes slideInLeft {
   0% {
     opacity: 0;
@@ -85,7 +86,7 @@ width: 477px;
 `;
 
 class Review extends React.Component {
-  constructor({ text, name, month, year, userIcon, showAnimation, delay, callback }) {
+  constructor({ text, name, month, year, userIcon, showAnimation, delay, isModal, callback }) {
     super();
     this.state = {
       fullText: text,
@@ -94,6 +95,7 @@ class Review extends React.Component {
       date: `${month} ${year}`,
       userIcon,
       showAllText: true,
+      isModal,
       mountRef: callback,
     };
 
@@ -139,10 +141,17 @@ class Review extends React.Component {
 
   render() {
     const {
-      name, date, text, userIcon, showAllText,
+      name, date, text, userIcon, showAllText, isModal,
     } = this.state;
+
+    const marginRight = isModal
+      ? '100px'
+      : '0';
+
+    console.log(marginRight);
+
     return (
-      <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
+      <FlexContainer marginRight={marginRight} className={this.className} delay={this.delay} ref={this.myRef}>
         <FlexRow>
           <ProfileImage src={userIcon} />
           <FlexColumn>

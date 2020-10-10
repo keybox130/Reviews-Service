@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import _ from 'underscore';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
-import {
-  FlexRow, Animation,
-} from './Constants.jsx';
+import { Animation } from './Constants.jsx';
 
 const ScrollableFlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
 flex-direction: column;
-height: 80vh;
-margin-left: -10vw;
+height: 75vh;
+max-width: 400px
+margin-top: 6vh;
+margin-left: -7vw;
+margin-right: 3vw;
 overflow-y: scroll;
 
 ::-webkit-scrollbar {
@@ -32,6 +33,12 @@ overflow-y: scroll;
     background: #555;
   }
 }
+`;
+
+const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
+display: flex;
+flex-direction: row;
+margin-bottom: 2vh;
 `;
 
 class ReviewListModal extends React.Component {
@@ -145,6 +152,7 @@ class ReviewListModal extends React.Component {
             showAnimation={this.initialRender}
             delay={delay}
             callback={this.saveRef}
+            isModal
           />
         );
       }, this);
