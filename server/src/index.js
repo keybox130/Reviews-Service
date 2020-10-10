@@ -11,7 +11,6 @@ app.use(express.static(path.join(__dirname, '/../../client/dist')));
 // return a stay matching the provided roomId
 app.get('/reviews/stays/:id', (req, res) => {
   const { id } = req.params;
-  console.log(id);
   db.Room.find({ room_id: id}).exec()
     .then((room) => {
       res.status(200).send(room[0]);

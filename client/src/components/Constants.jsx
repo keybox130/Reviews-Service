@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const Margins = {
-  barWidth: '150',
+  barWidth: '130',
   modalBarWidth: '75',
   barHeight: '3px',
   imageSize: '20px',
@@ -19,7 +19,7 @@ const Animation = {
   reviewSlideDuration: '300',
   reviewSlideDelay: '100',
   starLoadDuration: '600',
-}
+};
 
 const Fonts = {
   family: "'Nunito', sans-serif",
