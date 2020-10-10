@@ -7,7 +7,7 @@ import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
 import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
-import { FlexRow, Animation } from './Constants.jsx';
+import { FlexRow, Animation, Container } from './Constants.jsx';
 
 // overlay used for dimming the whole page
 const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`
@@ -143,7 +143,7 @@ class ReviewApp extends React.Component {
         value: 0,
       },
       showModal: false, // whether to show modal
-      showButton: true, // whether to render showAll button
+      showAllButton: true, // whether to render showAll button
       dimClass: 'none', // which direction to animate
     };
 
@@ -160,7 +160,7 @@ class ReviewApp extends React.Component {
 
   // gets a stay from the server based on id
   getStay(stayId) {
-    axios.get(`/reviews/stays/:${stayId}`)
+    axios.get(`/reviews/stays/${stayId}`)
       .then((rooms) => {
         this.setState({
           reviews: extractReviews(rooms.data.reviews),
@@ -185,7 +185,7 @@ class ReviewApp extends React.Component {
           // reshow the button and hide modal/dim class
           setTimeout(() => {
             this.setState({
-              showButton: true,
+              showAllButton: true,
               showModal: false,
               dimClass: 'none',
             });
@@ -200,7 +200,7 @@ class ReviewApp extends React.Component {
       // hide button after click animation completes
       setTimeout(() => {
         this.setState({
-          showButton: false
+          showAllButton: false,
         });
       }, Number(Animation.clickDuration)),
     )
@@ -219,12 +219,9 @@ class ReviewApp extends React.Component {
 
   render() {
     const {
-      dimClass, reviews, ratings, showButton, showModal,
+      dimClass, reviews, ratings, showAllButton, showModal,
     } = this.state;
-    // show all reviews button
-    const ShowAllButton = showButton
-      ? <StyledShowAll numReviews={reviews.length} onClick={this.renderModal} />
-      : null;
+    // console.log(showAllButton);
     // only render when state updates
     return !reviews.length
       ? null
@@ -246,7 +243,10 @@ class ReviewApp extends React.Component {
           <ReviewComponent className={showModal ? 'blur' : null}>
             <FlexRow justify="left">
               {/* rating overview banner */}
-              <StyledRatingOverview average={ratings.average} numReviews={reviews.length} />
+              <StyledRatingOverview
+                average={ratings.average}
+                numReviews={reviews.length}
+              />
             </FlexRow>
             <FlexRow justify="left">
               {/* rating graphs */}
@@ -258,7 +258,11 @@ class ReviewApp extends React.Component {
             </FlexRow>
             <FlexRow justify="left">
 
-              { ShowAllButton }
+              <StyledShowAll
+                numReviews={reviews.length}
+                onClick={this.renderModal}
+                isVisible={showAllButton}
+              />
 
             </FlexRow>
           </ReviewComponent>
