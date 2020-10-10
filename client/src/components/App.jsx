@@ -7,7 +7,7 @@ import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewList from './ReviewList.jsx';
 import StyledAppModal from './AppModal.jsx';
 import StyledShowAll from './ShowAll.jsx';
-import { FlexRow, Animation, Container } from './Constants.jsx';
+import { FlexRow, Animation } from './Constants.jsx';
 
 // overlay used for dimming the whole page
 const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`

@@ -54,25 +54,6 @@ mix-blend-mode: multiply;
 }
 `;
 
-const EmptyButton = styled.button.attrs((props) => ({ className: props.className }))`
-border-radius: 8px;
-color: rgb(34, 34, 34);
-border-style: solid;
-border-width: 1px;
-border-color: rgb(34, 34, 34);
-background-color: white;
-display: flex;
-justify-content: center;
-text-align: center;
-white-space: nowrap;
-flex: 0 0 auto;
-padding: 13px 23px;
-margin-top: 3vh;
-max-width: 10vw;
-max-height: 8vh;
-outline:none;
-`;
-
 const ShowAll = ({ numReviews, onClick, isVisible }) => {
   let className = null;
 
