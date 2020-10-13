@@ -53,6 +53,7 @@ class ReviewListModal extends React.Component {
       allReviews: reviews,
       filteredReviews: reviews, // reviews filtered by search term
       viewableReviews: initialReviews, // reviews which are actually rendered
+      searchTerm: '',
     };
 
     // whether this is the modal's first time rendering list of reviews
@@ -104,6 +105,9 @@ class ReviewListModal extends React.Component {
     // clash with filtered ones within checkScrollBar
     this.refList.splice(0);
     const searchTerm = e.target.value.toLowerCase();
+    this.setState({
+      searchTerm,
+    });
     let filtered = null;
 
     const { allReviews } = this.state;
@@ -131,8 +135,9 @@ class ReviewListModal extends React.Component {
   }
 
   render() {
-    const { viewableReviews } = this.state;
-    const areViewableReviews = viewableReviews && viewableReviews.length;
+    const { viewableReviews, searchTerm } = this.state;
+    const areViewableReviews = viewableReviews && viewableReviews.length >= 0;
+    console.log(areViewableReviews);
     // React review components generated here to keep return statement a bit cleaner
     let reviewComponents = null;
     if (areViewableReviews) {
@@ -153,6 +158,7 @@ class ReviewListModal extends React.Component {
             delay={delay}
             callback={this.saveRef}
             isModal
+            searchTerm={searchTerm}
           />
         );
       }, this);
@@ -162,7 +168,7 @@ class ReviewListModal extends React.Component {
       }
     } else {
       // empty placeholder to maintain modal width
-      reviewComponents = [<StyledReview text="" name="" date="" userIcon="" key={-1} />];
+      reviewComponents = [<StyledReview text="" name="" month="" year="" userIcon="" key={-1} />];
     }
     return (
       <>

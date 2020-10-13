@@ -17,7 +17,6 @@ text-align: center;
 white-space: nowrap;
 flex: 0 0 auto;
 padding: 13px 23px;
-margin-top: 7vh;
 max-width: 10vw;
 max-height: 8vh;
 outline:none;
@@ -62,8 +61,6 @@ const ShowAll = ({ numReviews, onClick, isVisible, buttonClass }) => {
   const visibility = isVisible
     ? 'visible'
     : 'hidden';
-
-    console.log(buttonClass);
 
   return (
     <FlexColumn>

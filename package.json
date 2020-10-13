@@ -9,6 +9,7 @@
   },
   "scripts": {
     "react-dev": "webpack -d --watch",
+    "react": "webpack -p",
     "start": "node server/src/index.js",
     "seed": "node server/src/seed.js",
     "test": "jest --coverage"
@@ -20,6 +21,7 @@
     "mongodb": "^3.6.2",
     "mongoose": "^5.10.6",
     "react": "^16.13.1",
+    "react-highlight-words": "^0.16.0",
     "styled-components": "^5.2.0",
     "underscore": "^1.11.0"
   },

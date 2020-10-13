@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import StyledReviewText from './ReviewText.jsx'
+import Highlighter from "react-highlight-words";
+import StyledReviewText from './ReviewText.jsx';
 import {
   FlexRow, FlexColumn, Fonts, Animation,
 } from './Constants.jsx';
@@ -12,24 +13,21 @@ border-radius: 50%;
 mix-blend-mode: multiply;
 `;
 
-const Name = styled.p`
-display: inline-block;
-font-family: ${Fonts.family};
-font-weight: ${Fonts.bold};
-font-size: ${Fonts.large};
-font-size: 18px;
-margin-top: 8px;
-padding-bottom: 5px;
+const Wrapper = styled.div`
+line-height: 20px;
 margin-left: 12px;
 `;
 
-const Date = styled.p`
-display: inline;
+const Name = styled.div`
+font-family: ${Fonts.family};
+font-weight: ${Fonts.bold};
+font-size: ${Fonts.large};
+`;
+
+const Date = styled.div`
 font-family: ${Fonts.family};
 font-weight: ${Fonts.thin};
 font-size: ${Fonts.small};
-margin-top: -20px;
-margin-left: 12px;
 `;
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
@@ -86,7 +84,7 @@ margin-right: ${(props) => props.marginRight};
 `;
 
 class Review extends React.Component {
-  constructor({ text, name, month, year, userIcon, showAnimation, delay, isModal, callback }) {
+  constructor({ text, name, month, year, userIcon, showAnimation, delay, isModal, callback, searchTerm }) {
     super();
     this.state = {
       fullText: text,
@@ -97,19 +95,20 @@ class Review extends React.Component {
       showAllText: true,
       isModal,
       mountRef: callback,
+      searchTerm
     };
 
     this.className = showAnimation ? 'effectSlideInLeft' : null;
     this.delay = delay;
     this.onClick = this.onClick.bind(this);
     // add a ref for scroll bar DOM manipulation
-    this.myRef = React.createRef();
+    this.containerRef = React.createRef();
   }
 
   componentDidMount() {
     const { mountRef } = this.state;
     if (mountRef) {
-      mountRef(this.myRef);
+      mountRef(this.containerRef);
     }
     this.shortenText();
   }
@@ -141,26 +140,38 @@ class Review extends React.Component {
 
   render() {
     const {
-      name, date, text, userIcon, showAllText, isModal,
+      name, date, text, userIcon, showAllText, isModal, searchTerm
     } = this.state;
 
     const marginRight = isModal
       ? '100px'
       : '0';
 
-    console.log(marginRight);
-
     return (
-      <FlexContainer marginRight={marginRight} className={this.className} delay={this.delay} ref={this.myRef}>
+      <FlexContainer marginRight={marginRight} className={this.className} delay={this.delay} ref={this.containerRef}>
         <FlexRow>
           <ProfileImage src={userIcon} />
           <FlexColumn>
-            <Name>{name}</Name>
-            <Date>{date}</Date>
+            <Wrapper>
+              <Name>
+                <Highlighter
+                  searchWords={[searchTerm]}
+                  autoEscape
+                  textToHighlight={name}
+                />
+              </Name>
+              <Date>
+                <Highlighter
+                  searchWords={[searchTerm]}
+                  autoEscape
+                  textToHighlight={date}
+                />
+              </Date>
+            </Wrapper>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <StyledReviewText text={text} onClick={this.onClick} expanded={showAllText} />
+          <StyledReviewText text={text} onClick={this.onClick} expanded={showAllText} searchTerm={searchTerm} />
         </FlexRow>
       </FlexContainer>
     );

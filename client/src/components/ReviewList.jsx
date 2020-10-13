@@ -48,7 +48,8 @@ const ReviewList = ({ reviews }) => {
                   month={reviewRow[1].month}
                   year={reviewRow[1].year}
                   userIcon={reviewRow[1].userIcon}
-                  key={(i*3)+2} />
+                  key={(i*3)+2}
+                />
               )
               : null}
           </FlexContainer>
