@@ -1,4 +1,5 @@
 const db = require('./db.js');
+const faker = require('faker');
 
 const randomNames = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'Clarence', 'Jorge', 'Antonio',
   'Elana', 'Lim', 'Jake', 'James', 'Johnny', 'Jorgen', 'Haneen', 'Mataeux', 'Theo', 'Ryan',
@@ -6,10 +7,6 @@ const randomNames = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'C
   'Carina', 'Catherine', 'Daniel', 'Erfan', 'Eric', 'Harris', 'Harrison', 'Jen', 'Jessie',
   'Joel', 'Johnny', 'Joesph', 'Karl', 'Katharine', 'Liz', 'Mike', 'Minji', 'Mylani', 'Rebecca',
   'Rob', 'Shaquon', 'Sophie', 'Sokhary', 'Susan', 'Victoria', 'Watson', 'Yas'];
-
-const randomText = ['apple', 'orange', 'pear', 'little', 'big', 'hack', 'reactor', 'review', 'great', 'the', 'a',
-  'is', 'of', 'will', 'tree', 'normal', 'abstract', 'your', 'job', 'free', 'work', 'stay','home',
-  'apartment', 'kite', 'rent', 'stay', 'like', 'roof', 'room', 'bathroom', 'lorem ipsum'];
 
 // get random float between min and max, inclusive and rounded to numDecimalPlaces
 const getRandomFloat = (min, max) => {
@@ -22,18 +19,6 @@ const getRandomFloat = (min, max) => {
 const getRandomInt = (min, max) => {
   const range = max - min;
   return Math.round(Math.random() * range) + min;
-};
-
-const generateReviewText = () => {
-  const text = [];
-  // generate random review of length between 50-150
-  const numWords = getRandomInt(50, 150);
-  for (let i = 0; i < numWords; i++) {
-    // get a random word from randomText
-    const index = getRandomInt(0, randomText.length);
-    text.push(randomText[index]);
-  }
-  return text.join(' ');
 };
 
 const getRandomPhoto = () => {
@@ -55,7 +40,7 @@ const generateRandomReview = () => {
 
   const review = {
     userIcon: getRandomPhoto(),
-    reviewText: generateReviewText(),
+    reviewText: faker.lorem.sentence(getRandomInt(15, 50)),
     month,
     year,
     name: randomNames[getRandomInt(0, randomNames.length)],

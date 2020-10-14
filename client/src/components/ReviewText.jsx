@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 font-family: ${Fonts.family};
 font-weight: ${Fonts.normal};
 font-size: ${Fonts.medium};
+margin-top: 16px;
 `;
 
 const ReviewText = ({ text, onClick, expanded, searchTerm }) => {
