@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Highlighter from "react-highlight-words";
 
 import {
-  Text, Fonts,
+  Fonts,
 } from './Constants.jsx';
 
 const ReadMore = styled.a`

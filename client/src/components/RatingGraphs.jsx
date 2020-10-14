@@ -33,7 +33,7 @@ const RatingGraphs = ({ ratings, isModal }) => {
   // render 1x6 bar graphs
   return (
     <>
-      <FlexColumn>
+      <FlexColumn className="modal">
         <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
         <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
         <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
