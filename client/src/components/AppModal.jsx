@@ -4,7 +4,7 @@ import StyledRatingOverview from './RatingOverview.jsx';
 import StyledRatingGraphs from './RatingGraphs.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
 import {
-  Fonts, FlexColumn, Container, Animation,
+  Fonts, FlexColumn, Container, Animation, compareFunction,
 } from './Constants.jsx';
 
 const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
@@ -139,7 +139,7 @@ class AppModal extends React.Component {
           <StyledRatingGraphs ratings={ratings} isModal />
         </FlexColumn>
         <FlexColumn>
-          <StyledReviewListModal reviews={reviews.sort()} />
+          <StyledReviewListModal reviews={reviews.sort(compareFunction)} />
         </FlexColumn>
       </ReviewModal>
     );

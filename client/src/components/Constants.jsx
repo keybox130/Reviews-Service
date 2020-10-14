@@ -71,6 +71,24 @@ width: 560px;
 }
 `;
 
+const compareFunction = (a, b) => {
+  if (Number(a.year) < Number(b.year)) {
+    return 1;
+  }
+  if (Number(a.year > Number(b.year))) {
+    return -1;
+  }
+  const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  if (months.indexOf(a.month) < months.indexOf(b.month)) {
+    return 1;
+  }
+  if (months.indexOf(a.month) > months.indexOf(b.month)) {
+    return -1;
+  }
+  // a must be equal to b
+  return 0;
+};
+
 export {
-  FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins,
+  FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins, compareFunction,
 };
