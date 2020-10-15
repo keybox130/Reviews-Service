@@ -9,6 +9,7 @@ import {
 
 const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
 top: 0;
+visibility: hidden;
 z-index: 3;
 position: fixed;
 display: flex;
@@ -49,6 +50,7 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 }
 
 &.enter {
+  visibility: visible;
   animation-name: slideIn;
   animation-duration: ${Animation.modalSlideDuration}ms;
   animation-fill-mode: both;
@@ -58,6 +60,7 @@ box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 }
 
 &.exit {
+  visibility: visible;
   animation-name: slideOut;
   animation-duration: ${Animation.modalSlideDuration}ms;
   animation-fill-mode: both;
@@ -105,18 +108,27 @@ class AppModal extends React.Component {
       ratings,
       close,
       transition,
+      isExiting: false,
     };
+    this.reviewListRef = React.createRef();
   }
 
   setTransition(transition, callback) {
-    this.setState({
-      transition,
-    }, callback);
+    Promise.resolve(
+      this.reviewListRef.current.setTransition(transition),
+    )
+      .then(() => {
+        setTimeout(() => {
+          this.setState({
+            transition,
+          }, callback);
+        }, Number(Animation.reviewDelay[transition]));
+      });
   }
 
   render() {
     const {
-      transition, close, ratings, reviews,
+      transition, close, ratings, reviews, isExiting, reviewListRef,
     } = this.state;
 
     return (
@@ -139,7 +151,7 @@ class AppModal extends React.Component {
           <StyledRatingGraphs ratings={ratings} isModal />
         </FlexColumn>
         <FlexColumn>
-          <StyledReviewListModal reviews={reviews.sort(compareFunction)} />
+          <StyledReviewListModal ref={this.reviewListRef} isExiting reviews={reviews.sort(compareFunction)} />
         </FlexColumn>
       </ReviewModal>
     );

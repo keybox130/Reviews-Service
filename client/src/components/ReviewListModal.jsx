@@ -8,9 +8,9 @@ import { Animation } from './Constants.jsx';
 const ScrollableFlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
 display: flex;
 flex-direction: column;
-height: 75vh;
+height: 77vh;
 min-width: 600px;
-margin-top: 6vh;
+margin-top: 0vh;
 margin-left: -136px;
 margin-right: 3vw;
 overflow-y: scroll;
@@ -42,7 +42,7 @@ margin-bottom: 2vh;
 `;
 
 class ReviewListModal extends React.Component {
-  constructor({ reviews }) {
+  constructor({ reviews, isExiting }) {
     super();
 
     // the number of reviews to load at a time
@@ -54,6 +54,7 @@ class ReviewListModal extends React.Component {
       filteredReviews: reviews, // reviews filtered by search term
       viewableReviews: initialReviews, // reviews which are actually rendered
       searchTerm: '',
+      isExiting,
     };
 
     // whether this is the modal's first time rendering list of reviews
@@ -73,6 +74,26 @@ class ReviewListModal extends React.Component {
     });
   }
 
+  setTransition(transition) {
+    let index = 0;
+    _.each(this.refList, (ref) => {
+      // only show transition on viewable reviews
+      if (ref.current) {
+        let delay = 0;
+        if (transition === 'enter') {
+          // animate each review successively after the dim and modal slide animations
+          delay = Number(Animation.reviewSlideDelay * (index)) + Number(Animation.modalSlideDuration)
+          + Number(Animation.dimDuration);
+        } else if (transition === 'exit') {
+          delay = Number(Animation.reviewSlideDelay * (index));
+        }
+        ref.current.setDelay(delay);
+        ref.current.setTransition(transition);
+        index += 1;
+      }
+    });
+  }
+
   // load more reviews if the scroll bar is at the bottom
   loadMoreReviews() {
     const { viewableReviews, filteredReviews } = this.state;
@@ -88,7 +109,8 @@ class ReviewListModal extends React.Component {
   checkScrollBar(e) {
     if (this.refList.length > 0) {
       const lastReview = this.refList[this.refList.length - 1].current;
-      const lastElementOffset = lastReview.offsetTop + lastReview.clientHeight;
+      const lastContainer = lastReview.containerRef.current;
+      const lastElementOffset = lastContainer.offsetTop + lastContainer.clientHeight;
       const scrollOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
       if (scrollOffset >= lastElementOffset) {
         this.loadMoreReviews();
@@ -98,7 +120,7 @@ class ReviewListModal extends React.Component {
 
   // save DOM refs of filtered reviews
   saveRef(ref) {
-    this.refList.push(ref);
+    // this.refList.push(ref);
   }
 
   // filter the rendered reviews by the search term
@@ -139,25 +161,23 @@ class ReviewListModal extends React.Component {
   render() {
     const { viewableReviews, searchTerm } = this.state;
     const areViewableReviews = viewableReviews && viewableReviews.length >= 0;
-    console.log(areViewableReviews);
     // React review components generated here to keep return statement a bit cleaner
     let reviewComponents = null;
     if (areViewableReviews) {
       reviewComponents = _.map(viewableReviews, (review, i) => {
-        // animate each review successively after the dim and modal slide animations
-        let delay = Number(Animation.reviewSlideDelay * (i)) + Number(Animation.modalSlideDuration)
-         + Number(Animation.dimDuration);
-        delay = delay.toString();
+        const transition = this.initialRender ? 'enter' : null;
+        const reviewRef = React.createRef();
+        this.refList.push(reviewRef);
         return (
           <StyledReview
+            ref={reviewRef}
             text={review.reviewText}
             name={review.name}
             month={review.month}
             year={review.year}
             userIcon={review.userIcon}
             key={(i)}
-            showAnimation={this.initialRender}
-            delay={delay}
+            transition={transition}
             callback={this.saveRef}
             isModal
             searchTerm={searchTerm}

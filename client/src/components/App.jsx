@@ -251,7 +251,6 @@ class ReviewApp extends React.Component {
     const {
       dimClass, reviews, ratings, showAllButton, showModal, buttonClass,
     } = this.state;
-    // console.log(showAllButton);
     // only render when state updates
     return !reviews.length
       ? null

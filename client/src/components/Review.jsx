@@ -36,11 +36,12 @@ flex-direction: column;
 width: 477px;
 margin-bottom: 40px;
 margin-right: ${(props) => props.marginRight};
+
 @keyframes slideInLeft {
   0% {
     opacity: 0;
     filter: blur(4px);
-    transform: translateX(-150px);
+    transform: translateX(-400px);
   }
 
   75% {
@@ -49,24 +50,27 @@ margin-right: ${(props) => props.marginRight};
 
   100% {
     opacity: 1;
-    filter: none;
     transform: translateX(0);
   }
 }
 
 @keyframes slideOutLeft {
   0% {
-    opacity: 0;
-    transform: translateX(0);
+    opacity: 1;
+  }
+
+  25% {
+    opacity: 0.7;
   }
 
   100% {
-    opacity: 1;
-    transform: translateX(-200px);
+    opacity: 0;
+    filter: blur(4px);
+    transform: translateX(-400px);
   }
 }
 
-&.effectSlideInLeft
+&.enter
 {
   animation: slideInLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${(props) => props.delay}ms;
@@ -74,9 +78,9 @@ margin-right: ${(props) => props.marginRight};
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
 
-&.effectSlideOutLeft
+&.exit
 {
-  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
+  animation: slideOutLeft ${Animation.reviewSlideDuration}ms;
   animation-delay: ${(props) => props.delay}ms;
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
@@ -84,7 +88,7 @@ margin-right: ${(props) => props.marginRight};
 `;
 
 class Review extends React.Component {
-  constructor({ text, name, month, year, userIcon, showAnimation, delay, isModal, callback, searchTerm }) {
+  constructor({ text, name, month, year, userIcon, transition, isModal, callback, searchTerm }) {
     super();
     this.state = {
       fullText: text,
@@ -95,11 +99,11 @@ class Review extends React.Component {
       showAllText: true,
       isModal,
       mountRef: callback,
-      searchTerm
+      searchTerm,
+      transition,
     };
 
-    this.className = showAnimation ? 'effectSlideInLeft' : null;
-    this.delay = delay;
+    this.delay = 0;
     this.onClick = this.onClick.bind(this);
     // add a ref for scroll bar DOM manipulation
     this.containerRef = React.createRef();
@@ -108,7 +112,7 @@ class Review extends React.Component {
   componentDidMount() {
     const { mountRef } = this.state;
     if (mountRef) {
-      mountRef(this.containerRef);
+      // mountRef(this.containerRef);
     }
     this.shortenText();
   }
@@ -120,6 +124,16 @@ class Review extends React.Component {
       text: fullText,
       showAllText: true,
     });
+  }
+
+  setTransition(transition) {
+    this.setState({
+      transition,
+    });
+  }
+
+  setDelay(delay) {
+    this.delay = delay;
   }
 
   // shortens the review text according to AirBnB style, if needed
@@ -140,15 +154,17 @@ class Review extends React.Component {
 
   render() {
     const {
-      name, date, text, userIcon, showAllText, isModal, searchTerm
+      name, date, text, userIcon, showAllText, isModal, searchTerm, transition,
     } = this.state;
 
     const marginRight = isModal
       ? '100px'
       : '0';
 
+    console.log(transition);
+
     return (
-      <FlexContainer marginRight={marginRight} className={this.className} delay={this.delay} ref={this.containerRef}>
+      <FlexContainer marginRight={marginRight} className={transition} delay={this.delay} ref={this.containerRef}>
         <FlexRow>
           <ProfileImage src={userIcon} />
           <FlexColumn>

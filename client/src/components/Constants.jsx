@@ -16,9 +16,13 @@ const Animation = {
   dimDuration: '400',
   clickDuration: '200',
   searchExpandDuration: '200',
-  reviewSlideDuration: '300',
-  reviewSlideDelay: '100',
+  reviewSlideDuration: '400',
+  reviewSlideDelay: '100', // time in between each review slide
   starLoadDuration: '600',
+  reviewDelay: { // delay before starting slide on modal enter/exit
+    enter: '0',
+    exit: '600',
+  },
 };
 
 const Fonts = {

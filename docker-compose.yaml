@@ -5,6 +5,6 @@ services:
     container_name: reviews
     restart: always
     build: ./
-    image: chrisbelldev/reviews:highlight
+    image: chrisbelldev/reviews:latest
     ports:
       - "3003:3003"
