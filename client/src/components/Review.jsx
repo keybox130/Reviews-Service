@@ -37,11 +37,10 @@ width: 477px;
 margin-bottom: 40px;
 margin-right: ${(props) => props.marginRight};
 
-@keyframes slideInLeft {
+@keyframes slideIn {
   0% {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateX(-400px);
+    transform: translateY(100px);
   }
 
   75% {
@@ -50,11 +49,11 @@ margin-right: ${(props) => props.marginRight};
 
   100% {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-@keyframes slideOutLeft {
+@keyframes slideOut {
   0% {
     opacity: 1;
   }
@@ -65,24 +64,29 @@ margin-right: ${(props) => props.marginRight};
 
   100% {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateX(-400px);
+    transform: translateY(-100px);
   }
 }
 
-&.enter
-{
-  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
-  animation-delay: ${(props) => props.delay}ms;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
+&.invisible {
+  visibility: hidden;
 }
 
-&.exit
-{
-  animation: slideOutLeft ${Animation.reviewSlideDuration}ms;
+&.enter {
+  visibility: visible;
+  animation-name: slideIn;
+  animation-duration: ${Animation.reviewSlideDuration}ms;
   animation-delay: ${(props) => props.delay}ms;
   animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+&.exit {
+  visibility: visible;
+  animation-name: slideOut;
+  animation-duration: ${Animation.reviewSlideDuration}ms;
+  animation-delay: ${(props) => props.delay}ms;
+  animation-fill-mode: forwards;
   animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
 }
 `;
@@ -98,7 +102,6 @@ class Review extends React.Component {
       userIcon,
       showAllText: true,
       isModal,
-      mountRef: callback,
       searchTerm,
       transition,
     };
@@ -110,10 +113,6 @@ class Review extends React.Component {
   }
 
   componentDidMount() {
-    const { mountRef } = this.state;
-    if (mountRef) {
-      // mountRef(this.containerRef);
-    }
     this.shortenText();
   }
 
@@ -126,12 +125,20 @@ class Review extends React.Component {
     });
   }
 
+  // set the transition class
   setTransition(transition) {
     this.setState({
       transition,
     });
   }
 
+  // get the transition class
+  getTransition() {
+    const { transition } = this.state;
+    return transition;
+  }
+
+  // set the animation delay
   setDelay(delay) {
     this.delay = delay;
   }
@@ -160,8 +167,6 @@ class Review extends React.Component {
     const marginRight = isModal
       ? '100px'
       : '0';
-
-    console.log(transition);
 
     return (
       <FlexContainer marginRight={marginRight} className={transition} delay={this.delay} ref={this.containerRef}>
