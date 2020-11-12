@@ -1,18 +1,70 @@
 const db = require('./db.js');
 const faker = require('faker');
 
-const randomNames = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'Clarence', 'Jorge', 'Antonio',
-  'Elana', 'Lim', 'Jake', 'James', 'Johnny', 'Jorgen', 'Haneen', 'Mataeux', 'Theo', 'Ryan',
-  'Jacob', 'Jenny', 'Alex', 'Alissa', 'Andrew', 'Anna', 'Arun', 'Adjoa', 'Billy', 'Brian',
-  'Carina', 'Catherine', 'Daniel', 'Erfan', 'Eric', 'Harris', 'Harrison', 'Jen', 'Jessie',
-  'Joel', 'Johnny', 'Joesph', 'Karl', 'Katharine', 'Liz', 'Mike', 'Minji', 'Mylani', 'Rebecca',
-  'Rob', 'Shaquon', 'Sophie', 'Sokhary', 'Susan', 'Victoria', 'Watson', 'Yas'];
+const randomNames = [
+  'Chris',
+  'Katie',
+  'Emmanuel',
+  'Josef',
+  'Kiara',
+  'Karen',
+  'Clarence',
+  'Jorge',
+  'Antonio',
+  'Elana',
+  'Lim',
+  'Jake',
+  'James',
+  'Johnny',
+  'Jorgen',
+  'Haneen',
+  'Mataeux',
+  'Theo',
+  'Ryan',
+  'Jacob',
+  'Jenny',
+  'Alex',
+  'Alissa',
+  'Andrew',
+  'Anna',
+  'Arun',
+  'Adjoa',
+  'Billy',
+  'Brian',
+  'Carina',
+  'Catherine',
+  'Daniel',
+  'Erfan',
+  'Eric',
+  'Harris',
+  'Harrison',
+  'Jen',
+  'Jessie',
+  'Joel',
+  'Johnny',
+  'Joesph',
+  'Karl',
+  'Katharine',
+  'Liz',
+  'Mike',
+  'Minji',
+  'Mylani',
+  'Rebecca',
+  'Rob',
+  'Shaquon',
+  'Sophie',
+  'Sokhary',
+  'Susan',
+  'Victoria',
+  'Watson',
+  'Yas',
+];
 
 // get random float between min and max, inclusive and rounded to numDecimalPlaces
 const getRandomFloat = (min, max) => {
   const numDecimalPlaces = 2;
   const range = max - min;
-  return Number(((Math.random() * range) + min).toFixed(numDecimalPlaces));
+  return Number((Math.random() * range + min).toFixed(numDecimalPlaces));
 };
 
 // get random int between min and max, inclusive
@@ -26,17 +78,31 @@ const getRandomPhoto = () => {
   const min = 69900;
   const max = 69999;
   let photoId = getRandomInt(min, max);
-  return `https://keybox-review-images.s3-us-west-1.amazonaws.com/${photoId}.png`;
+  return `https://keybox-review-images.s3-us-west-1.amazonaws.com/${photoId}.webp`;
 };
 
 // generate a random document
 const generateRandomReview = () => {
   const minRating = getRandomInt(1, 5);
 
-  const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const months = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   const month = months[getRandomInt(1, 12)];
   const years = ['2016', '2017', '2018', '2019', '2020'];
-  const year = years[getRandomInt(0, 4)];
+  const year = years[Math.round(Math.random(4))];
 
   const review = {
     userIcon: getRandomPhoto(),
@@ -95,9 +161,10 @@ const initDB = () => {
 
 const seedDB = () => {
   // populate the database once we are connected (if necessary!)
-  db.Room.find({}).exec()
+  db.Room.find({})
+    .exec()
     .then((docs) => {
-    // check if there are already docs in the database
+      // check if there are already docs in the database
       if (!docs.length) {
         initDB()
           .then(() => {
@@ -110,7 +177,7 @@ const seedDB = () => {
         console.log('Database is already populated!');
       }
     })
-    .catch(err => {
+    .catch((err) => {
       throw err;
     });
 };
