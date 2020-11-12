@@ -4,10 +4,10 @@ import StyledBarGraph from './BarGraph.jsx';
 import { FlexColumn, Container } from './Constants.jsx';
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
-display: flex;
-flex-direction: row;
-justify-content: space-between;
-min-width: 1120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 1120px;
 `;
 
 const RatingGraphs = ({ ratings, isModal }) => {
@@ -45,7 +45,6 @@ const RatingGraphs = ({ ratings, isModal }) => {
   );
 };
 
-const StyledRatingGraphs = styled(RatingGraphs)`
-`;
+const StyledRatingGraphs = styled(RatingGraphs)``;
 
 export default StyledRatingGraphs;

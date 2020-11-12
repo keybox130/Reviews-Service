@@ -6,40 +6,40 @@ import StyledSearchBar from './SearchBar.jsx';
 import { Animation } from './Constants.jsx';
 
 const ScrollableFlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
-display: flex;
-flex-direction: column;
-height: 77vh;
-min-width: 600px;
-margin-top: 0vh;
-margin-left: -136px;
-margin-right: 3vw;
-overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  height: 77vh;
+  min-width: 600px;
+  margin-top: 0vh;
+  margin-left: -136px;
+  margin-right: 3vw;
+  overflow-y: scroll;
 
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-&.scroll {
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    margin-top: 5vh;
-    margin-bottom: 5vh;
+  ::-webkit-scrollbar {
+    width: 10px;
   }
-}
 
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  background: #888;
-  :hover {
-    background: #555;
+  &.scroll {
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      margin-top: 5vh;
+      margin-bottom: 5vh;
+    }
   }
-}
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #888;
+    :hover {
+      background: #555;
+    }
+  }
 `;
 
 const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
-display: flex;
-flex-direction: row;
-margin-bottom: 2vh;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2vh;
 `;
 
 class ReviewListModal extends React.Component {
@@ -67,8 +67,9 @@ class ReviewListModal extends React.Component {
   }
 
   componentDidMount() {
-    this.scrollOffset = this.scrollWindow.current.clientHeight + this.scrollWindow.current.offsetTop;
-    this.scrollWindow.current.addEventListener('scroll', e => {
+    this.scrollOffset =
+      this.scrollWindow.current.clientHeight + this.scrollWindow.current.offsetTop;
+    this.scrollWindow.current.addEventListener('scroll', (e) => {
       this.scrollOffset = e.target.scrollTop + e.target.clientHeight + e.target.offsetTop;
       this.checkReviewView();
       this.checkScrollBar();
@@ -89,7 +90,10 @@ class ReviewListModal extends React.Component {
       animated = this.reviewRefs.slice(0, this.numReviewsToShow);
     } else if (transition === 'exit') {
       // animate from the bottom up
-      animated = this.reviewRefs.slice(this.reviewRefs.length - this.numReviewsToShow * 2, this.reviewRefs.length);
+      animated = this.reviewRefs.slice(
+        this.reviewRefs.length - this.numReviewsToShow * 2,
+        this.reviewRefs.length
+      );
       animated = _.filter(animated, (ref) => {
         return ref.current && this.reviewIsInView(ref);
       });
@@ -101,11 +105,13 @@ class ReviewListModal extends React.Component {
         let delay = 0;
         if (transition === 'enter') {
           // animate each review successively after the dim and modal slide animations
-          delay = Number(Animation.reviewSlideDelay * (index)) + Number(Animation.modalSlideDuration)
-          + Number(Animation.dimDuration);
+          delay =
+            Number(Animation.reviewSlideDelay * index) +
+            Number(Animation.modalSlideDuration) +
+            Number(Animation.dimDuration);
         } else if (transition === 'exit') {
           // start delay successions immediately
-          delay = Number(Animation.reviewSlideDelay * (index));
+          delay = Number(Animation.reviewSlideDelay * index);
         }
         ref.current.setDelay(delay);
         ref.current.setTransition(transition);
@@ -140,7 +146,7 @@ class ReviewListModal extends React.Component {
   // check if individual review is in view (able to animate)
   reviewIsInView(reviewRef) {
     const container = reviewRef.current.containerRef.current;
-    const containerOffset = container.offsetTop + (container.clientHeight / 2);
+    const containerOffset = container.offsetTop + container.clientHeight / 2;
     return containerOffset < this.scrollOffset;
   }
 
@@ -173,25 +179,30 @@ class ReviewListModal extends React.Component {
 
     if (searchTerm) {
       filtered = _.filter(allReviews, (review) => {
-        return review.reviewText.toLowerCase().includes(searchTerm)
-        || review.name.toLowerCase().includes(searchTerm)
-        || review.month.toLowerCase().includes(searchTerm)
-        || review.year.toLowerCase().includes(searchTerm);
+        return (
+          review.reviewText.toLowerCase().includes(searchTerm) ||
+          review.name.toLowerCase().includes(searchTerm) ||
+          review.month.toLowerCase().includes(searchTerm) ||
+          review.year.toLowerCase().includes(searchTerm)
+        );
       });
     } else {
       // show all rendered reviews
       filtered = allReviews;
     }
 
-    this.setState({
-      filteredReviews: filtered,
-      viewableReviews: null,
-    }, () => {
-      // this is a workaround to make sure the state updates with viewable reviews
-      this.setState({
-        viewableReviews: filtered.slice(0, this.numReviewsToShow),
-      });
-    });
+    this.setState(
+      {
+        filteredReviews: filtered,
+        viewableReviews: null,
+      },
+      () => {
+        // this is a workaround to make sure the state updates with viewable reviews
+        this.setState({
+          viewableReviews: filtered.slice(0, this.numReviewsToShow),
+        });
+      }
+    );
   }
 
   render() {
@@ -201,26 +212,30 @@ class ReviewListModal extends React.Component {
     let reviewComponents = null;
     if (areViewableReviews) {
       this.reviewRefs.splice(0);
-      reviewComponents = _.map(viewableReviews, (review, i) => {
-        // show an enter animation on any newly created reviews on modal init
-        const transition = this.initialRender ? 'enter' : null;
-        const reviewRef = React.createRef();
-        this.reviewRefs.push(reviewRef);
-        return (
-          <StyledReview
-            ref={reviewRef}
-            text={review.reviewText}
-            name={review.name}
-            month={review.month}
-            year={review.year}
-            userIcon={review.userIcon}
-            key={(i)}
-            transition={transition}
-            isModal
-            searchTerm={searchTerm}
-          />
-        );
-      }, this);
+      reviewComponents = _.map(
+        viewableReviews,
+        (review, i) => {
+          // show an enter animation on any newly created reviews on modal init
+          const transition = this.initialRender ? 'enter' : null;
+          const reviewRef = React.createRef();
+          this.reviewRefs.push(reviewRef);
+          return (
+            <StyledReview
+              ref={reviewRef}
+              text={review.reviewText}
+              name={review.name}
+              month={review.month}
+              year={review.year}
+              userIcon={review.userIcon}
+              key={i}
+              transition={transition}
+              isModal
+              searchTerm={searchTerm}
+            />
+          );
+        },
+        this
+      );
       if (this.initialRender) {
         this.initialRender = false;
       }
@@ -235,7 +250,10 @@ class ReviewListModal extends React.Component {
         </FlexRow>
         <FlexRow>
           {/* only show the scroll bar track if there are viewable reviews */}
-          <ScrollableFlexColumn className={areViewableReviews ? 'scroll' : null} ref={this.scrollWindow}>
+          <ScrollableFlexColumn
+            className={areViewableReviews ? 'scroll' : null}
+            ref={this.scrollWindow}
+          >
             {reviewComponents}
           </ScrollableFlexColumn>
         </FlexRow>
@@ -244,7 +262,6 @@ class ReviewListModal extends React.Component {
   }
 }
 
-const StyledReviewListModal = styled(ReviewListModal)`
-`;
+const StyledReviewListModal = styled(ReviewListModal)``;
 
 export default StyledReviewListModal;

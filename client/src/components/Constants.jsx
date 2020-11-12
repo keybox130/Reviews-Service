@@ -19,7 +19,8 @@ const Animation = {
   reviewSlideDuration: '400',
   reviewSlideDelay: '100', // time in between each review slide
   starLoadDuration: '600',
-  reviewDelay: { // delay before starting slide on modal enter/exit
+  reviewDelay: {
+    // delay before starting slide on modal enter/exit
     enter: '0',
     exit: '600',
   },
@@ -39,12 +40,12 @@ const Fonts = {
 };
 
 const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
-display: flex;
-flex-direction: row;
+  display: flex;
+  flex-direction: row;
 
-&.left {
-  justify-content: flex-start;
-}
+  &.left {
+    justify-content: flex-start;
+  }
 `;
 
 const Text = styled.p.attrs((props) => ({ className: props.className }))`
@@ -62,17 +63,17 @@ margin: 0 0;
 `;
 
 const FlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Container = styled.div.attrs((props) => ({ className: props.className }))`
-display: inline-block;
-width: 560px;
-&.header {
-  height: 6vh;
-  padding-bottom: 32px;
-}
+  display: inline-block;
+  width: 560px;
+  &.header {
+    height: 6vh;
+    padding-bottom: 32px;
+  }
 `;
 
 const compareFunction = (a, b) => {
@@ -82,7 +83,21 @@ const compareFunction = (a, b) => {
   if (Number(a.year > Number(b.year))) {
     return -1;
   }
-  const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const months = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   if (months.indexOf(a.month) < months.indexOf(b.month)) {
     return 1;
   }
@@ -93,6 +108,4 @@ const compareFunction = (a, b) => {
   return 0;
 };
 
-export {
-  FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins, compareFunction,
-};
+export { FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins, compareFunction };
