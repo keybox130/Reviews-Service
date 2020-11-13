@@ -1,9 +1,7 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import StyledRatingOverview from './RatingOverview.jsx';
-import StyledRatingGraphs from './RatingGraphs.jsx';
-import StyledReviewListModal from './ReviewListModal.jsx';
 import { Fonts, FlexColumn, Container, Animation, compareFunction } from './Constants.jsx';
+import StyledReviewListModal from './ReviewListModal.jsx';
 
 const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
   top: 0;
@@ -126,6 +124,10 @@ class AppModal extends React.Component {
 
   render() {
     const { transition, close, ratings, reviews, isExiting, reviewListRef } = this.state;
+    const renderLoader = () => <p>Loading</p>;
+    const StyledRatingOverview = lazy(() => import('./RatingOverview.jsx'));
+    const StyledRatingGraphs = lazy(() => import('./RatingGraphs.jsx'));
+    // const StyledReviewListModal = lazy(() => import('./ReviewListModal.jsx'));
 
     return (
       <ReviewModal className={transition}>
@@ -143,8 +145,12 @@ class AppModal extends React.Component {
               </X>
             </CloseButton>
           </Container>
-          <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
-          <StyledRatingGraphs ratings={ratings} isModal />
+          <Suspense fallback={renderLoader}>
+            <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
+          </Suspense>
+          <Suspense fallback={renderLoader}>
+            <StyledRatingGraphs ratings={ratings} isModal />
+          </Suspense>
         </FlexColumn>
         <FlexColumn>
           <StyledReviewListModal ref={this.reviewListRef} reviews={reviews.sort(compareFunction)} />

@@ -7,8 +7,9 @@ const app = express();
 const port = 3003;
 app.use(compression());
 
-// send app and js bundle
-app.use(express.static(path.join(__dirname, '..', '..', 'public')));
+// send html, bundles, and fonts/stylesheets
+app.use(express.static(path.join(__dirname, '..', '..', 'public/fonts')));
+app.use(express.static(path.join(__dirname, '..', '..', 'public/dist')));
 
 // return a stay matching the provided roomId
 app.get('/reviews/stays/:id', (req, res) => {

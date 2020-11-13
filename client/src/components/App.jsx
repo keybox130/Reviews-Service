@@ -2,11 +2,8 @@ import React, { lazy, Suspense } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import _ from 'underscore';
-import StyledRatingGraphs from './RatingGraphs.jsx';
-import StyledReviewList from './ReviewList.jsx';
-import StyledAppModal from './AppModal.jsx';
-import StyledShowAll from './ShowAll.jsx';
 import { FlexRow, Animation, compareFunction } from './Constants.jsx';
+import StyledAppModal from './AppModal.jsx';
 
 // overlay used for dimming the whole page
 const Dimmable = styled.div.attrs((props) => ({ className: props.className }))`
@@ -237,6 +234,9 @@ class ReviewApp extends React.Component {
     const { dimClass, reviews, ratings, showAllButton, showModal, buttonClass } = this.state;
     const renderLoader = () => <p>Loading</p>;
     const StyledRatingOverview = lazy(() => import('./RatingOverview.jsx'));
+    const StyledRatingGraphs = lazy(() => import('./RatingGraphs.jsx'));
+    const StyledReviewList = lazy(() => import('./ReviewList.jsx'));
+    const StyledShowAll = lazy(() => import('./ShowAll.jsx'));
     // only render when state updates
     return !reviews.length ? null : (
       <>
@@ -253,28 +253,32 @@ class ReviewApp extends React.Component {
         {/* show a transition if the modal is displayed */}
         <ReviewComponent className={showModal ? 'blur' : null}>
           <BorderTop />
-          <FlexRow justify="left">
-            {/* rating overview banner */}
-            <Suspense fallback={renderLoader()}>
+          <Suspense fallback={renderLoader}>
+            <FlexRow justify="left">
+              {/* rating overview banner */}
               <StyledRatingOverview average={ratings.average} numReviews={reviews.length} />
-            </Suspense>
-          </FlexRow>
-          <FlexRow justify="left">
-            {/* rating graphs */}
-            <StyledRatingGraphs ratings={ratings} />
-          </FlexRow>
-          <FlexRow justify="left">
-            {/* only render the top 6 arbitrarily sorted reviews */}
-            <StyledReviewList reviews={reviews.sort(compareFunction).slice(0, 6)} />
-          </FlexRow>
-          <FlexRow justify="left">
-            <StyledShowAll
-              numReviews={reviews.length}
-              onClick={this.renderModal}
-              isVisible={showAllButton}
-              buttonClass={buttonClass}
-            />
-          </FlexRow>
+            </FlexRow>
+          </Suspense>
+          <Suspense fallback={renderLoader}>
+            <FlexRow justify="left">
+              {/* rating graphs */}
+              <StyledRatingGraphs ratings={ratings} />
+            </FlexRow>
+          </Suspense>
+          <Suspense fallback={renderLoader}>
+            <FlexRow justify="left">
+              {/* only render the top 6 arbitrarily sorted reviews */}
+              <StyledReviewList reviews={reviews.sort(compareFunction).slice(0, 6)} />
+            </FlexRow>
+            <FlexRow justify="left">
+              <StyledShowAll
+                numReviews={reviews.length}
+                onClick={this.renderModal}
+                isVisible={showAllButton}
+                buttonClass={buttonClass}
+              />
+            </FlexRow>
+          </Suspense>
           <BorderBottom />
         </ReviewComponent>
 

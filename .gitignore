@@ -24,3 +24,5 @@ coverage
 
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 **bundle.js
+**js.map
+**index.html
