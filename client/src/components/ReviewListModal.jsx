@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import _ from 'underscore';
 import StyledReview from './Review.jsx';
 import StyledSearchBar from './SearchBar.jsx';
 import { Animation } from './Constants.jsx';
+import _ from 'underscore';
 
 const ScrollableFlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
   display: flex;

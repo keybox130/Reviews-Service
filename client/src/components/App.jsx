@@ -109,7 +109,7 @@ const extractRatings = (reviews) => {
   };
 
   // sum all rating types
-  _.each(reviews, (review) => {
+  reviews.forEach((review) => {
     ratings.cleanliness += review.rating.cleanliness;
     ratings.communication += review.rating.communication;
     ratings.checkIn += review.rating.checkIn;
