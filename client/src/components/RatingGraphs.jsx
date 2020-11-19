@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
-import { FlexColumn, Container } from './Constants.jsx';
+import { FlexColumn } from './Constants.jsx';
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
   display: flex;
