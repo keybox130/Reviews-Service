@@ -8,11 +8,9 @@ const HtmlTemplatePlugin = require('html-webpack-template');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env, argv) => {
-  console.log(argv.mode);
-  const isEnvProduction = argv.mode === 'production';
   return {
     devtool: 'source-map',
-    mode: 'development',
+    mode: argv.mode,
     entry: {
       main: `${SRC_DIR}/index.jsx`,
     },
