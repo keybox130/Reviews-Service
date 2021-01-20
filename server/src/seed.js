@@ -1,4 +1,7 @@
-const db = require('./db.js');
+const db = require('./db/mongo');
+const { exec } = require('child_process');
+const path = require('path');
+const fsPromises = require('fs').promises;
 const faker = require('faker');
 
 const randomNames = [
@@ -74,11 +77,11 @@ const getRandomInt = (min, max) => {
 };
 
 const getRandomPhoto = () => {
-  // min and max photo ids from S3
-  const min = 69900;
-  const max = 69999;
+  // random photo from local storage
+  const min = 1;
+  const max = 21;
   let photoId = getRandomInt(min, max);
-  return `https://keybox-review-images.s3-us-west-1.amazonaws.com/${photoId}.webp`;
+  return `http://localhost:3003/photos/${photoId}.webp`;
 };
 
 // generate a random document
@@ -132,7 +135,7 @@ const generateRandomReviews = () => {
   return reviews;
 };
 
-const initDB = () => {
+const initDB = async () => {
   const numRooms = 100;
 
   // create a random sample of reviews
@@ -156,30 +159,59 @@ const initDB = () => {
   }
 
   // insert them and return the promise
-  return db.Room.insertMany(rooms);
+  await db.Room.insertMany(rooms);
 };
 
-const seedDB = () => {
-  // populate the database once we are connected (if necessary!)
-  db.Room.find({})
-    .exec()
-    .then((docs) => {
-      // check if there are already docs in the database
-      if (!docs.length) {
-        initDB()
-          .then(() => {
-            console.log('Successfully initialized database');
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        console.log('Database is already populated!');
-      }
-    })
-    .catch((err) => {
-      throw err;
+const createRedisScript = async () => {
+  // export the db as a JSON
+  const cmd = `mongoexport --collection rooms --out ./public/db/rooms.json --uri="mongodb://localhost/reviews" --jsonArray`;
+  exec(cmd, async (error, stdout, stderr) => {
+    if (error) {
+      console.error(`error: ${error.message}`);
+      return;
+    }
+    const rooms = require('../../public/db/rooms.json');
+    let script = ``;
+    rooms.forEach((room) => {
+      script += `SET room:${room.room_id} '${JSON.stringify(room)}'
+
+      `;
     });
+    try {
+      await fsPromises.writeFile(
+        path.join(__dirname, '..', '..', 'public', 'db', 'rooms.txt'),
+        script
+      );
+      console.log('Wrote redis script file.');
+    } catch (err) {
+      console.error(`Couldn't write redis script file.`);
+      console.error(err);
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
+};
+
+const seedDB = async () => {
+  // populate the database once we are connected (if necessary!)
+  let docs;
+  try {
+    docs = await db.Room.find({});
+  } catch (err) {
+    throw err;
+  }
+  // check if there are already docs in the database
+  if (docs && !docs.length) {
+    try {
+      await initDB();
+      console.log('Successfully initialized database');
+      await createRedisScript();
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    console.error('Database is already populated!');
+  }
 };
 
 seedDB();
