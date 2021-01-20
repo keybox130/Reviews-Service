@@ -27,3 +27,6 @@ coverage
 **js.map
 **index.html
 **.LICENSE.txt
+
+**seed
+**public/db
