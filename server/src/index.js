@@ -11,10 +11,13 @@ app.use(compression());
 db.load();
 
 // send html, bundles, and fonts/stylesheets
-app.use(express.static(path.join(__dirname, '..', '..', 'public/fonts')));
-app.use(express.static(path.join(__dirname, '..', '..', 'public/dist')));
-app.use(express.static(path.join(__dirname, '..', '..', 'public/db')));
-app.use(express.static(path.join(__dirname, '..', '..', 'public/static-images')));
+app.use('/keybox/reviews/', express.static(path.join(__dirname, '..', '..', 'public/fonts')));
+app.use('/keybox/reviews/', express.static(path.join(__dirname, '..', '..', 'public/dist')));
+app.use('/keybox/reviews/', express.static(path.join(__dirname, '..', '..', 'public/db')));
+app.use(
+  '/keybox/reviews/',
+  express.static(path.join(__dirname, '..', '..', 'public/static-images'))
+);
 
 client.on('error', (err) => console.error(err));
 
