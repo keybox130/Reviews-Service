@@ -36,5 +36,5 @@ app.get('/reviews/stays/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}`);
+  console.log(`Listening at http://localhost:${port}/keybox/reviews`);
 });
