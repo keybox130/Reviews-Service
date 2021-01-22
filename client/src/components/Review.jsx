@@ -1,92 +1,96 @@
 import React from 'react';
 import styled from 'styled-components';
-import StyledReviewText from './ReviewText.jsx'
-import {
-  FlexRow, FlexColumn, Fonts, Animation,
-} from './Constants.jsx';
+import Highlighter from 'react-highlight-words';
+import StyledReviewText from './ReviewText.jsx';
+import { FlexRow, FlexColumn, Fonts, Animation } from './Constants.jsx';
 
 const ProfileImage = styled.img`
-max-height: 7vh;
-display: inline-block;
-border-radius: 50%;
-mix-blend-mode: multiply;
+  max-height: 56px;
+  display: inline-block;
+  border-radius: 50%;
+  mix-blend-mode: multiply;
 `;
 
-const Name = styled.p`
-display: inline-block;
-font-family: ${Fonts.family};
-font-weight: ${Fonts.bold};
-font-size: ${Fonts.large};
-margin-top: 10px;
+const Wrapper = styled.div`
+  line-height: 20px;
+  margin-left: 12px;
 `;
 
-const Date = styled.p`
-display: inline;
-font-family: ${Fonts.family};
-font-weight: ${Fonts.thin};
-font-size: ${Fonts.small};
-margin-bottom: 20px;
-margin-top: -15px;
+const Name = styled.div`
+  font-family: ${Fonts.family};
+  font-weight: ${Fonts.bold};
+  font-size: ${Fonts.large};
+`;
+
+const Date = styled.div`
+  font-family: ${Fonts.family};
+  font-weight: ${Fonts.thin};
+  font-size: ${Fonts.small};
 `;
 
 const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
-display: flex;
-flex-direction: column;
-margin-left 3vw;
-margin-right: 3vw;
-width: 25vw;
-margin-top: 3vh;
+  display: flex;
+  flex-direction: column;
+  width: 477px;
+  margin-bottom: 40px;
+  margin-right: ${(props) => props.marginRight};
 
-@keyframes slideInLeft {
-  0% {
-    opacity: 0;
-    filter: blur(4px);
-    transform: translateX(-150px);
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translateY(100px);
+    }
+
+    75% {
+      opacity: 0.7;
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  75% {
-    opacity: 0.7;
+  @keyframes slideOut {
+    0% {
+      opacity: 1;
+    }
+
+    25% {
+      opacity: 0.7;
+    }
+
+    100% {
+      opacity: 0;
+      transform: translateY(-100px);
+    }
   }
 
-  100% {
-    opacity: 1;
-    filter: none;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOutLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(0);
+  &.invisible {
+    visibility: hidden;
   }
 
-  100% {
-    opacity: 1;
-    transform: translateX(-200px);
+  &.enter {
+    visibility: visible;
+    animation-name: slideIn;
+    animation-duration: ${Animation.reviewSlideDuration}ms;
+    animation-delay: ${(props) => props.delay}ms;
+    animation-fill-mode: both;
+    animation-timing-function: ease-out;
   }
-}
 
-&.effectSlideInLeft
-{
-  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
-  animation-delay: ${(props) => props.delay}ms;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
-}
-
-&.effectSlideOutLeft
-{
-  animation: slideInLeft ${Animation.reviewSlideDuration}ms;
-  animation-delay: ${(props) => props.delay}ms;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.0, 0.0, 0.0, 1.0);
-}
-
+  &.exit {
+    visibility: visible;
+    animation-name: slideOut;
+    animation-duration: ${Animation.reviewSlideDuration}ms;
+    animation-delay: ${(props) => props.delay}ms;
+    animation-fill-mode: forwards;
+    animation-timing-function: cubic-bezier(0, 0, 0, 1);
+  }
 `;
 
 class Review extends React.Component {
-  constructor({ text, name, month, year, userIcon, showAnimation, delay, callback }) {
+  constructor({ text, name, month, year, userIcon, transition, isModal, callback, searchTerm }) {
     super();
     this.state = {
       fullText: text,
@@ -95,21 +99,18 @@ class Review extends React.Component {
       date: `${month} ${year}`,
       userIcon,
       showAllText: true,
-      mountRef: callback,
+      isModal,
+      searchTerm,
+      transition,
     };
 
-    this.className = showAnimation ? 'effectSlideInLeft' : null;
-    this.delay = delay;
+    this.delay = 0;
     this.onClick = this.onClick.bind(this);
     // add a ref for scroll bar DOM manipulation
-    this.myRef = React.createRef();
+    this.containerRef = React.createRef();
   }
 
   componentDidMount() {
-    const { mountRef } = this.state;
-    if (mountRef) {
-      mountRef(this.myRef);
-    }
     this.shortenText();
   }
 
@@ -120,6 +121,24 @@ class Review extends React.Component {
       text: fullText,
       showAllText: true,
     });
+  }
+
+  // set the transition class
+  setTransition(transition) {
+    this.setState({
+      transition,
+    });
+  }
+
+  // get the transition class
+  getTransition() {
+    const { transition } = this.state;
+    return transition;
+  }
+
+  // set the animation delay
+  setDelay(delay) {
+    this.delay = delay;
   }
 
   // shortens the review text according to AirBnB style, if needed
@@ -139,27 +158,43 @@ class Review extends React.Component {
   }
 
   render() {
-    const {
-      name, date, text, userIcon, showAllText,
-    } = this.state;
+    const { name, date, text, userIcon, showAllText, isModal, searchTerm, transition } = this.state;
+
+    const marginRight = isModal ? '100px' : '0';
+
     return (
-      <FlexContainer className={this.className} delay={this.delay} ref={this.myRef}>
+      <FlexContainer
+        marginRight={marginRight}
+        className={transition}
+        delay={this.delay}
+        ref={this.containerRef}
+      >
         <FlexRow>
           <ProfileImage src={userIcon} />
           <FlexColumn>
-            <Name>{name}</Name>
-            <Date>{date}</Date>
+            <Wrapper>
+              <Name>
+                <Highlighter searchWords={[searchTerm]} autoEscape textToHighlight={name} />
+              </Name>
+              <Date>
+                <Highlighter searchWords={[searchTerm]} autoEscape textToHighlight={date} />
+              </Date>
+            </Wrapper>
           </FlexColumn>
         </FlexRow>
         <FlexRow>
-          <StyledReviewText text={text} onClick={this.onClick} expanded={showAllText} />
+          <StyledReviewText
+            text={text}
+            onClick={this.onClick}
+            expanded={showAllText}
+            searchTerm={searchTerm}
+          />
         </FlexRow>
       </FlexContainer>
     );
   }
 }
 
-const StyledReview = styled(Review)`
-`;
+const StyledReview = styled(Review)``;
 
 export default StyledReview;

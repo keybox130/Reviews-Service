@@ -1,67 +1,67 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import styled from 'styled-components';
-import StyledRatingOverview from './RatingOverview.jsx';
-import StyledRatingGraphs from './RatingGraphs.jsx';
+import { Fonts, FlexColumn, Container, Animation, compareFunction } from './Constants.jsx';
 import StyledReviewListModal from './ReviewListModal.jsx';
-import {
-  Fonts, FlexColumn, Container, Animation,
-} from './Constants.jsx';
 
 const ReviewModal = styled.div.attrs((props) => ({ className: props.className }))`
-top: 0;
-z-index: 3;
-position: fixed;
-display: flex;
-flex-direction: row;
-justify-content: flex-start;
-background-color: white;
-border-style: none;
-border-width: 5px;
-border-radius: 15px;
-height: 85vh;
-max-width: 60vw;
-margin: 0 20vw;
-margin-top: 2vh;
-padding-top: 7vh;
-box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
+  top: 0;
+  visibility: hidden;
+  z-index: 3;
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: white;
+  border-style: none;
+  border-width: 5px;
+  border-radius: 15px;
+  height: 85vh;
+  width: 1000px;
+  margin: 0 20vw;
+  margin-top: 2vh;
+  padding: 24px;
+  padding-top: 7vh;
+  box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
 
-@keyframes slideIn {
-  0% {
-    opacity: 0;
-    transform: translate(0px, 100%);
+  @keyframes slideIn {
+    0% {
+      opacity: 0;
+      transform: translate(0px, 100%);
+    }
+    100% {
+      opacity: 1;
+      transform: none;
+    }
   }
-  100% {
-    opacity: 1;
-    transform: none;
-  }
-}
 
-@keyframes slideOut {
-  0% {
-    opacity: 1;
-    transform: none;
+  @keyframes slideOut {
+    0% {
+      opacity: 1;
+      transform: none;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(0px, 100%);
+    }
   }
-  100% {
-    opacity: 0;
-    transform: translate(0px, 100%);
+
+  &.enter {
+    visibility: visible;
+    animation-name: slideIn;
+    animation-duration: ${Animation.modalSlideDuration}ms;
+    animation-fill-mode: both;
+    /* should start animation after dim/blur animation completes */
+    animation-delay: ${Animation.dimDuration}ms;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
-}
 
-&.enter {
-  animation-name: slideIn;
-  animation-duration: ${Animation.modalSlideDuration}ms;
-  animation-fill-mode: both;
-  /* should start animation after dim/blur animation completes */
-  animation-delay: ${Animation.dimDuration}ms;
-  animation-timing-function: cubic-bezier(0, 0, 0.2, 1.0);
-}
-
-&.exit {
-  animation-name: slideOut;
-  animation-duration: ${Animation.modalSlideDuration}ms;
-  animation-fill-mode: both;
-  animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
-}
+  &.exit {
+    visibility: visible;
+    animation-name: slideOut;
+    animation-duration: ${Animation.modalSlideDuration}ms;
+    animation-fill-mode: both;
+    animation-timing-function: cubic-bezier(0.8, 0.2, 0.2, 0.8);
+  }
 `;
 
 const CloseButton = styled.button`
@@ -73,10 +73,10 @@ const CloseButton = styled.button`
   text-align: center;
   max-height: 10vh;
   max-width: 10vw;
-  margin-left: -15px;
-  margin-top: -10px;
+  margin-left: 0px;
+  margin-top: -50px;
   padding: 13px 15px;
-  outline:none;
+  outline: none;
   font-weight: ${Fonts.normal};
   font-family: ${Fonts.family};
   font-size: ${Fonts.header};
@@ -87,13 +87,13 @@ const CloseButton = styled.button`
 `;
 
 const X = styled.svg`
-display: block;
-fill: none;
-height: 16px;
-width: 16px;
-stroke: currentcolor;
-stroke-width: 3;
-overflow: visible;
+  display: block;
+  fill: none;
+  height: 16px;
+  width: 16px;
+  stroke: currentcolor;
+  stroke-width: 3;
+  overflow: visible;
 `;
 
 class AppModal extends React.Component {
@@ -104,23 +104,34 @@ class AppModal extends React.Component {
       ratings,
       close,
       transition,
+      isExiting: false,
     };
+    this.reviewListRef = React.createRef();
   }
 
   setTransition(transition, callback) {
-    this.setState({
-      transition,
-    }, callback);
+    Promise.resolve(this.reviewListRef.current.setTransition(transition)).then(() => {
+      setTimeout(() => {
+        this.setState(
+          {
+            transition,
+          },
+          callback
+        );
+      }, Number(Animation.reviewDelay[transition]));
+    });
   }
 
   render() {
-    const {
-      transition, close, ratings, reviews,
-    } = this.state;
+    const { transition, close, ratings, reviews, isExiting, reviewListRef } = this.state;
+    const renderLoader = () => <p>Loading</p>;
+    const StyledRatingOverview = lazy(() => import('./RatingOverview.jsx'));
+    const StyledRatingGraphs = lazy(() => import('./RatingGraphs.jsx'));
+    // const StyledReviewListModal = lazy(() => import('./ReviewListModal.jsx'));
 
     return (
       <ReviewModal className={transition}>
-        <FlexColumn className="modal">
+        <FlexColumn>
           <Container>
             <CloseButton onClick={close}>
               <X
@@ -134,18 +145,21 @@ class AppModal extends React.Component {
               </X>
             </CloseButton>
           </Container>
-          <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
-          <StyledRatingGraphs ratings={ratings} isModal />
+          <Suspense fallback={renderLoader}>
+            <StyledRatingOverview average={ratings.average} numReviews={reviews.length} isModal />
+          </Suspense>
+          <Suspense fallback={renderLoader}>
+            <StyledRatingGraphs ratings={ratings} isModal />
+          </Suspense>
         </FlexColumn>
         <FlexColumn>
-          <StyledReviewListModal reviews={reviews.sort()} />
+          <StyledReviewListModal ref={this.reviewListRef} reviews={reviews.sort(compareFunction)} />
         </FlexColumn>
       </ReviewModal>
     );
   }
 }
 
-const StyledAppModal = styled(AppModal)`
-`;
+const StyledAppModal = styled(AppModal)``;
 
 export default StyledAppModal;

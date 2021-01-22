@@ -1,64 +1,50 @@
 import React from 'react';
 import styled from 'styled-components';
 import StyledBarGraph from './BarGraph.jsx';
-import { FlexColumn, Container } from './Constants.jsx';
+import { FlexColumn } from './Constants.jsx';
 
-const LeftContainer = styled.div.attrs((props) => ({ className: props.className }))`
-display: inline-block;
-margin-top: 1vh;
-margin-left: 3vw;
-width: 25vw;
-}
-`;
-
-const RightContainer = styled.div.attrs((props) => ({ className: props.className }))`
-display: inline-block;
-margin-top: 1vh;
-margin-left: 5vw;
-width: 25vw;
-}
+const FlexContainer = styled.div.attrs((props) => ({ className: props.className }))`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 1120px;
 `;
 
 const RatingGraphs = ({ ratings, isModal }) => {
   if (!isModal) {
     // render 2x3 bar graphs
     return (
-      <>
-        <FlexColumn>
-          <LeftContainer>
-            <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} />
-            <StyledBarGraph text="Communication" rating={ratings.communication} />
-            <StyledBarGraph text="Check-in" rating={ratings.checkIn} />
-          </LeftContainer>
-        </FlexColumn>
-        <FlexColumn>
-          <RightContainer>
-            <StyledBarGraph text="Accuracy" rating={ratings.accuracy} />
-            <StyledBarGraph text="Location" rating={ratings.location} />
-            <StyledBarGraph text="Value" rating={ratings.value} />
-          </RightContainer>
-        </FlexColumn>
-      </>
+      <FlexColumn>
+        <FlexContainer>
+          <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} />
+          <StyledBarGraph text="Accuracy" rating={ratings.accuracy} />
+        </FlexContainer>
+        <FlexContainer>
+          <StyledBarGraph text="Communication" rating={ratings.communication} />
+          <StyledBarGraph text="Location" rating={ratings.location} />
+        </FlexContainer>
+        <FlexContainer>
+          <StyledBarGraph text="Check-in" rating={ratings.checkIn} />
+          <StyledBarGraph text="Value" rating={ratings.value} />
+        </FlexContainer>
+      </FlexColumn>
     );
   }
   // render 1x6 bar graphs
   return (
     <>
-      <FlexColumn>
-        <Container>
-          <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
-          <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
-          <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
-          <StyledBarGraph text="Location" rating={ratings.location} isModal />
-          <StyledBarGraph text="Check-in" rating={ratings.checkIn} isModal />
-          <StyledBarGraph text="Value" rating={ratings.value} isModal />
-        </Container>
+      <FlexColumn className="modal">
+        <StyledBarGraph text="Cleanliness" rating={ratings.cleanliness} isModal />
+        <StyledBarGraph text="Accuracy" rating={ratings.accuracy} isModal />
+        <StyledBarGraph text="Communication" rating={ratings.communication} isModal />
+        <StyledBarGraph text="Location" rating={ratings.location} isModal />
+        <StyledBarGraph text="Check-in" rating={ratings.checkIn} isModal />
+        <StyledBarGraph text="Value" rating={ratings.value} isModal />
       </FlexColumn>
     </>
   );
 };
 
-const StyledRatingGraphs = styled(RatingGraphs)`
-`;
+const StyledRatingGraphs = styled(RatingGraphs)``;
 
 export default StyledRatingGraphs;

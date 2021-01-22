@@ -1,21 +1,73 @@
-const db = require('./db.js');
+const db = require('./db/mongo');
+const { exec } = require('child_process');
+const path = require('path');
+const fsPromises = require('fs').promises;
+const faker = require('faker');
 
-const randomNames = ['Chris', 'Katie', 'Emmanuel', 'Josef', 'Kiara', 'Karen', 'Clarence', 'Jorge', 'Antonio',
-  'Elana', 'Lim', 'Jake', 'James', 'Johnny', 'Jorgen', 'Haneen', 'Mataeux', 'Theo', 'Ryan',
-  'Jacob', 'Jenny', 'Alex', 'Alissa', 'Andrew', 'Anna', 'Arun', 'Adjoa', 'Billy', 'Brian',
-  'Carina', 'Catherine', 'Daniel', 'Erfan', 'Eric', 'Harris', 'Harrison', 'Jen', 'Jessie',
-  'Joel', 'Johnny', 'Joesph', 'Karl', 'Katharine', 'Liz', 'Mike', 'Minji', 'Mylani', 'Rebecca',
-  'Rob', 'Shaquon', 'Sophie', 'Sokhary', 'Susan', 'Victoria', 'Watson', 'Yas'];
-
-const randomText = ['apple', 'orange', 'pear', 'little', 'big', 'hack', 'reactor', 'review', 'great', 'the', 'a',
-  'is', 'of', 'will', 'tree', 'normal', 'abstract', 'your', 'job', 'free', 'work', 'stay','home',
-  'apartment', 'kite', 'rent', 'stay', 'like', 'roof', 'room', 'bathroom', 'lorem ipsum'];
+const randomNames = [
+  'Chris',
+  'Katie',
+  'Emmanuel',
+  'Josef',
+  'Kiara',
+  'Karen',
+  'Clarence',
+  'Jorge',
+  'Antonio',
+  'Elana',
+  'Lim',
+  'Jake',
+  'James',
+  'Johnny',
+  'Jorgen',
+  'Haneen',
+  'Mataeux',
+  'Theo',
+  'Ryan',
+  'Jacob',
+  'Jenny',
+  'Alex',
+  'Alissa',
+  'Andrew',
+  'Anna',
+  'Arun',
+  'Adjoa',
+  'Billy',
+  'Brian',
+  'Carina',
+  'Catherine',
+  'Daniel',
+  'Erfan',
+  'Eric',
+  'Harris',
+  'Harrison',
+  'Jen',
+  'Jessie',
+  'Joel',
+  'Johnny',
+  'Joesph',
+  'Karl',
+  'Katharine',
+  'Liz',
+  'Mike',
+  'Minji',
+  'Mylani',
+  'Rebecca',
+  'Rob',
+  'Shaquon',
+  'Sophie',
+  'Sokhary',
+  'Susan',
+  'Victoria',
+  'Watson',
+  'Yas',
+];
 
 // get random float between min and max, inclusive and rounded to numDecimalPlaces
 const getRandomFloat = (min, max) => {
   const numDecimalPlaces = 2;
   const range = max - min;
-  return Number(((Math.random() * range) + min).toFixed(numDecimalPlaces));
+  return Number((Math.random() * range + min).toFixed(numDecimalPlaces));
 };
 
 // get random int between min and max, inclusive
@@ -24,38 +76,40 @@ const getRandomInt = (min, max) => {
   return Math.round(Math.random() * range) + min;
 };
 
-const generateReviewText = () => {
-  const text = [];
-  // generate random review of length between 50-150
-  const numWords = getRandomInt(50, 150);
-  for (let i = 0; i < numWords; i++) {
-    // get a random word from randomText
-    const index = getRandomInt(0, randomText.length);
-    text.push(randomText[index]);
-  }
-  return text.join(' ');
-};
-
 const getRandomPhoto = () => {
-  // min and max photo ids from S3
-  const min = 69900;
-  const max = 69999;
+  // random photo from local storage
+  const min = 1;
+  const max = 21;
   let photoId = getRandomInt(min, max);
-  return `https://keybox-review-images.s3-us-west-1.amazonaws.com/${photoId}.png`;
+  return `/keybox/reviews/photos/${photoId}.webp`;
 };
 
 // generate a random document
 const generateRandomReview = () => {
   const minRating = getRandomInt(1, 5);
 
-  const months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const months = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
   const month = months[getRandomInt(1, 12)];
   const years = ['2016', '2017', '2018', '2019', '2020'];
-  const year = years[getRandomInt(0, 4)];
+  const year = years[Math.round(Math.random(4))];
 
   const review = {
     userIcon: getRandomPhoto(),
-    reviewText: generateReviewText(),
+    reviewText: faker.lorem.sentence(getRandomInt(15, 50)),
     month,
     year,
     name: randomNames[getRandomInt(0, randomNames.length)],
@@ -81,7 +135,7 @@ const generateRandomReviews = () => {
   return reviews;
 };
 
-const initDB = () => {
+const initDB = async () => {
   const numRooms = 100;
 
   // create a random sample of reviews
@@ -105,29 +159,59 @@ const initDB = () => {
   }
 
   // insert them and return the promise
-  return db.Room.insertMany(rooms);
+  await db.Room.insertMany(rooms);
 };
 
-const seedDB = () => {
-  // populate the database once we are connected (if necessary!)
-  db.Room.find({}).exec()
-    .then((docs) => {
-    // check if there are already docs in the database
-      if (!docs.length) {
-        initDB()
-          .then(() => {
-            console.log('Successfully initialized database');
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      } else {
-        console.log('Database is already populated!');
-      }
-    })
-    .catch(err => {
-      throw err;
+const createRedisScript = async () => {
+  // export the db as a JSON
+  const cmd = `mongoexport --collection rooms --out ./public/db/rooms.json --uri="mongodb://localhost/reviews" --jsonArray`;
+  exec(cmd, async (error, stdout, stderr) => {
+    if (error) {
+      console.error(`error: ${error.message}`);
+      return;
+    }
+    const rooms = require('../../public/db/rooms.json');
+    let script = ``;
+    rooms.forEach((room) => {
+      script += `SET room:${room.room_id} '${JSON.stringify(room)}'
+
+      `;
     });
+    try {
+      await fsPromises.writeFile(
+        path.join(__dirname, '..', '..', 'public', 'db', 'rooms.txt'),
+        script
+      );
+      console.log('Wrote redis script file.');
+    } catch (err) {
+      console.error(`Couldn't write redis script file.`);
+      console.error(err);
+    }
+    console.log(`stdout: ${stdout}`);
+    console.error(`stderr: ${stderr}`);
+  });
+};
+
+const seedDB = async () => {
+  // populate the database once we are connected (if necessary!)
+  let docs;
+  try {
+    docs = await db.Room.find({});
+  } catch (err) {
+    throw err;
+  }
+  // check if there are already docs in the database
+  if (docs && !docs.length) {
+    try {
+      await initDB();
+      console.log('Successfully initialized database');
+      await createRedisScript();
+    } catch (err) {
+      console.error(err);
+    }
+  } else {
+    console.error('Database is already populated!');
+  }
 };
 
 seedDB();

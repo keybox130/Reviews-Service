@@ -1,33 +1,38 @@
 import React from 'react';
 import styled from 'styled-components';
-import {
-  Text, Fonts,
-} from './Constants.jsx';
+import Highlighter from 'react-highlight-words';
+
+import { Fonts } from './Constants.jsx';
 
 const ReadMore = styled.a`
-font-family: ${Fonts.family};
-font-weight: ${Fonts.bold};
-font-size: ${Fonts.medium};
-text-decoration: underline;
-display: inline;
-cursor: pointer;
-:active {
-  color: rgb(113, 113, 113);
-}
+  font-family: ${Fonts.family};
+  font-weight: ${Fonts.bold};
+  font-size: ${Fonts.medium};
+  text-decoration: underline;
+  display: inline;
+  cursor: pointer;
+  :active {
+    color: rgb(113, 113, 113);
+  }
 `;
 
-const ReviewText = ({ text, onClick, expanded }) => {
+const Wrapper = styled.div`
+  font-family: ${Fonts.family};
+  font-weight: ${Fonts.normal};
+  line-height: 1.2;
+  font-size: ${Fonts.medium};
+  margin-top: 16px;
+`;
+
+const ReviewText = ({ text, onClick, expanded, searchTerm }) => {
   return (
-    <div>
-      <Text>{text}</Text>
-      {expanded
-        ? null
-        : <ReadMore onClick={onClick}>read more...</ReadMore>}
-    </div>
+    <Wrapper>
+      <Highlighter searchWords={[searchTerm]} autoEscape textToHighlight={text} />
+      {expanded ? null : <ReadMore onClick={onClick}>read more...</ReadMore>}
+    </Wrapper>
   );
 };
 
-const StyledReviewText = styled(ReviewText)`
-`;
+const StyledReviewText = styled(ReviewText)``;
 
 export default StyledReviewText;

@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 const Margins = {
-  barWidth: '130',
+  barWidth: '122',
   modalBarWidth: '75',
-  barHeight: '3px',
+  barHeight: '4px',
   imageSize: '20px',
   modalImageSize: '30px',
 };
@@ -16,9 +16,14 @@ const Animation = {
   dimDuration: '400',
   clickDuration: '200',
   searchExpandDuration: '200',
-  reviewSlideDuration: '300',
-  reviewSlideDelay: '100',
+  reviewSlideDuration: '400',
+  reviewSlideDelay: '100', // time in between each review slide
   starLoadDuration: '600',
+  reviewDelay: {
+    // delay before starting slide on modal enter/exit
+    enter: '0',
+    exit: '600',
+  },
 };
 
 const Fonts = {
@@ -35,14 +40,12 @@ const Fonts = {
 };
 
 const FlexRow = styled.div.attrs((props) => ({ className: props.justify }))`
-display: flex;
-flex-direction: row;
-margin-bottom: 1vh;
+  display: flex;
+  flex-direction: row;
 
-&.left {
-  justify-content: flex-start;
-  margin: 0 6vw;
-}
+  &.left {
+    justify-content: flex-start;
+  }
 `;
 
 const Text = styled.p.attrs((props) => ({ className: props.className }))`
@@ -60,26 +63,49 @@ margin: 0 0;
 `;
 
 const FlexColumn = styled.div.attrs((props) => ({ className: props.className }))`
-display: flex;
-flex-direction: column;
-margin-left: 1vw;
-
-&.modal {
-  margin-left: -20px;
-  margin-top: -50px;
-}
+  display: flex;
+  flex-direction: column;
 `;
 
 const Container = styled.div.attrs((props) => ({ className: props.className }))`
-display: inline-block;
-margin: 1vh 3vw;
-width: 25vw;
-&.header {
-  height: 6vh;
-  margin-top: 0vh;
-}
+  display: inline-block;
+  width: 560px;
+  &.header {
+    height: 6vh;
+    padding-bottom: 32px;
+  }
 `;
 
-export {
-  FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins,
+const compareFunction = (a, b) => {
+  if (Number(a.year) < Number(b.year)) {
+    return 1;
+  }
+  if (Number(a.year > Number(b.year))) {
+    return -1;
+  }
+  const months = [
+    '',
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ];
+  if (months.indexOf(a.month) < months.indexOf(b.month)) {
+    return 1;
+  }
+  if (months.indexOf(a.month) > months.indexOf(b.month)) {
+    return -1;
+  }
+  // a must be equal to b
+  return 0;
 };
+
+export { FlexRow, FlexColumn, Container, Text, Fonts, Animation, Margins, compareFunction };
