@@ -81,7 +81,7 @@ const getRandomPhoto = () => {
   const min = 1;
   const max = 21;
   let photoId = getRandomInt(min, max);
-  return `/photos/${photoId}.webp`;
+  return `/keybox/reviews/photos/${photoId}.webp`;
 };
 
 // generate a random document

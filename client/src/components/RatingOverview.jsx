@@ -70,8 +70,13 @@ const RatingOverview = ({ average, numReviews, isModal }) => {
   return (
     <FlexRow>
       <Container className="header">
-        <StarUnderlay className={className} imageSize={imageSize} src="/star.png" />
-        <Star className={className} percentage={percentage} imageSize={imageSize} src="/star.png" />
+        <StarUnderlay className={className} imageSize={imageSize} src="/keybox/reviews/star.png" />
+        <Star
+          className={className}
+          percentage={percentage}
+          imageSize={imageSize}
+          src="/keybox/reviews/star.png"
+        />
         <Header
           className={className}
           fontSize={fontSize}
